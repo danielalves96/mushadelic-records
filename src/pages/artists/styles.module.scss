@@ -1,0 +1,27 @@
+.nameSection {
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+  background: #181818;
+  height: 3rem;
+  align-items: center;
+  font-size: 0.9rem
+}
+
+.imageMargin {
+  color: #fff;
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transform-origin: 65% 75%;
+  transition: transform 1s, filter .5s ease-out;
+
+  &:hover {
+    opacity: 0.95;
+    transform: scale(1.02);
+    color: #9ef300
+  }
+
+  transition: all 0.2s;
+}

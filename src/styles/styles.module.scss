@@ -1,0 +1,17 @@
+.imageMargin {
+  color: #fff;
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transform-origin: 65% 75%;
+  transition: transform 1s, filter 0.5s ease-out;
+
+  &:hover {
+    opacity: 0.95;
+    transform: scale(1.02);
+    color: #9ef300;
+  }
+
+  transition: all 0.2s;
+}

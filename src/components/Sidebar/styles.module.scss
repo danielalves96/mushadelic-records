@@ -1,0 +1,40 @@
+.selectedMenu {
+  a {
+    color: #9ef300 !important;
+    font-size: 1.3rem !important;
+  }
+}
+
+.sidenav {
+  height: 100%;
+  width: 260px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #181818;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.sidenav a {
+  padding: 6px;
+  text-decoration: none;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.sidenav a:hover {
+  color: #9ef300;
+}
+
+.socialNetworks {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
