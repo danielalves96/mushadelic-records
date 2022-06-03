@@ -166,3 +166,9 @@ export default function Contact() {
     </>
   );
 }
+
+export async function getStaticProps() {
+  return {
+    props: {},
+  };
+}

@@ -12,7 +12,7 @@ export default function Contact() {
   } = useForm();
 
   const toastifySuccess = () => {
-    toast.success(`Email sent!`, {
+    toast.success(`DEMO sent!`, {
       position: `top-right`,
       autoClose: 5000,
       closeOnClick: true,
@@ -194,4 +194,10 @@ export default function Contact() {
       <ToastContainer position="top-right" />
     </>
   );
+}
+
+export async function getStaticProps() {
+  return {
+    props: {},
+  };
 }
