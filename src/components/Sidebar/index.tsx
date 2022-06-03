@@ -22,10 +22,16 @@ export const Sidebar = () => {
             <img src="images/logo.png" alt="logo" />
           </div>
         </Link>
-        <div className={route === `/` ? styles.selectedMenu : ``}>
+        <div
+          className={
+            route === `/` || route.includes(`release`)
+              ? styles.selectedMenu
+              : ``
+          }
+        >
           <Link href="/">Releases</Link>
         </div>
-        <div className={route === `/artists` ? styles.selectedMenu : ``}>
+        <div className={route.includes(`artist`) ? styles.selectedMenu : ``}>
           <Link href="/artists">Artists</Link>
         </div>
         <div className={route === `/demos` ? styles.selectedMenu : ``}>
