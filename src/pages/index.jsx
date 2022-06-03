@@ -1,12 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import { FilterInput } from '../components/FilterInput';
-
-import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import styles from '@/styles/styles.module.scss';
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { db } from '../firebase-config';
 import { collection, getDocs } from 'firebase/firestore';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
+import { FilterInput } from '../components/FilterInput';
+import { db } from '../firebase-config';
 
 export default function Home() {
   const [value, setValue] = useState('');

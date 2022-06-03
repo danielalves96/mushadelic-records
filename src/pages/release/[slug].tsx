@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import React from 'react';
 import { db } from '@/firebase-config';
 import { collection, getDocs, query, where } from 'firebase/firestore';
+import React from 'react';
+import { SiBeatport, SiSoundcloud, SiSpotify, SiYoutube } from 'react-icons/si';
 import styles from './styles.module.scss';
-import { SiBeatport, SiSoundcloud, SiYoutube, SiSpotify } from 'react-icons/si';
 
 export default function Release({ releaseReturn }: any) {
   return (

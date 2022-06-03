@@ -1,12 +1,13 @@
-import React from 'react';
+/* eslint-disable @next/next/no-img-element */
 import { db } from '@/firebase-config';
 import { collection, getDocs, query, where } from 'firebase/firestore';
+import React from 'react';
 import {
-  SiSoundcloud,
-  SiYoutube,
-  SiSpotify,
   SiFacebook,
   SiInstagram,
+  SiSoundcloud,
+  SiSpotify,
+  SiYoutube,
 } from 'react-icons/si';
 import styles from './styles.module.scss';
 

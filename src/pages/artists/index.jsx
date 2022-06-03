@@ -2,12 +2,10 @@
 import { FilterInput } from '@/components/FilterInput';
 import { db } from '@/firebase-config';
 import { collection, getDocs } from 'firebase/firestore';
-
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import styles from './styles.module.scss';
-
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
 
 export default function Home() {
   const [value, setValue] = useState('');

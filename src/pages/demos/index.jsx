@@ -185,7 +185,7 @@ export default function Contact() {
             </div>
           </div>
 
-          <button className="button button-green" type="submit">
+          <button className="button button-green mb-6" type="submit">
             Send
           </button>
         </form>

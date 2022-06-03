@@ -9,6 +9,7 @@ import {
   SiInstagram,
   SiSoundcloud,
 } from 'react-icons/si';
+import Image from 'next/image';
 
 export const Sidebar = () => {
   const router = useRouter();
@@ -19,7 +20,7 @@ export const Sidebar = () => {
       <div className={styles.sidenav}>
         <Link href="/">
           <div className="px-6 mb-5 mt-3 pointer">
-            <img src="images/logo.png" alt="logo" />
+            <Image width="370" height="275" src="/images/logo.png" alt="logo" />
           </div>
         </Link>
         <div
