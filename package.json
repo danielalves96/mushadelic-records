@@ -1,14 +1,14 @@
 {
-  "name": "typescript-nextjs-starter",
-  "description": "A TypeScript starter for Next.js that includes all you need to build amazing projects",
+  "name": "anunnaki-records",
+  "description": "Brazilian Psytrance Label",
   "version": "1.0.0",
   "private": true,
-  "author": "João Pedro Schmitz <hey@joaopedro.dev> (@jpedroschmitz)",
+  "author": "Daniel Luiz Alves (daniel.xcoders@gmail.com)",
   "license": "MIT",
   "keywords": [
-    "nextjs",
-    "starter",
-    "typescript"
+    "label",
+    "psytrance",
+    "brazilian"
   ],
   "scripts": {
     "dev": "next",

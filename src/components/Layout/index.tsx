@@ -6,10 +6,7 @@ export default function Layout({ children }: any) {
     <>
       <Head>
         <title>Anunnaki Records</title>
-        <meta
-          name="description"
-          content="TypeScript starter for Next.js that includes all you need to build amazing apps"
-        />
+        <meta name="description" content="Brazilian Psytrance Label" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Sidebar />
