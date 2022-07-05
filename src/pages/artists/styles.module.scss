@@ -5,7 +5,8 @@
   background: #181818;
   height: 3rem;
   align-items: center;
-  font-size: 0.9rem
+  font-size: 0.9rem;
+  width: 100%;
 }
 
 .imageMargin {
@@ -16,6 +17,8 @@
   cursor: pointer;
   transform-origin: 65% 75%;
   transition: transform 1s, filter .5s ease-out;
+  align-items: end;
+
 
   &:hover {
     opacity: 0.95;
@@ -26,3 +29,10 @@
   transition: all 0.2s;
 }
 
+.flag {
+    position: absolute;
+    display: flex;
+    width: 40px;
+    margin-top: 5px;
+    margin-right: 5px;
+}

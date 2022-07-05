@@ -59,6 +59,9 @@ export default function Home() {
           {artists.map((artist) => (
             <Link href={`/artist/${artist.slug}`} key={artist.id}>
               <div className={styles.imageMargin}>
+                <div className={styles.flag}>
+                  <img src={artist.flag} alt="flag" />
+                </div>
                 <img src={artist.picture} alt={artist.artist_name} />
                 <div className={styles.nameSection}>
                   <span>{artist.artist_name.toUpperCase()}</span>
