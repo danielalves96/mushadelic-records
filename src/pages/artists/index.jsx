@@ -25,10 +25,10 @@ export default function Home() {
   const artistsRef = collection(db, 'artists');
 
   function orderArtists(a, b) {
-    if (a.release_number < b.release_number) {
+    if (a.artist_number < b.artist_number) {
       return -1;
     }
-    if (a.release_number > b.release_number) {
+    if (a.artist_number > b.artist_number) {
       return 1;
     }
     return 0;
