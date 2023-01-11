@@ -24,7 +24,7 @@ export default function Home() {
   const [artistsMain, setArtistsMain] = useState([]);
   const artistsRef = collection(db, 'artists');
 
-  console.log(artistsMain);
+  // console.log(artistsMain);
 
   function orderArtists(a, b) {
     if (a.artist_number < b.artist_number) {
