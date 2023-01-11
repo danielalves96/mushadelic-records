@@ -5,7 +5,7 @@ export default function Layout({ children }: any) {
   return (
     <>
       <Head>
-        <title>Anunnaki Records</title>
+        <title>Mushadelic Records</title>
         <meta name="description" content="Brazilian Psytrance Label" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

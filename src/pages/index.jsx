@@ -45,6 +45,8 @@ export default function Home() {
     getReleases();
   }, []);
 
+  console.log(releasesMain);
+
   return (
     <>
       <FilterInput
