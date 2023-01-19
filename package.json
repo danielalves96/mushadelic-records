@@ -18,7 +18,8 @@
     "lint": "eslint --ignore-path .gitignore \"src/**/*.+(ts|js|tsx)\"",
     "format": "prettier --ignore-path .gitignore \"src/**/*.+(ts|js|tsx)\" --write",
     "postinstall": "husky install",
-    "commit": "cz"
+    "commit": "cz",
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "lint-staged": {
     "./src/**/*.{ts,js,jsx,tsx}": [
@@ -37,9 +38,16 @@
     "react-hook-form": "7.31.3",
     "react-icons": "4.3.1",
     "react-responsive-masonry": "2.1.4",
-    "react-toastify": "9.0.3"
+    "react-toastify": "9.0.3",
+    "graphql": "16.6.0",
+    "urql": "3.0.3"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "2.16.1",
+    "@graphql-codegen/import-types-preset": "2.2.6",
+    "@graphql-codegen/typescript": "2.8.5",
+    "@graphql-codegen/typescript-operations": "2.5.10",
+    "@graphql-codegen/typescript-urql": "3.7.3",
     "@commitlint/cli": "17.0.0",
     "@commitlint/config-conventional": "17.0.0",
     "@types/node": "16.11.36",

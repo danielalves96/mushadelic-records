@@ -1,0 +1,22 @@
+query Artists {
+  artists(last: 9999) {
+    id
+    key
+    artist_number
+    artist_name
+    facebook_link
+    iframe_sc
+    instgram_link
+    slug
+    sptfy_link
+    sc_link
+    yt_link
+    description
+    flag {
+      url
+    }
+    picture {
+      url
+    }
+  }
+}
