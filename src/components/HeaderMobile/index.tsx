@@ -58,6 +58,13 @@ export default function Header() {
                             Contact
                           </span>
                         </Link>
+                        <a
+                          target="_blank"
+                          rel="noreferrer"
+                          href="https://mushadelicrecords.lojavirtualnuvem.com.br/"
+                        >
+                          Store
+                        </a>
                       </div>
                     </div>
                     <div
