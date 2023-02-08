@@ -41,6 +41,15 @@ export const Sidebar = () => {
         <div className={route === `/contact` ? styles.selectedMenu : ``}>
           <Link href="/contact">Contact</Link>
         </div>
+        <div className={route === `/contact` ? styles.selectedMenu : ``}>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://mushadelicrecords.lojavirtualnuvem.com.br/"
+          >
+            Store
+          </a>
+        </div>
 
         <div className={styles.socialNetworks}>
           <a
