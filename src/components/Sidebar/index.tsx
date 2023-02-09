@@ -82,6 +82,16 @@ export const Sidebar = () => {
           </a>
         </div>
       </div>
+      <div className={styles.sidenavDistro}>
+        Developed by:{` `}
+        <a
+          target="_blank"
+          href="https://daniel-luiz-alves.vercel.app/"
+          rel="noreferrer"
+        >
+          Daniel Alves
+        </a>
+      </div>
     </div>
   );
 };
