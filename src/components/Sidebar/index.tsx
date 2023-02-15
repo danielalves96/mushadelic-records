@@ -41,7 +41,7 @@ export const Sidebar = () => {
         <div className={route === `/contact` ? styles.selectedMenu : ``}>
           <Link href="/contact">Contact</Link>
         </div>
-        <div className={route === `/contact` ? styles.selectedMenu : ``}>
+        <div>
           <a
             target="_blank"
             rel="noreferrer"

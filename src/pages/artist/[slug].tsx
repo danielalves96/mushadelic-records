@@ -59,7 +59,7 @@ export default function Artist({ artistReturn }: any) {
         dangerouslySetInnerHTML={{
           __html: artistReturn?.iframe_sc,
         }}
-      ></div>
+      />
     </>
   );
 }
