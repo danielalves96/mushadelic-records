@@ -7,9 +7,7 @@ import { client } from '../../src/lib/urql';
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider value={client}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <Component {...pageProps} />
     </Provider>
   );
 }

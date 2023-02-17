@@ -11,6 +11,8 @@ query Release($slug: String) {
     yt_link
     buy_link
     artist
+    deezer_link
+    apple_link
     cover_art {
       url(transformation: {image: {resize: {width: 1000}}})
     }

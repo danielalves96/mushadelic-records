@@ -2555,6 +2555,7 @@ export type RgbaInput = {
 /** Musics released by label */
 export type Release = Node & {
   __typename?: 'Release';
+  apple_link?: Maybe<Scalars['String']>;
   artist: Scalars['String'];
   buy_link: Scalars['String'];
   cover_art: Asset;
@@ -2562,6 +2563,7 @@ export type Release = Node & {
   createdAt: Scalars['DateTime'];
   /** User that created this document */
   createdBy?: Maybe<User>;
+  deezer_link?: Maybe<Scalars['String']>;
   description: Scalars['String'];
   /** Get the document in other stages */
   documentInStages: Array<Release>;
@@ -2658,10 +2660,12 @@ export type ReleaseConnection = {
 };
 
 export type ReleaseCreateInput = {
+  apple_link?: InputMaybe<Scalars['String']>;
   artist: Scalars['String'];
   buy_link: Scalars['String'];
   cover_art: AssetCreateOneInlineInput;
   createdAt?: InputMaybe<Scalars['DateTime']>;
+  deezer_link?: InputMaybe<Scalars['String']>;
   description: Scalars['String'];
   iframe_sc: Scalars['String'];
   music_name: Scalars['String'];
@@ -2707,6 +2711,25 @@ export type ReleaseManyWhereInput = {
   OR?: InputMaybe<Array<ReleaseWhereInput>>;
   /** Contains search across all appropriate fields. */
   _search?: InputMaybe<Scalars['String']>;
+  apple_link?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  apple_link_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  apple_link_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  apple_link_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  apple_link_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  apple_link_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  apple_link_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  apple_link_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  apple_link_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  apple_link_starts_with?: InputMaybe<Scalars['String']>;
   artist?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   artist_contains?: InputMaybe<Scalars['String']>;
@@ -2762,6 +2785,25 @@ export type ReleaseManyWhereInput = {
   /** All values that are not contained in given list. */
   createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
+  deezer_link?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  deezer_link_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  deezer_link_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  deezer_link_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  deezer_link_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  deezer_link_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  deezer_link_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  deezer_link_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  deezer_link_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  deezer_link_starts_with?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   description_contains?: InputMaybe<Scalars['String']>;
@@ -2985,12 +3027,16 @@ export type ReleaseManyWhereInput = {
 };
 
 export enum ReleaseOrderByInput {
+  AppleLinkAsc = `apple_link_ASC`,
+  AppleLinkDesc = `apple_link_DESC`,
   ArtistAsc = `artist_ASC`,
   ArtistDesc = `artist_DESC`,
   BuyLinkAsc = `buy_link_ASC`,
   BuyLinkDesc = `buy_link_DESC`,
   CreatedAtAsc = `createdAt_ASC`,
   CreatedAtDesc = `createdAt_DESC`,
+  DeezerLinkAsc = `deezer_link_ASC`,
+  DeezerLinkDesc = `deezer_link_DESC`,
   DescriptionAsc = `description_ASC`,
   DescriptionDesc = `description_DESC`,
   IdAsc = `id_ASC`,
@@ -3018,9 +3064,11 @@ export enum ReleaseOrderByInput {
 }
 
 export type ReleaseUpdateInput = {
+  apple_link?: InputMaybe<Scalars['String']>;
   artist?: InputMaybe<Scalars['String']>;
   buy_link?: InputMaybe<Scalars['String']>;
   cover_art?: InputMaybe<AssetUpdateOneInlineInput>;
+  deezer_link?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
   iframe_sc?: InputMaybe<Scalars['String']>;
   music_name?: InputMaybe<Scalars['String']>;
@@ -3050,8 +3098,10 @@ export type ReleaseUpdateManyInlineInput = {
 };
 
 export type ReleaseUpdateManyInput = {
+  apple_link?: InputMaybe<Scalars['String']>;
   artist?: InputMaybe<Scalars['String']>;
   buy_link?: InputMaybe<Scalars['String']>;
+  deezer_link?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
   iframe_sc?: InputMaybe<Scalars['String']>;
   music_name?: InputMaybe<Scalars['String']>;
@@ -3120,6 +3170,25 @@ export type ReleaseWhereInput = {
   OR?: InputMaybe<Array<ReleaseWhereInput>>;
   /** Contains search across all appropriate fields. */
   _search?: InputMaybe<Scalars['String']>;
+  apple_link?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  apple_link_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  apple_link_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  apple_link_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  apple_link_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  apple_link_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  apple_link_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  apple_link_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  apple_link_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  apple_link_starts_with?: InputMaybe<Scalars['String']>;
   artist?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   artist_contains?: InputMaybe<Scalars['String']>;
@@ -3175,6 +3244,25 @@ export type ReleaseWhereInput = {
   /** All values that are not contained in given list. */
   createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
+  deezer_link?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  deezer_link_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  deezer_link_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  deezer_link_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  deezer_link_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  deezer_link_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  deezer_link_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  deezer_link_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  deezer_link_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  deezer_link_starts_with?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   description_contains?: InputMaybe<Scalars['String']>;
@@ -3644,6 +3732,8 @@ export type ScheduledOperationManyWhereInput = {
   /** All values that are not contained in given list. */
   publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
+  /** All values containing the given json path. */
+  rawPayload_json_path_exists?: InputMaybe<Scalars['String']>;
   release?: InputMaybe<ScheduledReleaseWhereInput>;
   status?: InputMaybe<ScheduledOperationStatus>;
   /** All values that are contained in given list. */
@@ -3811,6 +3901,8 @@ export type ScheduledOperationWhereInput = {
   /** All values that are not contained in given list. */
   publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
+  /** All values containing the given json path. */
+  rawPayload_json_path_exists?: InputMaybe<Scalars['String']>;
   release?: InputMaybe<ScheduledReleaseWhereInput>;
   status?: InputMaybe<ScheduledOperationStatus>;
   /** All values that are contained in given list. */
@@ -4856,6 +4948,7 @@ export enum _FilterKind {
   Gt = `gt`,
   Gte = `gte`,
   In = `in`,
+  JsonPathExists = `json_path_exists`,
   Lt = `lt`,
   Lte = `lte`,
   NotContains = `not_contains`,
@@ -4963,6 +5056,8 @@ export type ReleaseQuery = {
     yt_link: string;
     buy_link: string;
     artist: string;
+    deezer_link?: string | null;
+    apple_link?: string | null;
     cover_art: { __typename?: 'Asset'; url: string };
   } | null;
 };
@@ -5033,6 +5128,8 @@ export const ReleaseDocument = gql`
       yt_link
       buy_link
       artist
+      deezer_link
+      apple_link
       cover_art {
         url(transformation: { image: { resize: { width: 1000 } } })
       }

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import styles from './styles.module.scss';
+import Layout from '@/components/Layout';
 
 export default function Home() {
   const [value, setValue] = useState('');
@@ -48,7 +49,7 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <Layout>
       <FilterInput
         value={value}
         filter={filterArtists}
@@ -73,6 +74,6 @@ export default function Home() {
           ))}
         </Masonry>
       </ResponsiveMasonry>
-    </>
+    </Layout>
   );
 }

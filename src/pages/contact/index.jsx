@@ -2,6 +2,7 @@ import emailjs from 'emailjs-com';
 import { useForm } from 'react-hook-form';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Layout from '@/components/Layout';
 
 export default function Contact() {
   const {
@@ -61,7 +62,7 @@ export default function Contact() {
     }
   };
   return (
-    <>
+    <Layout>
       <div>
         <div className=" is-flex  mb-4 mr-2 ">
           <div className="field title-header">
@@ -163,7 +164,7 @@ export default function Contact() {
       </div>
 
       <ToastContainer position="top-right" />
-    </>
+    </Layout>
   );
 }
 

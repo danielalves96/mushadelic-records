@@ -2,9 +2,11 @@
 import { ReleaseDocument } from '@/generated/graphql';
 import React from 'react';
 import { SiBeatport, SiSoundcloud, SiSpotify, SiYoutube } from 'react-icons/si';
+import { GiShare } from 'react-icons/gi';
 import styles from './styles.module.scss';
 import { useRouter } from 'next/router';
 import { useQuery } from 'urql';
+import Layout from '@/components/Layout';
 
 export default function Release() {
   const router = useRouter();
@@ -19,7 +21,7 @@ export default function Release() {
   const release = result.data?.release;
 
   return (
-    <>
+    <Layout>
       <div className="columns">
         <div className="column is-one-quarter">
           <img src={release?.cover_art?.url} alt="" />
@@ -43,6 +45,9 @@ export default function Release() {
               <a href={release?.yt_link} target="_blank" rel="noreferrer">
                 <SiYoutube size={25} />
               </a>
+              <a href={`/share/${slug}`} target="_blank" rel="noreferrer">
+                <GiShare size={25} />
+              </a>
             </div>
             <div className={styles.limitText}>
               <span>{release?.description}</span>
@@ -55,6 +60,6 @@ export default function Release() {
           __html: release?.iframe_sc,
         }}
       ></div>
-    </>
+    </Layout>
   );
 }
