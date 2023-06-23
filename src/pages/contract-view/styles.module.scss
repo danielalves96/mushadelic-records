@@ -1,0 +1,76 @@
+.container {
+  display: flex;
+  flex-direction: column; /* Empilhar verticalmente */
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.folha {
+  width: 210mm; /* Largura de uma folha A4 */
+  height: 297mm; /* Altura de uma folha A4 */
+  background-color: white;
+  margin: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.signature {
+  position: relative;
+  bottom: 275px;
+  left: -159px;
+}
+
+.name {
+  position: relative;
+  bottom: 264px;
+  left: -155px;
+  color: black;
+  font-size: 0.8rem;
+}
+
+.artist {
+  position: relative;
+  bottom: 264px;
+  color: black;
+  left: -132px;
+  font-size: 0.8rem;
+}
+
+.hour {
+  position: relative;
+  bottom: 264px;
+  color: black;
+  left: -189px;
+  font-size: 0.8rem;
+}
+
+.code3 {
+  position: relative;
+  bottom: 200px;
+  color: #5c5c5c;
+  left: 200px;
+  font-size: 0.8rem;
+}
+
+.code2 {
+  position: relative;
+  bottom: 60px;
+  color: #5c5c5c;
+  left: 200px;
+  font-size: 0.8rem;
+}
+
+.btnImprimir {
+  position: fixed; /* Adiciona posicionamento absoluto para o botão */
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+

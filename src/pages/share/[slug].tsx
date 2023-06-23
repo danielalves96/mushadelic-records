@@ -51,7 +51,6 @@ const Share: React.FC = () => {
 
   const release = result.data?.release;
 
-  console.log(release);
   return (
     <>
       <div
