@@ -13,7 +13,7 @@ export const authOptions = {
       async authorize(credentials, req) {
         try {
           const response = await fetch(
-            `http://localhost:3000/api/login?username=${credentials.email}`,
+            `${process.env.NEXT_PUBLIC_APP_URL}/api/login?username=${credentials.email}`,
           );
           if (response.ok) {
             const data = await response.json();
