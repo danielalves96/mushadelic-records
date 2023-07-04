@@ -45,7 +45,9 @@ const FolhasA4Centralizadas = () => {
         <span>Technical Intelligence</span>
       </div>
       <div className={styles.hour}>
-        <span>Date: {new Date().toLocaleString()}</span>
+        <span>
+          Date: {new Date(data?.dashboard?.updatedAt).toLocaleString()}
+        </span>
       </div>
       <div className={styles.code3}>
         <span>Authentication code: {data?.dashboard?.id}</span>

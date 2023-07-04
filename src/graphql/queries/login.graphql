@@ -8,5 +8,6 @@ query Login($username: String) {
     username
     responsable_name
     is_signed_contract
+    updatedAt
   }
 }

@@ -11,7 +11,8 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import styles from './styles.module.scss';
 import { LoginDocument } from '@/generated/graphql';
-import { useQuery } from 'urql';
+import { useQuery as URQL } from 'urql';
+import { gql, useMutation } from '@apollo/client';
 import Avatar from '@mui/material/Avatar';
 import Modal from '@mui/material/Modal';
 import Link from 'next/link';
@@ -20,6 +21,7 @@ export default function Component() {
   const { data: session } = useSession();
   const [createSign, setCreateSign] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [contractData, setContractData] = React.useState({});
 
   const handleOpen = () => {
     setOpen(true);
@@ -29,13 +31,40 @@ export default function Component() {
     setOpen(false);
   };
 
-  const handleAssinarContrato = () => {
-    // Lógica da função para assinar o contrato
+  const handleAssinarContrato = async () => {
+    const newData = {
+      is_signed_contract: true,
+    };
+
+    try {
+      const { data } = await updateDashboard({
+        variables: {
+          id: contractData.id,
+          input: {
+            ...newData,
+          },
+        },
+      });
+
+      try {
+        const { data } = await publishDashboard({
+          variables: {
+            id: contractData.id,
+          },
+        });
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
     handleClose();
     alert('Contrato assinado!');
   };
 
-  const [result] = useQuery({
+  const [result] = URQL({
     query: LoginDocument,
     variables: { username: session?.user?.name },
     requestPolicy: `cache-and-network`,
@@ -43,16 +72,66 @@ export default function Component() {
 
   const { data } = result;
 
+  React.useEffect(() => {
+    setContractData(data?.dashboard);
+  }, [data]);
+
   const signatureCanvasRef = useRef();
 
-  const handleSaveSignature = () => {
+  const handleSaveSignature = async () => {
     const dataUrl = signatureCanvasRef?.current?.toDataURL();
-    console.log(dataUrl); // Aqui você pode usar o valor da assinatura em formato de imagem (data:img)
+
+    const newData = {
+      signature: dataUrl,
+    };
+
+    try {
+      const { data } = await updateDashboard({
+        variables: {
+          id: contractData.id,
+          input: {
+            ...newData,
+          },
+        },
+      });
+
+      try {
+        const { data } = await publishDashboard({
+          variables: {
+            id: contractData.id,
+          },
+        });
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleClearSignature = () => {
     signatureCanvasRef?.current?.clear();
   };
+
+  const UPDATE_APP_DATA = gql`
+    mutation updateDashboard($input: DashboardUpdateInput!, $id: ID!) {
+      updateDashboard(data: $input, where: { id: $id }) {
+        id
+      }
+    }
+  `;
+
+  const PUBLISH_APP_DATA = gql`
+    mutation publishDashboard($id: ID!) {
+      publishDashboard(where: { id: $id }) {
+        id
+      }
+    }
+  `;
+
+  const [updateDashboard] = useMutation(UPDATE_APP_DATA);
+  const [publishDashboard] = useMutation(PUBLISH_APP_DATA);
 
   if (session) {
     return (
@@ -63,7 +142,11 @@ export default function Component() {
               <b>Mushadelic Records</b>
             </Typography>
 
-            <Button color="inherit" onClick={() => signOut()}>
+            <Button
+              color="success"
+              variant="contained"
+              onClick={() => signOut()}
+            >
               <>Logout</>
             </Button>
           </Toolbar>
@@ -81,20 +164,20 @@ export default function Component() {
           >
             <div>
               <Avatar
-                alt={data?.dashboard?.project_name}
+                alt={contractData?.project_name}
                 src="https://res.cloudinary.com/technical-intelligence/image/upload/v1675350807/avatars-ehaINiEPHFO0VdbJ-6Rg0qA-t500x500_j3aqwl.jpg"
                 sx={{ width: 150, height: 150 }}
               />
               <Typography variant="h4" component="h1" color="#fff">
-                <b>{data?.dashboard?.project_name}</b>
+                <b>{contractData?.project_name}</b>
               </Typography>
               <br />
               <Typography variant="subtitle1" component="h2" color="#fff">
-                <b>Manager:</b> {data?.dashboard?.responsable_name}
+                <b>Manager:</b> {contractData?.responsable_name}
               </Typography>
               <br />
               <Typography variant="subtitle1" component="h2" color="#fff">
-                <b>E-mail: </b> {data?.dashboard?.email}
+                <b>E-mail: </b> {contractData?.email}
               </Typography>
               <br />
               <Typography variant="subtitle1" component="h2" color="#fff">
@@ -102,7 +185,7 @@ export default function Component() {
               </Typography>
               {!createSign && (
                 <div>
-                  {!data?.dashboard?.signature && (
+                  {!contractData?.signature && (
                     <Typography
                       variant="subtitle2"
                       color="#fff"
@@ -112,7 +195,7 @@ export default function Component() {
               )}
               {createSign && (
                 <div>
-                  {!data?.dashboard?.signature && (
+                  {!contractData?.signature && (
                     <Typography
                       variant="subtitle2"
                       color="#fff"
@@ -123,7 +206,7 @@ export default function Component() {
               )}
               {!createSign && (
                 <div>
-                  {data?.dashboard?.signature && (
+                  {contractData?.signature && (
                     <Typography
                       variant="subtitle2"
                       color="#fff"
@@ -157,14 +240,14 @@ export default function Component() {
                       color="success"
                       onClick={handleSaveSignature}
                     >
-                      Salvar Assinatura
+                      Save signature
                     </Button>
                     <Button
                       variant="contained"
                       color="success"
                       onClick={handleClearSignature}
                     >
-                      Limpar Assinatura
+                      Clear signature
                     </Button>
                   </Box>
                 </div>
@@ -172,7 +255,7 @@ export default function Component() {
 
               {!createSign && (
                 <div>
-                  {data?.dashboard?.signature ? (
+                  {contractData?.signature ? (
                     <Box
                       sx={{
                         width: `fit-content`,
@@ -182,7 +265,7 @@ export default function Component() {
                       }}
                     >
                       <img
-                        src={data?.dashboard?.signature}
+                        src={contractData?.signature}
                         alt="signature"
                         width={200}
                       />
@@ -206,7 +289,7 @@ export default function Component() {
                 <b>Contract: </b>
               </Typography>
 
-              {!data?.dashboard?.signature && (
+              {!contractData?.signature && (
                 <>
                   <Typography
                     variant="subtitle2"
@@ -216,9 +299,9 @@ export default function Component() {
                 </>
               )}
 
-              {data?.dashboard?.is_signed_contract ? (
+              {contractData?.is_signed_contract ? (
                 <Button variant="contained" color="success">
-                  <Link href={`/contract-view?id=${data?.dashboard?.username}`}>
+                  <Link href={`/contract-view?id=${contractData?.username}`}>
                     <a target="_blank">Open signed contract</a>
                   </Link>
                 </Button>
@@ -226,7 +309,7 @@ export default function Component() {
                 <Button
                   variant="contained"
                   color="success"
-                  disabled={!data?.dashboard?.signature}
+                  disabled={!contractData?.signature}
                   onClick={handleOpen}
                 >
                   Read and sign the contract
@@ -271,9 +354,24 @@ export default function Component() {
   return (
     <>
       <Container className={styles.loginContainer}>
-        <Button variant="contained" color="success" onClick={() => signIn()}>
-          Login
-        </Button>
+        <Box
+          alignItems="center"
+          display="flex"
+          justifyContent="center"
+          className="mt-6"
+        >
+          <img width="220" src="/images/logo.png" alt="logo" />
+        </Box>
+        <div className={styles.loginButtons}>
+          <Button variant="contained" color="success" onClick={() => signIn()}>
+            Login
+          </Button>
+          <Link href="/register" passHref>
+            <Button variant="contained" color="primary">
+              Register
+            </Button>
+          </Link>
+        </div>
       </Container>
     </>
   );

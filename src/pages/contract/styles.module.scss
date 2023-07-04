@@ -1,8 +1,17 @@
 .loginContainer {
-  display: flex;
+  display: flex !important;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  gap: 80px;
+  flex-direction: column;
+}
+
+.loginButtons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
 
 .strong {

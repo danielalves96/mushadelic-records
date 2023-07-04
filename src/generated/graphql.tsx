@@ -5921,6 +5921,7 @@ export type LoginQuery = {
     username?: string | null;
     responsable_name?: string | null;
     is_signed_contract?: boolean | null;
+    updatedAt: any;
   } | null;
 };
 
@@ -6012,6 +6013,7 @@ export const LoginDocument = gql`
       username
       responsable_name
       is_signed_contract
+      updatedAt
     }
   }
 `;
