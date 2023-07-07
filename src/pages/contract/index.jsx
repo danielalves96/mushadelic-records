@@ -16,6 +16,7 @@ import { gql, useMutation } from '@apollo/client';
 import Avatar from '@mui/material/Avatar';
 import Modal from '@mui/material/Modal';
 import Link from 'next/link';
+import Swal from 'sweetalert2';
 
 export default function Component() {
   const { data: session } = useSession();
@@ -52,7 +53,14 @@ export default function Component() {
             id: contractData.id,
           },
         });
-        window.location.reload();
+
+        Swal.fire({
+          icon: `success`,
+          title: `Signed contract! `,
+          text: `Now the same is available on your profile.`,
+        }).then(function () {
+          window.location.reload();
+        });
       } catch (error) {
         console.log(error);
       }
@@ -61,7 +69,6 @@ export default function Component() {
     }
 
     handleClose();
-    alert('Contrato assinado!');
   };
 
   const [result] = URQL({
@@ -79,6 +86,15 @@ export default function Component() {
   const signatureCanvasRef = useRef();
 
   const handleSaveSignature = async () => {
+    const isEmptySign = signatureCanvasRef?.current?.isEmpty();
+
+    if (isEmptySign)
+      return Swal.fire({
+        icon: `error`,
+        title: `Signature is empty!`,
+        text: `Your signature cannot be blank! Sign correctly.`,
+      });
+
     const dataUrl = signatureCanvasRef?.current?.toDataURL();
 
     const newData = {
@@ -101,7 +117,13 @@ export default function Component() {
             id: contractData.id,
           },
         });
-        window.location.reload();
+        Swal.fire({
+          icon: `success`,
+          title: `Signature created!`,
+          text: `It is no longer possible to change it`,
+        }).then(function () {
+          window.location.reload();
+        });
       } catch (error) {
         console.log(error);
       }
@@ -168,6 +190,7 @@ export default function Component() {
                 src={contractData?.picture}
                 sx={{ width: 150, height: 150 }}
               />
+              <br />
               <Typography variant="h4" component="h1" color="#fff">
                 <b>{contractData?.project_name}</b>
               </Typography>

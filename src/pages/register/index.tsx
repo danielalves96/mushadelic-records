@@ -3,6 +3,8 @@ import { Button, Box, FormControl, Container, Typography } from '@mui/material';
 import ImageUploader from '@/components/ImageUploader';
 import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import Swal from 'sweetalert2';
 
 interface FormData {
   email: string;
@@ -18,9 +20,20 @@ const RegistrationForm: React.FC = () => {
   const router = useRouter();
   const [imageValue, setImageValue] = useState<string | null>(null);
   const [usernameError, setUsernameError] = useState<string>(``);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] =
+    useState<boolean>(false);
 
   const handleImageChange = (dataUrl: string) => {
     setImageValue(dataUrl);
+  };
+
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleTogglePasswordConfirm = () => {
+    setShowPasswordConfirm(!showPasswordConfirm);
   };
 
   const [formData, setFormData] = useState<FormData>({
@@ -110,7 +123,12 @@ const RegistrationForm: React.FC = () => {
             id: id,
           },
         });
-        alert(`Conta criada com sucesso!`);
+        Swal.fire({
+          icon: `success`,
+          title: `Nice!`,
+          text: `
+          Account successfully created!`,
+        });
         router.push(`/contract`);
       } catch (error) {
         console.log(error);
@@ -124,24 +142,39 @@ const RegistrationForm: React.FC = () => {
     event.preventDefault();
 
     if (formData.password !== formData.passwordConfirm) {
-      alert(`As senhas não coincidem. Por favor, verifique novamente.`);
+      Swal.fire({
+        icon: `error`,
+        title: `Oops...`,
+        text: `Passwords do not match. Please check again.`,
+      });
       return;
     }
 
     if (!isPasswordSecure(formData.password)) {
-      alert(
-        `A senha deve ter pelo menos 8 caracteres, incluir letras maiúsculas, letras minúsculas e números. Por favor, tente novamente.`,
-      );
+      Swal.fire({
+        icon: `error`,
+        title: `Oops...`,
+        text: `Password must be at least 8 characters long, include uppercase letters, lowercase letters and numbers. Please try again.`,
+      });
       return;
     }
 
     if (!isEmailValid(formData.email)) {
-      alert(`Por favor, insira um email válido.`);
+      Swal.fire({
+        icon: `error`,
+        title: `Oops...`,
+        text: `Please enter a valid email.`,
+      });
       return;
     }
 
     if (formData.username.includes(` `)) {
-      alert(`Seu username não é valido`);
+      Swal.fire({
+        icon: `error`,
+        title: `Oops...`,
+        text: `Your username is not valid as it contains spaces. Choose another before continue.`,
+      });
+
       return;
     }
 
@@ -152,12 +185,11 @@ const RegistrationForm: React.FC = () => {
       picture: imageValue,
     };
 
-    console.log(formDataWithImage);
     handleSaveData(formDataWithImage);
   };
 
   return (
-    <Container>
+    <Container maxWidth="md">
       <Box
         alignItems="center"
         display="flex"
@@ -167,17 +199,17 @@ const RegistrationForm: React.FC = () => {
         <img width="150" src="/images/logo.png" alt="logo" />
       </Box>
       <Typography
-        variant="h3"
+        variant="h4"
         color="white"
         align="center"
         className="mt-6 mb-3"
       >
         REGISTER TO SIGN THE CONTRACT
       </Typography>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="mb-6">
         <FormControl fullWidth margin="normal" variant="outlined">
           <div className="mb-2">
-            <label>Email</label>
+            <label>E-mail</label>
           </div>
           <input
             name="email"
@@ -208,31 +240,57 @@ const RegistrationForm: React.FC = () => {
           <div className="mb-2">
             <label>Password</label>
           </div>
-          <input
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="input"
-            type="password"
-            required
-          />
-        </FormControl>
-        <FormControl fullWidth margin="normal" variant="outlined">
-          <div className="mb-2">
-            <label>Confirm password</label>
+          <div className="input-wrapper">
+            <input
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="input"
+              type={showPassword ? `text` : `password`}
+              required
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={handleTogglePassword}
+            >
+              {showPassword ? (
+                <AiFillEyeInvisible color="#9ef300" size={18} />
+              ) : (
+                <AiFillEye color="#9ef300" size={18} />
+              )}
+            </button>
           </div>
-          <input
-            name="passwordConfirm"
-            value={formData.passwordConfirm}
-            onChange={handleChange}
-            className="input"
-            type="password"
-            required
-          />
         </FormControl>
         <FormControl fullWidth margin="normal" variant="outlined">
           <div className="mb-2">
-            <label>Project name</label>
+            <label>Confirm Password</label>
+          </div>
+          <div className="input-wrapper">
+            <input
+              name="passwordConfirm"
+              value={formData.passwordConfirm}
+              onChange={handleChange}
+              className="input"
+              type={showPasswordConfirm ? `text` : `password`}
+              required
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={handleTogglePasswordConfirm}
+            >
+              {showPasswordConfirm ? (
+                <AiFillEyeInvisible color="#9ef300" size={18} />
+              ) : (
+                <AiFillEye color="#9ef300" size={18} />
+              )}
+            </button>
+          </div>
+        </FormControl>
+        <FormControl fullWidth margin="normal" variant="outlined">
+          <div className="mb-2">
+            <label>Project Name</label>
           </div>
           <input
             name="project_name"
@@ -244,7 +302,7 @@ const RegistrationForm: React.FC = () => {
         </FormControl>
         <FormControl fullWidth margin="normal" variant="outlined">
           <div className="mb-2">
-            <label>Responsable full name</label>
+            <label>Responsable Fullname</label>
           </div>
           <input
             name="responsable_name"
@@ -256,7 +314,7 @@ const RegistrationForm: React.FC = () => {
         </FormControl>
         <FormControl fullWidth margin="normal" variant="outlined">
           <div className="mb-2">
-            <label>Profile image</label>
+            <label>Profile Image</label>
           </div>
           <div>
             <ImageUploader onImageChange={handleImageChange} />

@@ -39,6 +39,7 @@
     "emailjs-com": "3.2.0",
     "firebase": "9.8.2",
     "graphql": "16.7.0",
+    "isomorphic-fetch": "3.0.0",
     "next": "12.1.6",
     "next-auth": "4.22.1",
     "node-sass": "7.0.1",
@@ -50,6 +51,7 @@
     "react-responsive-masonry": "2.1.4",
     "react-signature-canvas": "1.0.6",
     "react-toastify": "9.0.3",
+    "sweetalert2": "11.7.12",
     "urql": "3.0.3"
   },
   "devDependencies": {

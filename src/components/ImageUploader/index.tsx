@@ -46,7 +46,14 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageChange }) => {
 
   return (
     <div style={{ display: `flex`, flexDirection: `column`, gap: `20px` }}>
-      {selectedImage && <img width={200} src={selectedImage} alt="Preview" />}
+      {selectedImage && (
+        <img
+          style={{ border: `1px solid #9ef300` }}
+          width={200}
+          src={selectedImage}
+          alt="Preview"
+        />
+      )}
       <input type="file" accept="image/*" onChange={handleImageUpload} />
     </div>
   );
