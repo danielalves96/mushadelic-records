@@ -17,6 +17,7 @@ import Avatar from '@mui/material/Avatar';
 import Modal from '@mui/material/Modal';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
+import Head from 'next/head';
 
 export default function Component() {
   const { data: session } = useSession();
@@ -158,6 +159,11 @@ export default function Component() {
   if (session) {
     return (
       <Box sx={{ flexGrow: 1 }}>
+        <Head>
+          <title>Contract | Mushadelic Records</title>
+          <meta name="description" content="Brazilian Psytrance Label" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
         <AppBar position="static" color="success">
           <Toolbar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -376,6 +382,11 @@ export default function Component() {
   }
   return (
     <>
+      <Head>
+        <title>Login | Mushadelic Records</title>
+        <meta name="description" content="Brazilian Psytrance Label" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Container className={styles.loginContainer}>
         <Box
           alignItems="center"

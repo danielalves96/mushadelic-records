@@ -3,6 +3,7 @@ import { ReleaseDocument } from '@/generated/graphql';
 import styles from './styles.module.scss';
 import { useRouter } from 'next/router';
 import { useQuery } from 'urql';
+import Head from 'next/head';
 
 function SocialCard({ link, logo }: any) {
   return (
@@ -51,6 +52,13 @@ const Share: React.FC = () => {
 
   return (
     <>
+      <Head>
+        <title>
+          {release?.music_name} - {release?.artist}
+        </title>
+        <meta name="description" content="Brazilian Psytrance Label" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <div
         style={{
           backgroundImage: `url(${release?.cover_art?.url})`,

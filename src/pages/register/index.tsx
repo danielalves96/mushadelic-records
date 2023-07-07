@@ -5,6 +5,7 @@ import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import Swal from 'sweetalert2';
+import Head from 'next/head';
 
 interface FormData {
   email: string;
@@ -190,6 +191,11 @@ const RegistrationForm: React.FC = () => {
 
   return (
     <Container maxWidth="md">
+      <Head>
+        <title>Register | Mushadelic Records</title>
+        <meta name="description" content="Brazilian Psytrance Label" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Box
         alignItems="center"
         display="flex"

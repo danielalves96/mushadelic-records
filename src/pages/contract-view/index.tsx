@@ -3,6 +3,7 @@ import styles from './styles.module.scss';
 import { LoginDocument } from '@/generated/graphql';
 import { useQuery } from 'urql';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 const FolhasA4Centralizadas = () => {
   const { query } = useRouter();
@@ -17,6 +18,11 @@ const FolhasA4Centralizadas = () => {
 
   return (
     <div className={styles.container}>
+      <Head>
+        <title>Contract Mushadelic</title>
+        <meta name="description" content="Brazilian Psytrance Label" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <div className={styles.folha}>
         <img src="/images/f1.jpg" alt="" />
       </div>
