@@ -17,13 +17,30 @@ interface FormData {
   picture: string | null;
 }
 
+const todayPassword = `mush${new Date().getFullYear()}&${new Date().getMonth()}@recs!`;
+
 const RegistrationForm: React.FC = () => {
   const router = useRouter();
   const [imageValue, setImageValue] = useState<string | null>(null);
   const [usernameError, setUsernameError] = useState<string>(``);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [liberationPassword, setLiberationPassword] = useState(``);
+  const [hasAccess, setHasAccess] = useState<boolean>(false);
+
   const [showPasswordConfirm, setShowPasswordConfirm] =
     useState<boolean>(false);
+
+  const handleGiveAccess = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (liberationPassword === todayPassword) {
+      setHasAccess(true);
+    } else {
+      setHasAccess(false);
+    }
+
+    setLiberationPassword(``);
+  };
 
   const handleImageChange = (dataUrl: string) => {
     setImageValue(dataUrl);
@@ -51,10 +68,9 @@ const RegistrationForm: React.FC = () => {
     const { name, value } = event.target;
 
     if (name === `username`) {
-      const trimmedValue = value.trim(); // Remove espaços em branco no início e no final
+      const trimmedValue = value.trim();
 
       if (trimmedValue.includes(` `)) {
-        // Se houver espaços em branco após remoção
         setUsernameError(`Não é permitido inserir espaços no username.`);
       } else {
         setUsernameError(``);
@@ -68,7 +84,6 @@ const RegistrationForm: React.FC = () => {
   };
 
   const isPasswordSecure = (password: string): boolean => {
-    // Critérios de segurança da senha
     const minLength = 8;
     const hasUppercase = /[A-Z]/.test(password);
     const hasLowercase = /[a-z]/.test(password);
@@ -80,7 +95,6 @@ const RegistrationForm: React.FC = () => {
   };
 
   const isEmailValid = (email: string): boolean => {
-    // Expressão regular para validar o formato do email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
@@ -190,150 +204,183 @@ const RegistrationForm: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="md">
-      <Head>
-        <title>Register | Mushadelic Records</title>
-        <meta name="description" content="Brazilian Psytrance Label" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Box
-        alignItems="center"
-        display="flex"
-        justifyContent="center"
-        className="mt-6"
-      >
-        <img width="150" src="/images/logo.png" alt="logo" />
-      </Box>
-      <Typography
-        variant="h4"
-        color="white"
-        align="center"
-        className="mt-6 mb-3"
-      >
-        REGISTER TO SIGN THE CONTRACT
-      </Typography>
-      <form onSubmit={handleSubmit} className="mb-6">
-        <FormControl fullWidth margin="normal" variant="outlined">
-          <div className="mb-2">
-            <label>E-mail</label>
-          </div>
-          <input
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="input"
-            required
-          />
-        </FormControl>
-        <FormControl fullWidth margin="normal" variant="outlined">
-          <div className="mb-2">
-            <label>Username</label>
-          </div>
-          <input
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            className="input"
-            required
-          />
-          {usernameError && (
-            <p style={{ color: `red`, fontSize: 12, marginTop: 8 }}>
-              {usernameError}
-            </p>
-          )}
-        </FormControl>
-        <FormControl fullWidth margin="normal" variant="outlined">
-          <div className="mb-2">
-            <label>Password</label>
-          </div>
-          <div className="input-wrapper">
-            <input
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="input"
-              type={showPassword ? `text` : `password`}
-              required
-            />
-            <button
-              type="button"
-              className="password-toggle"
-              onClick={handleTogglePassword}
-            >
-              {showPassword ? (
-                <AiFillEyeInvisible color="#9ef300" size={18} />
-              ) : (
-                <AiFillEye color="#9ef300" size={18} />
+    <>
+      {hasAccess ? (
+        <Container maxWidth="md">
+          <Head>
+            <title>Register | Mushadelic Records</title>
+            <meta name="description" content="Brazilian Psytrance Label" />
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
+          <Box
+            alignItems="center"
+            display="flex"
+            justifyContent="center"
+            className="mt-6"
+          >
+            <img width="150" src="/images/logo.png" alt="logo" />
+          </Box>
+          <Typography
+            variant="h4"
+            color="white"
+            align="center"
+            className="mt-6 mb-3"
+          >
+            REGISTER TO SIGN THE CONTRACT
+          </Typography>
+          <form onSubmit={handleSubmit} className="mb-6">
+            <FormControl fullWidth margin="normal" variant="outlined">
+              <div className="mb-2">
+                <label>E-mail</label>
+              </div>
+              <input
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="input"
+                required
+              />
+            </FormControl>
+            <FormControl fullWidth margin="normal" variant="outlined">
+              <div className="mb-2">
+                <label>Username</label>
+              </div>
+              <input
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                className="input"
+                required
+              />
+              {usernameError && (
+                <p style={{ color: `red`, fontSize: 12, marginTop: 8 }}>
+                  {usernameError}
+                </p>
               )}
-            </button>
-          </div>
-        </FormControl>
-        <FormControl fullWidth margin="normal" variant="outlined">
-          <div className="mb-2">
-            <label>Confirm Password</label>
-          </div>
-          <div className="input-wrapper">
-            <input
-              name="passwordConfirm"
-              value={formData.passwordConfirm}
-              onChange={handleChange}
-              className="input"
-              type={showPasswordConfirm ? `text` : `password`}
-              required
-            />
-            <button
-              type="button"
-              className="password-toggle"
-              onClick={handleTogglePasswordConfirm}
-            >
-              {showPasswordConfirm ? (
-                <AiFillEyeInvisible color="#9ef300" size={18} />
-              ) : (
-                <AiFillEye color="#9ef300" size={18} />
-              )}
-            </button>
-          </div>
-        </FormControl>
-        <FormControl fullWidth margin="normal" variant="outlined">
-          <div className="mb-2">
-            <label>Project Name</label>
-          </div>
-          <input
-            name="project_name"
-            value={formData.project_name}
-            onChange={handleChange}
-            className="input"
-            required
-          />
-        </FormControl>
-        <FormControl fullWidth margin="normal" variant="outlined">
-          <div className="mb-2">
-            <label>Responsable Fullname</label>
-          </div>
-          <input
-            name="responsable_name"
-            value={formData.responsable_name}
-            onChange={handleChange}
-            className="input"
-            required
-          />
-        </FormControl>
-        <FormControl fullWidth margin="normal" variant="outlined">
-          <div className="mb-2">
-            <label>Profile Image</label>
-          </div>
-          <div>
-            <ImageUploader onImageChange={handleImageChange} />
-          </div>
-        </FormControl>
+            </FormControl>
+            <FormControl fullWidth margin="normal" variant="outlined">
+              <div className="mb-2">
+                <label>Password</label>
+              </div>
+              <div className="input-wrapper">
+                <input
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="input"
+                  type={showPassword ? `text` : `password`}
+                  required
+                />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={handleTogglePassword}
+                >
+                  {showPassword ? (
+                    <AiFillEyeInvisible color="#9ef300" size={18} />
+                  ) : (
+                    <AiFillEye color="#9ef300" size={18} />
+                  )}
+                </button>
+              </div>
+            </FormControl>
+            <FormControl fullWidth margin="normal" variant="outlined">
+              <div className="mb-2">
+                <label>Confirm Password</label>
+              </div>
+              <div className="input-wrapper">
+                <input
+                  name="passwordConfirm"
+                  value={formData.passwordConfirm}
+                  onChange={handleChange}
+                  className="input"
+                  type={showPasswordConfirm ? `text` : `password`}
+                  required
+                />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={handleTogglePasswordConfirm}
+                >
+                  {showPasswordConfirm ? (
+                    <AiFillEyeInvisible color="#9ef300" size={18} />
+                  ) : (
+                    <AiFillEye color="#9ef300" size={18} />
+                  )}
+                </button>
+              </div>
+            </FormControl>
+            <FormControl fullWidth margin="normal" variant="outlined">
+              <div className="mb-2">
+                <label>Project Name</label>
+              </div>
+              <input
+                name="project_name"
+                value={formData.project_name}
+                onChange={handleChange}
+                className="input"
+                required
+              />
+            </FormControl>
+            <FormControl fullWidth margin="normal" variant="outlined">
+              <div className="mb-2">
+                <label>Responsable Fullname</label>
+              </div>
+              <input
+                name="responsable_name"
+                value={formData.responsable_name}
+                onChange={handleChange}
+                className="input"
+                required
+              />
+            </FormControl>
+            <FormControl fullWidth margin="normal" variant="outlined">
+              <div className="mb-2">
+                <label>Profile Image</label>
+              </div>
+              <div>
+                <ImageUploader onImageChange={handleImageChange} />
+              </div>
+            </FormControl>
 
-        <Box display="flex" justifyContent="flex-end" mt={2}>
-          <Button type="submit" variant="contained" color="success">
-            Register
-          </Button>
-        </Box>
-      </form>
-    </Container>
+            <Box display="flex" justifyContent="flex-end" mt={2}>
+              <Button type="submit" variant="contained" color="success">
+                Register
+              </Button>
+            </Box>
+          </form>
+        </Container>
+      ) : (
+        <Container maxWidth="sm">
+          <Box
+            alignItems="center"
+            display="flex"
+            justifyContent="center"
+            className="mt-6 mb-6"
+          >
+            <img width="150" src="/images/logo.png" alt="logo" />
+          </Box>
+
+          <form onSubmit={handleGiveAccess}>
+            <div className="mb-2">
+              <label>Type the code to access this page</label>
+            </div>
+            <input
+              type="password"
+              value={liberationPassword}
+              onChange={(event) => setLiberationPassword(event.target.value)}
+              className="input mb-3"
+            />
+
+            <Box display="flex" justifyContent="center" mt={2}>
+              <Button type="submit" variant="contained" color="success">
+                Activate
+              </Button>
+            </Box>
+          </form>
+        </Container>
+      )}
+    </>
   );
 };
 
