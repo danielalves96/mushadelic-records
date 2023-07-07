@@ -9,5 +9,6 @@ query Login($username: String) {
     responsable_name
     is_signed_contract
     updatedAt
+    picture
   }
 }

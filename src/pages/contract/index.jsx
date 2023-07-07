@@ -165,7 +165,7 @@ export default function Component() {
             <div>
               <Avatar
                 alt={contractData?.project_name}
-                src="https://res.cloudinary.com/technical-intelligence/image/upload/v1675350807/avatars-ehaINiEPHFO0VdbJ-6Rg0qA-t500x500_j3aqwl.jpg"
+                src={contractData?.picture}
                 sx={{ width: 150, height: 150 }}
               />
               <Typography variant="h4" component="h1" color="#fff">

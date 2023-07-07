@@ -1669,6 +1669,7 @@ export type Dashboard = Node & {
   id: Scalars['ID'];
   is_signed_contract?: Maybe<Scalars['Boolean']>;
   password?: Maybe<Scalars['String']>;
+  picture?: Maybe<Scalars['String']>;
   project_name?: Maybe<Scalars['String']>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
@@ -1746,6 +1747,7 @@ export type DashboardCreateInput = {
   email?: InputMaybe<Scalars['String']>;
   is_signed_contract?: InputMaybe<Scalars['Boolean']>;
   password?: InputMaybe<Scalars['String']>;
+  picture?: InputMaybe<Scalars['String']>;
   project_name?: InputMaybe<Scalars['String']>;
   responsable_name?: InputMaybe<Scalars['String']>;
   signature?: InputMaybe<Scalars['String']>;
@@ -1865,6 +1867,25 @@ export type DashboardManyWhereInput = {
   password_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   password_starts_with?: InputMaybe<Scalars['String']>;
+  picture?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  picture_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  picture_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  picture_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  picture_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  picture_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  picture_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  picture_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  picture_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  picture_starts_with?: InputMaybe<Scalars['String']>;
   project_name?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   project_name_contains?: InputMaybe<Scalars['String']>;
@@ -1989,6 +2010,8 @@ export enum DashboardOrderByInput {
   IsSignedContractDesc = `is_signed_contract_DESC`,
   PasswordAsc = `password_ASC`,
   PasswordDesc = `password_DESC`,
+  PictureAsc = `picture_ASC`,
+  PictureDesc = `picture_DESC`,
   ProjectNameAsc = `project_name_ASC`,
   ProjectNameDesc = `project_name_DESC`,
   PublishedAtAsc = `publishedAt_ASC`,
@@ -2007,6 +2030,7 @@ export type DashboardUpdateInput = {
   email?: InputMaybe<Scalars['String']>;
   is_signed_contract?: InputMaybe<Scalars['Boolean']>;
   password?: InputMaybe<Scalars['String']>;
+  picture?: InputMaybe<Scalars['String']>;
   project_name?: InputMaybe<Scalars['String']>;
   responsable_name?: InputMaybe<Scalars['String']>;
   signature?: InputMaybe<Scalars['String']>;
@@ -2034,6 +2058,7 @@ export type DashboardUpdateManyInput = {
   email?: InputMaybe<Scalars['String']>;
   is_signed_contract?: InputMaybe<Scalars['Boolean']>;
   password?: InputMaybe<Scalars['String']>;
+  picture?: InputMaybe<Scalars['String']>;
   project_name?: InputMaybe<Scalars['String']>;
   responsable_name?: InputMaybe<Scalars['String']>;
   signature?: InputMaybe<Scalars['String']>;
@@ -2177,6 +2202,25 @@ export type DashboardWhereInput = {
   password_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   password_starts_with?: InputMaybe<Scalars['String']>;
+  picture?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  picture_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  picture_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  picture_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  picture_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  picture_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  picture_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  picture_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  picture_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  picture_starts_with?: InputMaybe<Scalars['String']>;
   project_name?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   project_name_contains?: InputMaybe<Scalars['String']>;
@@ -5922,6 +5966,7 @@ export type LoginQuery = {
     responsable_name?: string | null;
     is_signed_contract?: boolean | null;
     updatedAt: any;
+    picture?: string | null;
   } | null;
 };
 
@@ -6014,6 +6059,7 @@ export const LoginDocument = gql`
       responsable_name
       is_signed_contract
       updatedAt
+      picture
     }
   }
 `;

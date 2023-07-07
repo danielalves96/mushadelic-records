@@ -4,8 +4,6 @@ import styles from './styles.module.scss';
 import { useRouter } from 'next/router';
 import { useQuery } from 'urql';
 
-// import { Container } from './styles';
-
 function SocialCard({ link, logo }: any) {
   return (
     <>
