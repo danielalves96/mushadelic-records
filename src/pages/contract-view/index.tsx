@@ -39,10 +39,10 @@ const FolhasA4Centralizadas = () => {
         <img src={data?.dashboard?.signature} alt="" width={190} />
       </div>
       <div className={styles.name}>
-        <span>Daniel Luiz Alves</span>
+        <span>{data?.dashboard?.responsable_name}</span>
       </div>
       <div className={styles.artist}>
-        <span>Technical Intelligence</span>
+        <span>{data?.dashboard?.project_name}</span>
       </div>
       <div className={styles.hour}>
         <span>

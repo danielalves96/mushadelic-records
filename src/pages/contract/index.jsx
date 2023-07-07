@@ -332,7 +332,7 @@ export default function Component() {
           >
             <div>
               <iframe
-                src="contract.html"
+                src="/public/contract.html"
                 width="100%"
                 height="600px"
                 title="PDF Viewer"
