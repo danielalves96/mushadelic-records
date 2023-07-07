@@ -14,41 +14,56 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.folha2 {
+  width: 210mm; /* Largura de uma folha A4 */
+  height: 297mm; /* Altura de uma folha A4 */
+  background-image: url("/images/f3.jpg");
+  margin: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
 .signature {
   position: relative;
-  bottom: 275px;
-  left: -159px;
+  z-index: 99;
+  bottom: -871px;
+  left: 139px;
 }
 
 .name {
   position: relative;
-  bottom: 264px;
-  left: -155px;
+  z-index: 99;
+  bottom: -879px;
+  left: 192px;
   color: black;
   font-size: 0.8rem;
 }
 
 .artist {
   position: relative;
-  bottom: 264px;
+  z-index: 99;
+  bottom: -879px;
+  left: 201px;
   color: black;
-  left: -132px;
   font-size: 0.8rem;
 }
 
 .hour {
   position: relative;
-  bottom: 264px;
+  z-index: 99;
+  bottom: -879px;
   color: black;
-  left: -189px;
+  left: 130px;
   font-size: 0.8rem;
 }
 
 .code3 {
   position: relative;
-  bottom: 200px;
+  z-index: 99;
+  bottom: -934px;
   color: #5c5c5c;
-  left: 200px;
+  left: 440px;
   font-size: 0.8rem;
 }
 
@@ -72,5 +87,3 @@
   border-radius: 5px;
   cursor: pointer;
 }
-
-
