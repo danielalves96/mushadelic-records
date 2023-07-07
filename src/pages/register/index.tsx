@@ -36,6 +36,12 @@ const RegistrationForm: React.FC = () => {
     if (liberationPassword === todayPassword) {
       setHasAccess(true);
     } else {
+      Swal.fire({
+        icon: `error`,
+        title: `Oops...`,
+        text: `Passwords do not correct. Please try again.`,
+      });
+      return;
       setHasAccess(false);
     }
 
@@ -71,7 +77,7 @@ const RegistrationForm: React.FC = () => {
       const trimmedValue = value.trim();
 
       if (trimmedValue.includes(` `)) {
-        setUsernameError(`Não é permitido inserir espaços no username.`);
+        setUsernameError(`Entering spaces in the username is not allowed.`);
       } else {
         setUsernameError(``);
       }
