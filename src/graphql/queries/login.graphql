@@ -1,0 +1,14 @@
+query Login($username: String) {
+  dashboard(where: { username: $username }) {
+    email
+    id
+    password
+    project_name
+    signature
+    username
+    responsable_name
+    is_signed_contract
+    updatedAt
+    picture
+  }
+}

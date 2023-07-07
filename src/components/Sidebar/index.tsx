@@ -41,37 +41,56 @@ export const Sidebar = () => {
         <div className={route === `/contact` ? styles.selectedMenu : ``}>
           <Link href="/contact">Contact</Link>
         </div>
+        <div>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://mushadelicrecords.lojavirtualnuvem.com.br/"
+          >
+            Store
+          </a>
+        </div>
 
         <div className={styles.socialNetworks}>
           <a
-            href="https://www.beatport.com/label/anunnaki-records/87620"
+            href="https://www.beatport.com/label/mushadelic-records/84164"
             target="_blank"
             rel="noreferrer"
           >
             <SiBeatport size={22} />
           </a>
           <a
-            href="https://www.instagram.com/anunnaki_records/"
+            href="https://www.instagram.com/mushadelicrecords/"
             target="_blank"
             rel="noreferrer"
           >
             <SiInstagram size={22} />
           </a>
           <a
-            href="https://www.facebook.com/records.anunnaki"
+            href="https://www.facebook.com/mushadelicrec"
             target="_blank"
             rel="noreferrer"
           >
             <SiFacebook size={22} />
           </a>
           <a
-            href="https://soundcloud.com/anunnaki-rec"
+            href="https://soundcloud.com/mushadelicrec"
             target="_blank"
             rel="noreferrer"
           >
             <SiSoundcloud size={22} />
           </a>
         </div>
+      </div>
+      <div className={styles.sidenavDistro}>
+        Developed by:{` `}
+        <a
+          target="_blank"
+          href="https://daniel-luiz-alves.vercel.app/"
+          rel="noreferrer"
+        >
+          Daniel Alves
+        </a>
       </div>
     </div>
   );

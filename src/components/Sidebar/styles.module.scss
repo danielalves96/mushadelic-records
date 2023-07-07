@@ -38,3 +38,17 @@
   justify-content: center;
   gap: 1rem;
 }
+
+.sidenavDistro {
+  position: fixed;
+  z-index: 1;
+  color: #cfcfcf;
+  bottom: 20px;
+  left: 47px;
+  font-size: 13px;
+  a {
+    &:hover {
+      color: #9ef300;
+    }
+  }
+}

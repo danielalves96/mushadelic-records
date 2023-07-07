@@ -1,0 +1,16 @@
+query Releases {
+  releases(orderBy: release_date_DESC, last: 999) {
+    id
+    music_name
+    release_date
+    sc_link
+    slug
+    sptfy_link
+    yt_link
+    buy_link
+    artist
+    cover_art {
+      url(transformation: {image: {resize: {width: 500}}})
+    }
+  }
+}

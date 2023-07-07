@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import Layout from '@/components/Layout';
 import { db } from '@/firebase-config';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import React from 'react';
@@ -13,7 +14,7 @@ import styles from './styles.module.scss';
 
 export default function Artist({ artistReturn }: any) {
   return (
-    <>
+    <Layout>
       <div className="columns">
         <div className="column is-one-quarter">
           <img src={artistReturn.picture} alt="" />
@@ -59,8 +60,8 @@ export default function Artist({ artistReturn }: any) {
         dangerouslySetInnerHTML={{
           __html: artistReturn?.iframe_sc,
         }}
-      ></div>
-    </>
+      />
+    </Layout>
   );
 }
 
