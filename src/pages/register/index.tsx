@@ -17,6 +17,7 @@ interface FormData {
 const RegistrationForm: React.FC = () => {
   const router = useRouter();
   const [imageValue, setImageValue] = useState<string | null>(null);
+  const [usernameError, setUsernameError] = useState<string>(``);
 
   const handleImageChange = (dataUrl: string) => {
     setImageValue(dataUrl);
@@ -34,6 +35,18 @@ const RegistrationForm: React.FC = () => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+
+    if (name === `username`) {
+      const trimmedValue = value.trim(); // Remove espaços em branco no início e no final
+
+      if (trimmedValue.includes(` `)) {
+        // Se houver espaços em branco após remoção
+        setUsernameError(`Não é permitido inserir espaços no username.`);
+      } else {
+        setUsernameError(``);
+      }
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -50,6 +63,12 @@ const RegistrationForm: React.FC = () => {
     return (
       password.length >= minLength && hasUppercase && hasLowercase && hasNumber
     );
+  };
+
+  const isEmailValid = (email: string): boolean => {
+    // Expressão regular para validar o formato do email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   const INSERT_DATA = gql`
@@ -116,6 +135,16 @@ const RegistrationForm: React.FC = () => {
       return;
     }
 
+    if (!isEmailValid(formData.email)) {
+      alert(`Por favor, insira um email válido.`);
+      return;
+    }
+
+    if (formData.username.includes(` `)) {
+      alert(`Seu username não é valido`);
+      return;
+    }
+
     const { passwordConfirm, ...formDataWithoutConfirm } = formData;
 
     const formDataWithImage: FormData = {
@@ -169,6 +198,11 @@ const RegistrationForm: React.FC = () => {
             className="input"
             required
           />
+          {usernameError && (
+            <p style={{ color: `red`, fontSize: 12, marginTop: 8 }}>
+              {usernameError}
+            </p>
+          )}
         </FormControl>
         <FormControl fullWidth margin="normal" variant="outlined">
           <div className="mb-2">
