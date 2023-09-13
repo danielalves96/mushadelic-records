@@ -41,13 +41,22 @@ export const Sidebar = () => {
         <div className={route === `/contact` ? styles.selectedMenu : ``}>
           <Link href="/contact">Contact</Link>
         </div>
-        <div>
+        {/* <div>
           <a
             target="_blank"
             rel="noreferrer"
             href="https://mushadelicrecords.lojavirtualnuvem.com.br/"
           >
             Store
+          </a>
+        </div> */}
+        <div>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://open.spotify.com/playlist/2On9Qqg6sunRFYP5lhCoSv?si=V79Fv3YeS9iU2fM0qD9Pqw&nd"
+          >
+            Playlist Spotify
           </a>
         </div>
 
