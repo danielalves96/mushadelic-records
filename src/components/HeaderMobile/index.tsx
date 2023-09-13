@@ -58,12 +58,19 @@ export default function Header() {
                             Contact
                           </span>
                         </Link>
-                        <a
+                        {/* <a
                           target="_blank"
                           rel="noreferrer"
                           href="https://mushadelicrecords.lojavirtualnuvem.com.br/"
                         >
                           Store
+                        </a> */}
+                        <a
+                          target="_blank"
+                          rel="noreferrer"
+                          href="https://open.spotify.com/playlist/2On9Qqg6sunRFYP5lhCoSv?si=V79Fv3YeS9iU2fM0qD9Pqw&nd"
+                        >
+                          Playlist Spotify
                         </a>
                       </div>
                     </div>
