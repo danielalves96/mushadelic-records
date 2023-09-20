@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { ReleaseDocument } from '@/generated/graphql';
 import styles from './styles.module.scss';
 import { useRouter } from 'next/router';
@@ -7,7 +7,7 @@ import Head from 'next/head';
 
 function SocialCard({ link, logo }: any) {
   return (
-    <>
+    <Fragment>
       {link && (
         <a
           href={link}
@@ -34,7 +34,7 @@ function SocialCard({ link, logo }: any) {
           </div>
         </a>
       )}
-    </>
+    </Fragment>
   );
 }
 
