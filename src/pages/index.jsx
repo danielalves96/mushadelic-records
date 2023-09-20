@@ -53,7 +53,13 @@ export default function Home() {
             {releases?.map((release) => (
               <Link href={`/release/${release.slug}`} key={release.id}>
                 <div className={styles.imageMargin}>
-                  <img src={release.cover_art.url} alt={release.music_name} />
+                  <div className={styles.shine}>
+                    <img
+                      src={release.cover_art.url}
+                      alt={release.music_name}
+                      style={{ borderRadius: 5 }}
+                    />
+                  </div>
                 </div>
               </Link>
             ))}
