@@ -12,8 +12,8 @@ import AdminPanelLayout from '../components/admin-panel/admin-panel-layout';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: `TypeScript starter for Next.js(SAAS) by Daniel Luiz Alves`,
-  description: `TypeScript starter for Next.js that includes all you need to build amazing saas`,
+  title: `Mushadelic Records`,
+  description: `Psytrance Music Label`,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
