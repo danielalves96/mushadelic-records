@@ -27,13 +27,12 @@
 
 ## Features
 
-- ⚡️ Next.js 12
+- ⚡️ Next.js 14 (App Router)
 - ⚛️ React 18
 - ⛑ TypeScript
 - 📏 ESLint — To find and fix problems in your code
 - 💖 Prettier — Code Formatter for consistent style
 - 🐶 Husky — For running scripts before committing
-- 📄 Commitizen — To define a standard way of committing rules
 - 🚓 Commitlint — To make sure your commit messages follow the convention
 - 🖌 Renovate — To keep your dependencies up to date
 - 🚫 lint-staged — Run ESLint and Prettier against staged Git files
@@ -46,9 +45,12 @@
 The best way to start with this template is using [Create Next App](https://nextjs.org/docs/api-reference/create-next-app).
 
 ```
+# yarn
 yarn create next-app -e https://github.com/jpedroschmitz/typescript-nextjs-starter
-# or
+# npm
 npx create-next-app -e https://github.com/jpedroschmitz/typescript-nextjs-starter
+# pnpm
+pnpm create next-app -e https://github.com/jpedroschmitz/typescript-nextjs-starter
 ```
 
 ### Development
@@ -56,7 +58,7 @@ npx create-next-app -e https://github.com/jpedroschmitz/typescript-nextjs-starte
 To start the project locally, run:
 
 ```bash
-yarn dev
+pnpm dev
 ```
 
 Open `http://localhost:3000` with your browser to see the result.
@@ -76,18 +78,18 @@ Open `http://localhost:3000` with your browser to see the result.
 
 List of websites that started off with Next.js TypeScript Starter:
 
-- [dowhile.io](https://dowhile.io)
-- [graphcms.com](https://graphcms.com)
-- [mobg.com.br](https://mobg.com.br)
-- [nextlevelweek.com](https://nextlevelweek.com)
+- [hygraph.com](https://hygraph.com)
 - [rocketseat.com.br](https://www.rocketseat.com.br)
+- [unfork.vercel.app](https://unfork.vercel.app)
+- [cryptools.dev](https://cryptools.dev)
+- [Add yours](https://github.com/jpedroschmitz/typescript-nextjs-starter/edit/main/README.md)
 
 ## Documentation
 
 ### Requirements
 
-- Node.js >= 12.22.0
-- Yarn 1 (Classic)
+- Node.js >= 20
+- pnpm 9
 
 ### Directory Structure
 
@@ -98,13 +100,12 @@ List of websites that started off with Next.js TypeScript Starter:
 
 ### Scripts
 
-- `yarn dev` — Starts the application in development mode at `http://localhost:3000`.
-- `yarn build` — Creates an optimized production build of your application.
-- `yarn start` — Starts the application in production mode.
-- `yarn type-check` — Validate code using TypeScript compiler.
-- `yarn lint` — Runs ESLint for all files in the `src` directory.
-- `yarn format` — Runs Prettier for all files in the `src` directory.
-- `yarn commit` — Run commitizen. Alternative to `git commit`.
+- `pnpm dev` — Starts the application in development mode at `http://localhost:3000`.
+- `pnpm build` — Creates an optimized production build of your application.
+- `pnpm start` — Starts the application in production mode.
+- `pnpm type-check` — Validate code using TypeScript compiler.
+- `pnpm lint` — Runs ESLint for all files in the `src` directory.
+- `pnpm format` — Runs Prettier for all files in the `src` directory.
 
 ### Path Mapping
 
@@ -112,14 +113,15 @@ TypeScript are pre-configured with custom path mappings. To import components or
 
 ```tsx
 import { Button } from '@/components/Button';
-
 // To import images or other files from the public folder
 import avatar from '@/public/avatar.png';
 ```
 
-### Switch to npm
+### Switch to Yarn/npm
 
-This starter uses Yarn 1 (Classic) by default, but this choice is yours. If you'd like to switch to npm, delete the `yarn.lock` file, install the dependencies with `npm i`, change the CI workflow, and Husky Git hooks to use npm commands.
+This starter uses pnpm by default, but this choice is yours. If you'd like to switch to Yarn/npm, delete the `pnpm-lock.yaml` file, install the dependencies with Yarn/npm, change the CI workflow, and Husky Git hooks to use Yarn/npm commands.
+
+> **Note:** If you use Yarn, make sure to follow these steps from the [Husky documentation](https://typicode.github.io/husky/troubleshoot.html#yarn-on-windows) so that Git hooks do not fail with Yarn on Windows.
 
 ## License
 

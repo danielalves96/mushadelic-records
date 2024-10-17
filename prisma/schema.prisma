@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+model MusicRelease {
+  id              String   @id @default(cuid())
+  music_name      String
+  description     String
+  buy_link        String?
+  cover_art       String?
+  soundcloud_link String?
+  slug            String   @unique
+  spotify_link    String?
+  youtube_link    String?
+  release_date    DateTime
+  deezer_link     String?
+  apple_link      String?
+  artists         Artist[]
+}
+
+model Artist {
+  id                String         @id @default(cuid())
+  name              String         @unique
+  is_casting_artist Boolean        @default(false)
+  music_releases    MusicRelease[]
+  casting_artist    CastingArtist?
+}
+
+model CastingArtist {
+  id              String  @id @default(cuid())
+  artist          Artist  @relation(fields: [artistId], references: [id])
+  artistId        String  @unique
+  description     String
+  facebook_link   String?
+  flag            String?
+  instagram_link  String?
+  picture         String?
+  soundcloud_link String?
+  slug            String  @unique
+  spotify_link    String?
+  youtube_link    String?
+}

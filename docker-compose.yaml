@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # DATABASE
+  crdb:
+    image: cockroachdb/cockroach:v22.2.8
+    ports:
+      - "26257:26257"
+      - "8080:8080"
+    volumes:
+      - crdb-data:/cockroach/cockroach-data
+    command: start-single-node --insecure
+    environment:
+      - COCKROACH_DATABASE=root-database
+      - COCKROACH_USER=admin
+      - COCKROACH_PASSWORD=admin
+      - COCKROACH_LOCALITY=datacenter=dc1
+      - COCKROACH_STORE=path=/cockroach/cockroach-data,attrs=ssd
+      - COCKROACH_CACHE=.25
+      - COCKROACH_MAX_SQL_MEMORY=.25
+      - COCKROACH_LISTEN_ADDR=0.0.0.0
+      - COCKROACH_HTTP_ADDR=0.0.0.0
+    networks:
+      - app-network
+
+  # AWS S3
+  minio:
+    image: minio/minio:latest
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - 'minio_data:/data'
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+      - MINIO_BUCKETS=psytrance-samples:public
+    command: server --console-address ":9001" /data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  crdb-data:
+  minio_data:
+    driver: local
