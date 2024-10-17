@@ -12,9 +12,11 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-10 backdrop-blur-lg dark:bg-[#111318]/90 px-4 sm:px-8">
       <div className="container mx-auto flex h-24 items-center justify-between ">
-        <div className="flex items-center lg:space-x-0">
+        <div className="flex items-center lg:space-x-0 w-full md:w-fit md:items-start">
           <SheetMenu />
-          <Image src="/logo.png" alt="Mushadelic Records Logo" width={180} height={30} />
+          <div className="flex justify-center w-full">
+            <Image src="/logo.png" alt="Mushadelic Records Logo" width={180} height={30} />
+          </div>
         </div>
         <div className="flex flex-1 items-center justify-end">
           <div className="hidden md:flex space-x-4">

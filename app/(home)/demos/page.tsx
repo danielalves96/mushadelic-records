@@ -73,7 +73,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="w-full max-w-lg mx-auto py-8">
+    <div className="w-full max-w-lg mx-auto py-8 px-4">
       <h1 className="text-2xl font-bold mb-6 text-center">Submit Your Demo</h1>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="mb-4">
