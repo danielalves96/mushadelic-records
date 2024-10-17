@@ -61,8 +61,8 @@ const ReleaseDetailsPage: React.FC = () => {
           <Image
             src={musicData.cover_art}
             alt={musicData.music_name}
-            width={250}
-            height={250}
+            width={270}
+            height={270}
             className="object-cover rounded-lg shadow-lg"
           />
           <div className="text-center md:text-left">

@@ -8,6 +8,9 @@ export async function GET() {
       include: {
         artists: true,
       },
+      orderBy: {
+        release_date: 'desc',
+      },
     });
 
     return NextResponse.json(releases, { status: 200 });
