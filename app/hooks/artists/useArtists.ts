@@ -12,5 +12,6 @@ export const useArtists = () => {
   return useQuery({
     queryKey: ['artists'],
     queryFn: fetchArtists,
+    staleTime: 0,
   });
 };
