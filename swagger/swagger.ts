@@ -66,6 +66,79 @@ export const swaggerSpec: OpenAPIV3.Document = {
         },
       },
     },
+    '/artist/{slug}': {
+      get: {
+        summary: 'Get casting artist by slug',
+        tags: ['Artists'],
+        parameters: [
+          {
+            name: 'slug',
+            in: 'path',
+            required: true,
+            schema: {
+              type: 'string',
+            },
+            description: 'Slug of the casting artist',
+          },
+        ],
+        responses: {
+          '200': {
+            description: 'Casting artist details retrieved successfully',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    id: { type: 'string' },
+                    name: { type: 'string' },
+                    description: { type: 'string' },
+                    facebook_link: { type: 'string' },
+                    instagram_link: { type: 'string' },
+                    soundcloud_link: { type: 'string' },
+                    spotify_link: { type: 'string' },
+                    youtube_link: { type: 'string' },
+                    flag: { type: 'string' },
+                    picture: { type: 'string' },
+                  },
+                },
+                example: {
+                  id: 'cm2dbm1qw002flrwkpi0f1491',
+                  name: 'Casting Artist Example',
+                  description: 'Description of the casting artist',
+                  facebook_link: 'https://facebook.com/casting_artist',
+                  instagram_link: 'https://instagram.com/casting_artist',
+                  soundcloud_link: 'https://soundcloud.com/casting_artist',
+                  spotify_link: 'https://spotify.com/casting_artist',
+                  youtube_link: 'https://youtube.com/casting_artist',
+                  flag: 'https://link-to-flag.com/flag.png',
+                  picture: 'https://link-to-picture.com/picture.png',
+                },
+              },
+            },
+          },
+          '404': {
+            description: 'Casting artist not found',
+            content: {
+              'application/json': {
+                example: {
+                  message: 'Release not found',
+                },
+              },
+            },
+          },
+          '500': {
+            description: 'Error fetching casting artist',
+            content: {
+              'application/json': {
+                example: {
+                  error: 'Error fetching release',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
     '/artist/update/{artistId}': {
       patch: {
         summary: 'Update an existing artist',
