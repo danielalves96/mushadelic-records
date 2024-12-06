@@ -10,9 +10,27 @@ export async function GET() {
       },
     });
 
-    return NextResponse.json(artists, { status: 200 });
+    return NextResponse.json(artists, {
+      status: 200,
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        Pragma: 'no-cache',
+        Expires: '0',
+      },
+    });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: 'Erro ao listar os artistas' }, { status: 500 });
+    console.error('Erro ao listar os artistas:', error);
+
+    return NextResponse.json(
+      { error: 'Erro ao listar os artistas' },
+      {
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          Pragma: 'no-cache',
+          Expires: '0',
+        },
+      }
+    );
   }
 }

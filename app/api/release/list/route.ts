@@ -13,9 +13,27 @@ export async function GET() {
       },
     });
 
-    return NextResponse.json(releases, { status: 200 });
+    return NextResponse.json(releases, {
+      status: 200,
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        Pragma: 'no-cache',
+        Expires: '0',
+      },
+    });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: 'Erro ao listar os releases' }, { status: 500 });
+    console.error('Erro ao listar os releases:', error);
+
+    return NextResponse.json(
+      { error: 'Erro ao listar os releases' },
+      {
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          Pragma: 'no-cache',
+          Expires: '0',
+        },
+      }
+    );
   }
 }
