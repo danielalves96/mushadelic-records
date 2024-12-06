@@ -17,7 +17,8 @@
     "type-check": "tsc --noEmit",
     "lint": "eslint --ignore-path .gitignore \"**/*.+(ts|js|tsx)\"",
     "format": "prettier --ignore-path .gitignore \"**/*.+(ts|js|tsx)\" --write",
-    "postinstall": "husky"
+    "postinstall": "husky",
+    "dump-database": "node prisma/scripts/dump.js"
   },
   "lint-staged": {
     "./src/**/*.{ts,js,jsx,tsx}": [
@@ -63,12 +64,14 @@
     "clsx": "2.1.1",
     "cmdk": "1.0.0",
     "date-fns": "4.1.0",
+    "dotenv": "16.4.7",
     "emailjs-com": "3.2.0",
     "embla-carousel-react": "8.3.0",
     "input-otp": "1.2.4",
     "lucide-react": "0.453.0",
     "next": "14.2.15",
     "next-themes": "0.3.0",
+    "pg": "8.13.1",
     "react": "18.3.1",
     "react-day-picker": "9.1.4",
     "react-dom": "18.3.1",
