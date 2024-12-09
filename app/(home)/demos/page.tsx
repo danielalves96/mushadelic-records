@@ -19,7 +19,7 @@ const formSchema = z.object({
     .string()
     .min(1, { message: 'Please enter your artist name' })
     .max(30, 'Please use 30 characters or less'),
-  soundcloud_link: z.string().url({ message: 'Please enter a valid SoundCloud link' }),
+  country: z.string().url({ message: 'Please enter a valid SoundCloud link' }),
   message: z.string().min(1, { message: 'Please enter a release description' }),
 });
 
@@ -38,7 +38,7 @@ export default function Contact() {
   });
 
   const onSubmit = async (data: FormData) => {
-    const { name, email, message, artist_name, soundcloud_link } = data;
+    const { name, email, message, artist_name, country } = data;
 
     try {
       const templateParams = {
@@ -46,7 +46,7 @@ export default function Contact() {
         email,
         message,
         artist_name,
-        soundcloud_link,
+        country,
       };
 
       await emailjs.send(
@@ -96,10 +96,8 @@ export default function Contact() {
 
         <div className="mb-4">
           <label>SoundCloud Demo (Private Link)</label>
-          <Input type="text" {...register('soundcloud_link')} className="mt-2" disabled={isSubmitting} />
-          {errors.soundcloud_link && (
-            <p className="text-red-500 text-sm mt-1">{errors.soundcloud_link?.message?.toString()}</p>
-          )}
+          <Input type="text" {...register('country')} className="mt-2" disabled={isSubmitting} />
+          {errors.country && <p className="text-red-500 text-sm mt-1">{errors.country?.message?.toString()}</p>}
         </div>
 
         <div className="mb-4">
