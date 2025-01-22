@@ -9,8 +9,8 @@ import { ThemeProvider } from 'providers/theme-provider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: `Mushadelic Records`,
-  description: `Psytrance Music Label`,
+  title: `Mushadelic Festival`,
+  description: `Winter Edition`,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
