@@ -6,8 +6,6 @@ import { Inter } from 'next/font/google';
 import TanstackProvider from 'providers/tanstack-provider';
 import { ThemeProvider } from 'providers/theme-provider';
 
-import { ContentLayout } from '@/components/admin-panel/content-layout';
-
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
