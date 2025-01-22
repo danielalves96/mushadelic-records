@@ -21,9 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${inter.className} bg-zinc-50 dark:bg-[#111318]`}>
         <TanstackProvider>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-            <main className="min-h-screen">
-              <ContentLayout>{children}</ContentLayout>
-            </main>
+            <main>{children}</main>
           </ThemeProvider>
         </TanstackProvider>
       </body>
