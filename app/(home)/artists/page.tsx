@@ -54,36 +54,38 @@ const ArtistsPage = () => {
         </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-          {filteredArtists.map((artist: Artist) => (
-            <Link href={`/artists/${artist.casting_artist.slug}`} key={artist.id} className="relative aspect-square">
-              <div className="relative w-full h-full">
-                <Image
-                  src={artist.casting_artist.picture as string}
-                  alt={artist.name}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  className="rounded-lg"
-                  priority={true}
-                />
-              </div>
-              <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center rounded-md justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-                <div className="flex flex-col justify-center items-center">
-                  <h3 className="text-white text-center font-bold">{artist.name || 'Untitled'}</h3>
-                  {artist.casting_artist.flag && (
-                    <div className="mt-2">
-                      <Image
-                        src={artist.casting_artist.flag as string}
-                        alt="flag"
-                        width={32}
-                        height={24}
-                        className="object-contain"
-                      />
-                    </div>
-                  )}
+          {filteredArtists.map((artist: Artist) =>
+            artist.casting_artist ? (
+              <Link href={`/artists/${artist.casting_artist.slug}`} key={artist.id} className="relative aspect-square">
+                <div className="relative w-full h-full">
+                  <Image
+                    src={artist.casting_artist.picture as string}
+                    alt={artist.name}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    className="rounded-lg"
+                    priority={true}
+                  />
                 </div>
-              </div>
-            </Link>
-          ))}
+                <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center rounded-md justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+                  <div className="flex flex-col justify-center items-center">
+                    <h3 className="text-white text-center font-bold">{artist.name || 'Untitled'}</h3>
+                    {artist.casting_artist.flag && (
+                      <div className="mt-2">
+                        <Image
+                          src={artist.casting_artist.flag as string}
+                          alt="flag"
+                          width={32}
+                          height={24}
+                          className="object-contain"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            ) : null
+          )}
         </div>
       )}
     </div>

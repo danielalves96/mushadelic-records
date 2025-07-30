@@ -5,7 +5,7 @@ interface ContentLayoutProps {
 export function ContentLayout({ children }: ContentLayoutProps) {
   return (
     <div>
-      <div className="container mx-auto flex items-center justify-between">{children}</div>
+      <div className="container mx-auto  py-6">{children}</div>
     </div>
   );
 }

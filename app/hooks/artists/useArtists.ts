@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 const fetchArtists = async () => {
-  const response = await fetch('/api/artist/casting/list');
+  const response = await fetch('/api/artist/list');
   if (!response.ok) {
     throw new Error('Failed to fetch artists');
   }

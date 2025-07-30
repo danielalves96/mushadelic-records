@@ -13,9 +13,26 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(newArtist, { status: 201 });
+    return NextResponse.json(newArtist, {
+      status: 201,
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        Pragma: 'no-cache',
+        Expires: '0',
+      },
+    });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: 'Erro ao criar o artista' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Erro ao criar o artista' },
+      {
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          Pragma: 'no-cache',
+          Expires: '0',
+        },
+      }
+    );
   }
 }

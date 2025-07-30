@@ -1,28 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  headers: () => [
-    {
-      source: '/:path*',
-      headers: [
-        {
-          key: 'Cache-Control',
-          value: 'no-store',
-        },
-      ],
+  experimental: {
+    staleTimes: {
+      dynamic: 0,
+      static: 180,
     },
-  ],
+  },
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'media.graphassets.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'utfs.io',
+        hostname: '**',
         port: '',
         pathname: '/**',
       },
