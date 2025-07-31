@@ -1,6 +1,7 @@
 'use client';
 
-import { ArrowLeft, Edit, Eye, Plus, Search, Users } from 'lucide-react';
+import { ArrowLeft, Edit, Eye, Plus, Search, Trash2, Users } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -9,9 +10,18 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useArtists } from '@/hooks/artists/useArtists';
+import { useDeleteArtist } from '@/hooks/artists/useDeleteArtist';
 import { useRemoveFromCasting } from '@/hooks/artists/useRemoveFromCasting';
 import { useToast } from '@/hooks/use-toast';
 
@@ -19,6 +29,10 @@ interface Artist {
   id: string;
   name: string;
   is_casting_artist: boolean;
+  music_releases: Array<{
+    id: string;
+    music_name: string;
+  }>;
   casting_artist?: {
     id: string;
     description: string;
@@ -37,9 +51,12 @@ export default function AdminArtistsPage() {
   const router = useRouter();
   const { data: artists, isLoading } = useArtists();
   const removeFromCastingMutation = useRemoveFromCasting();
+  const deleteArtistMutation = useDeleteArtist();
   const { toast } = useToast();
 
   const [searchTerm, setSearchTerm] = useState('');
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [artistToDelete, setArtistToDelete] = useState<{ id: string; name: string } | null>(null);
 
   const handleRemoveFromCasting = async (artistId: string, artistName: string) => {
     if (window.confirm(`Remove "${artistName}" from casting roster?`)) {
@@ -57,6 +74,32 @@ export default function AdminArtistsPage() {
           variant: 'destructive',
         });
       }
+    }
+  };
+
+  const openDeleteDialog = (artistId: string, artistName: string) => {
+    setArtistToDelete({ id: artistId, name: artistName });
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteArtist = async () => {
+    if (!artistToDelete) return;
+
+    try {
+      await deleteArtistMutation.mutateAsync(artistToDelete.id);
+      toast({
+        title: 'Success',
+        description: `${artistToDelete.name} deleted successfully!`,
+      });
+      setDeleteDialogOpen(false);
+      setArtistToDelete(null);
+    } catch (error: any) {
+      console.error(error);
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to delete artist',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -110,6 +153,8 @@ export default function AdminArtistsPage() {
             artists={castingArtists}
             handleRemoveFromCasting={handleRemoveFromCasting}
             removeFromCastingMutation={removeFromCastingMutation}
+            openDeleteDialog={openDeleteDialog}
+            deleteArtistMutation={deleteArtistMutation}
           />
         ) : (
           <EmptyState type="casting" searchTerm={searchTerm} />
@@ -129,18 +174,51 @@ export default function AdminArtistsPage() {
             artists={otherArtists}
             handleRemoveFromCasting={handleRemoveFromCasting}
             removeFromCastingMutation={removeFromCastingMutation}
+            openDeleteDialog={openDeleteDialog}
+            deleteArtistMutation={deleteArtistMutation}
           />
         ) : (
           <EmptyState type="other" searchTerm={searchTerm} />
         )}
       </section>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Artist</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete &quot;{artistToDelete?.name}&quot;? This action cannot be undone and will
+              permanently remove the artist and all associated data.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setDeleteDialogOpen(false)}
+              disabled={deleteArtistMutation.isPending}
+            >
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDeleteArtist} disabled={deleteArtistMutation.isPending}>
+              {deleteArtistMutation.isPending ? 'Deleting...' : 'Delete Artist'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
 
 // --- Reusable Components ---
 
-function ArtistGrid({ artists, handleRemoveFromCasting, removeFromCastingMutation }: any) {
+function ArtistGrid({
+  artists,
+  handleRemoveFromCasting,
+  removeFromCastingMutation,
+  openDeleteDialog,
+  deleteArtistMutation,
+}: any) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {artists.map((artist: Artist) => (
@@ -154,34 +232,59 @@ function ArtistGrid({ artists, handleRemoveFromCasting, removeFromCastingMutatio
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1">
-                <h3 className="font-semibold text-lg">{artist.name}</h3>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-semibold text-lg">{artist.name}</h3>
+                  {artist.casting_artist?.flag && (
+                    <Image
+                      src={artist.casting_artist.flag}
+                      alt="Country flag"
+                      width={20}
+                      height={15}
+                      className="object-contain"
+                    />
+                  )}
+                </div>
                 {artist.casting_artist?.description && (
                   <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{artist.casting_artist.description}</p>
                 )}
               </div>
             </div>
           </CardContent>
-          <div className="p-4 border-t bg-muted/50 flex justify-end gap-2">
-            <Link href={`/admin/artists/${artist.id}`}>
-              <Button variant="ghost" size="sm">
-                <Eye className="h-4 w-4 mr-2" /> View
-              </Button>
-            </Link>
-            <Link href={`/admin/artists/edit/${artist.id}`}>
-              <Button variant="ghost" size="sm">
-                <Edit className="h-4 w-4 mr-2" /> Edit
-              </Button>
-            </Link>
-            {artist.is_casting_artist && (
+          <div className="p-4 border-t bg-muted/50 flex justify-between items-center gap-2">
+            <Badge variant="outline" className="text-xs rounded-sm">
+              {artist.music_releases.length} {artist.music_releases.length === 1 ? 'release' : 'releases'}
+            </Badge>
+            <div className="flex gap-2">
+              <Link href={`/admin/artists/${artist.id}`}>
+                <Button variant="ghost" size="sm">
+                  <Eye className="h-4 w-4 " />
+                </Button>
+              </Link>
+              <Link href={`/admin/artists/edit/${artist.id}`}>
+                <Button variant="ghost" size="sm">
+                  <Edit className="h-4 w-4 " />
+                </Button>
+              </Link>
               <Button
-                variant="destructive"
+                variant="ghost"
                 size="sm"
-                onClick={() => handleRemoveFromCasting(artist.id, artist.name)}
-                disabled={removeFromCastingMutation.isPending}
+                onClick={() => openDeleteDialog(artist.id, artist.name)}
+                className="hover:text-red-500"
+                disabled={deleteArtistMutation.isPending}
               >
-                Remove from Casting
+                <Trash2 className="h-4 w-4 " />
               </Button>
-            )}
+              {artist.is_casting_artist && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleRemoveFromCasting(artist.id, artist.name)}
+                  disabled={removeFromCastingMutation.isPending}
+                >
+                  Remove from Casting
+                </Button>
+              )}
+            </div>
           </div>
         </Card>
       ))}

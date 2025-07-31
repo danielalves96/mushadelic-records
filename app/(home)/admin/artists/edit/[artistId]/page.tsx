@@ -1,5 +1,6 @@
 'use client';
 
+import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -197,11 +198,11 @@ export default function EditArtistPage({ params }: { params: { artistId: string 
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Edit Artist</h1>
-        <Button variant="outline" onClick={() => router.back()}>
-          Back
+      <div className="flex items-center gap-4 mb-8">
+        <Button variant="outline" size="icon" onClick={() => router.back()}>
+          <ArrowLeft className="h-4 w-4" />
         </Button>
+        <h1 className="text-3xl font-bold">Edit Artist</h1>
       </div>
 
       <div>
@@ -325,11 +326,11 @@ export default function EditArtistPage({ params }: { params: { artistId: string 
                 </div>
               )}
 
-              <div className="flex gap-4">
-                <Button type="submit" disabled={updateArtistMutation.isPending} className="flex-1">
+              <div className="flex w-full gap-4 justify-end">
+                <Button type="submit" disabled={updateArtistMutation.isPending}>
                   {updateArtistMutation.isPending ? 'Updating...' : 'Update Artist'}
                 </Button>
-                <Button type="button" variant="outline" onClick={() => router.back()} className="flex-1">
+                <Button type="button" variant="outline" onClick={() => router.back()}>
                   Cancel
                 </Button>
               </div>

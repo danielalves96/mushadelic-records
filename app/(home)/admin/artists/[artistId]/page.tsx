@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, Facebook, Instagram, Music, Youtube } from 'lucide-react';
+import { ArrowLeft, Edit, Facebook, Instagram, Music, Youtube } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -38,11 +38,21 @@ export default function ArtistDetailPage({ params }: Props) {
 
   return (
     <div className="w-full space-y-6">
-      <div className="flex items-center gap-4">
-        <Button variant="outline" size="icon" onClick={() => router.back()}>
-          <ArrowLeft className="h-4 w-4" />
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Button variant="outline" size="icon" onClick={() => router.back()}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <h1 className="text-3xl font-bold tracking-tight">Artist Profile</h1>
+        </div>
+        <Button 
+          variant="default" 
+          onClick={() => router.push(`/admin/artists/edit/${params.artistId}`)}
+          className="flex items-center gap-2"
+        >
+          <Edit className="h-4 w-4" />
+          Editar
         </Button>
-        <h1 className="text-3xl font-bold tracking-tight">Artist Profile</h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -61,7 +71,18 @@ export default function ArtistDetailPage({ params }: Props) {
             </CardHeader>
             <CardContent className="pt-16">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold">{artist.name}</h2>
+                <div className="flex items-center gap-3">
+                  <h2 className="text-3xl font-bold">{artist.name}</h2>
+                  {artist.casting_artist?.flag && (
+                    <Image 
+                      src={artist.casting_artist.flag} 
+                      alt="Country flag" 
+                      width={32} 
+                      height={24} 
+                      className="object-contain" 
+                    />
+                  )}
+                </div>
                 <Badge variant={artist.casting_artist ? 'default' : 'secondary'}>
                   {artist.casting_artist ? 'Casting Artist' : 'Regular Artist'}
                 </Badge>

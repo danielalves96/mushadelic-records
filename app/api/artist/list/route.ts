@@ -7,6 +7,7 @@ export async function GET() {
     const artists = await prisma.artist.findMany({
       include: {
         casting_artist: true,
+        music_releases: true,
       },
     });
 

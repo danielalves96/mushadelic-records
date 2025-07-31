@@ -215,7 +215,7 @@ function ReleaseGrid({
           <CardFooter className="p-2 border-t bg-muted/50 flex justify-end gap-1">
             <Link href={`/admin/releases/edit/${release.id}`}>
               <Button variant="ghost" size="sm">
-                <Edit className="h-4 w-4 mr-2" /> Edit
+                <Edit className="h-4 w-4" />
               </Button>
             </Link>
             <Button
@@ -224,7 +224,7 @@ function ReleaseGrid({
               className="text-red-500"
               onClick={() => handleDeleteRelease(release.id, release.music_name)}
             >
-              <Trash className="h-4 w-4 mr-2" /> Delete
+              <Trash className="h-4 w-4" />
             </Button>
           </CardFooter>
         </Card>
