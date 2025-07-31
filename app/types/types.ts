@@ -1,6 +1,8 @@
 export interface Artist {
   id: string;
   name: string;
+  is_casting_artist: boolean;
+  music_releases: Release[];
   casting_artist: {
     id: string;
     artistId: string;
