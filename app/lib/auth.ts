@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
+import { env } from '@/env';
 import prisma from './prisma';
 
 export const authOptions: NextAuthOptions = {
@@ -97,5 +98,16 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/auth/signin',
+  },
+  cookies: {
+    sessionToken: {
+      name: `${env.NODE_ENV === 'production' ? '__Secure-' : ''}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: env.NODE_ENV === 'production',
+      },
+    },
   },
 };
