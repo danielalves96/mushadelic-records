@@ -22,12 +22,12 @@ const updateArtist = async ({ artistId, data }: { artistId: string; data: Update
 };
 
 export const useUpdateArtist = () => {
-  const { invalidateArtists } = useQueryInvalidation();
+  const { invalidateAllArtists } = useQueryInvalidation();
 
   return useMutation({
     mutationFn: updateArtist,
     onSuccess: () => {
-      invalidateArtists();
+      invalidateAllArtists();
     },
   });
 };

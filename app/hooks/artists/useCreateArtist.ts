@@ -13,12 +13,12 @@ const createArtist = async (data: CreateArtistData) => {
 };
 
 export const useCreateArtist = () => {
-  const { invalidateArtists } = useQueryInvalidation();
+  const { invalidateAllArtists } = useQueryInvalidation();
 
   return useMutation({
     mutationFn: createArtist,
     onSuccess: () => {
-      invalidateArtists();
+      invalidateAllArtists();
     },
   });
 };

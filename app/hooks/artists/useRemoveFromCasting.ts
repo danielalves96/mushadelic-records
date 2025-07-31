@@ -9,12 +9,12 @@ const removeFromCasting = async (artistId: string) => {
 };
 
 export const useRemoveFromCasting = () => {
-  const { invalidateArtists } = useQueryInvalidation();
+  const { invalidateAllArtists } = useQueryInvalidation();
 
   return useMutation({
     mutationFn: removeFromCasting,
     onSuccess: () => {
-      invalidateArtists();
+      invalidateAllArtists();
     },
   });
 };

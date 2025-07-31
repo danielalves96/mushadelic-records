@@ -23,12 +23,12 @@ const updateRelease = async ({ releaseId, data }: { releaseId: string; data: Upd
 };
 
 export const useUpdateRelease = () => {
-  const { invalidateReleases } = useQueryInvalidation();
+  const { invalidateAllReleases } = useQueryInvalidation();
 
   return useMutation({
     mutationFn: updateRelease,
     onSuccess: () => {
-      invalidateReleases();
+      invalidateAllReleases();
     },
   });
 };

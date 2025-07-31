@@ -9,12 +9,12 @@ const deleteRelease = async (releaseId: string) => {
 };
 
 export const useDeleteRelease = () => {
-  const { invalidateReleases } = useQueryInvalidation();
+  const { invalidateAllReleases } = useQueryInvalidation();
 
   return useMutation({
     mutationFn: deleteRelease,
     onSuccess: () => {
-      invalidateReleases();
+      invalidateAllReleases();
     },
   });
 };

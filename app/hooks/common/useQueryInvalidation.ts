@@ -7,8 +7,26 @@ export const useQueryInvalidation = () => {
     queryClient.invalidateQueries({ queryKey: ['releases'] });
   };
 
+  const invalidateRelease = (slug: string) => {
+    queryClient.invalidateQueries({ queryKey: ['release', slug] });
+  };
+
+  const invalidateAllReleases = () => {
+    queryClient.invalidateQueries({ queryKey: ['releases'] });
+    queryClient.invalidateQueries({ queryKey: ['release'] });
+  };
+
   const invalidateArtists = () => {
     queryClient.invalidateQueries({ queryKey: ['artists'] });
+  };
+
+  const invalidateArtist = (identifier: string) => {
+    queryClient.invalidateQueries({ queryKey: ['artist', identifier] });
+  };
+
+  const invalidateAllArtists = () => {
+    queryClient.invalidateQueries({ queryKey: ['artists'] });
+    queryClient.invalidateQueries({ queryKey: ['artist'] });
   };
 
   const invalidateAll = () => {
@@ -17,7 +35,11 @@ export const useQueryInvalidation = () => {
 
   return {
     invalidateReleases,
+    invalidateRelease,
+    invalidateAllReleases,
     invalidateArtists,
+    invalidateArtist,
+    invalidateAllArtists,
     invalidateAll,
   };
 };

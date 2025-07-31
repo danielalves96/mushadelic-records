@@ -20,12 +20,12 @@ const assignToCasting = async ({ artistId, data }: { artistId: string; data: Ass
 };
 
 export const useAssignToCasting = () => {
-  const { invalidateArtists } = useQueryInvalidation();
+  const { invalidateAllArtists } = useQueryInvalidation();
 
   return useMutation({
     mutationFn: assignToCasting,
     onSuccess: () => {
-      invalidateArtists();
+      invalidateAllArtists();
     },
   });
 };

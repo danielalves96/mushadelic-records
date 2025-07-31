@@ -1,4 +1,6 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+
+import { useQueryInvalidation } from '../common/useQueryInvalidation';
 
 const deleteArtist = async (artistId: string) => {
   const response = await fetch(`/api/artist/delete/${artistId}`, {
@@ -14,12 +16,12 @@ const deleteArtist = async (artistId: string) => {
 };
 
 export const useDeleteArtist = () => {
-  const queryClient = useQueryClient();
+  const { invalidateAllArtists } = useQueryInvalidation();
 
   return useMutation({
     mutationFn: deleteArtist,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['artists'] });
+      invalidateAllArtists();
     },
   });
 };
