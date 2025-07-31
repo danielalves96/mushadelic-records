@@ -1,8 +1,9 @@
 'use client';
 
-import { Calendar, Download, Edit3, Music, Plus, Search, Trash2, Users } from 'lucide-react';
+import { ArrowLeft, Calendar, Download, Edit3, Music, Plus, Search, Trash2, Users } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FaApple, FaDeezer, FaSoundcloud, FaSpotify, FaYoutube } from 'react-icons/fa';
 
@@ -16,6 +17,7 @@ import { useReleases } from '@/hooks/releases/useReleases';
 import { useToast } from '@/hooks/use-toast';
 
 export default function AdminReleasesPage() {
+  const router = useRouter();
   const { data: releases, isLoading } = useReleases();
   const deleteReleaseMutation = useDeleteRelease();
   const { toast } = useToast();
@@ -52,12 +54,17 @@ export default function AdminReleasesPage() {
     releases?.filter((release) => new Date(release.release_date).getFullYear() === currentYear).length || 0;
 
   return (
-    <div className="space-y-8 border-t pt-8">
+    <div className="space-y-8 mt-2">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Releases Management</h1>
-          <p className="text-muted-foreground">Manage your music catalog and streaming links</p>
+        <div className="flex items-center gap-4">
+          <Button variant="outline" size="icon" onClick={() => router.push('/admin')}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Releases Management</h1>
+            <p className="text-muted-foreground">Manage your music catalog and streaming links</p>
+          </div>
         </div>
         <Link href="/admin/releases/create">
           <Button className="gap-2">

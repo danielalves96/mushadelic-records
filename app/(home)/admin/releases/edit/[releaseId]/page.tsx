@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ImageUpload } from '@/components/ui/image-upload';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { MultiSelect } from '@/components/ui/multi-select';
@@ -36,6 +37,8 @@ export default function EditReleasePage({ params }: { params: { releaseId: strin
     release_date: '',
     artistIds: [] as string[],
   });
+
+  const [coverArtFile, setCoverArtFile] = useState<File | null>(null);
 
   useEffect(() => {
     const fetchRelease = async () => {
@@ -91,9 +94,36 @@ export default function EditReleasePage({ params }: { params: { releaseId: strin
     }
 
     try {
+      let coverArtUrl = formData.cover_art;
+
+      // Upload new cover art if file is selected
+      if (coverArtFile) {
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', coverArtFile);
+        uploadFormData.append('type', 'release');
+        if (formData.cover_art) {
+          uploadFormData.append('oldImageUrl', formData.cover_art);
+        }
+
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: uploadFormData,
+        });
+
+        if (response.ok) {
+          const { imageUrl } = await response.json();
+          coverArtUrl = imageUrl;
+        }
+      }
+
+      const updateData = {
+        ...formData,
+        cover_art: coverArtUrl,
+      };
+
       await updateReleaseMutation.mutateAsync({
         releaseId: params.releaseId,
-        data: formData,
+        data: updateData,
       });
       toast({
         title: 'Success',
@@ -172,14 +202,13 @@ export default function EditReleasePage({ params }: { params: { releaseId: strin
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="cover_art">Cover Art URL</Label>
-                  <Input
-                    id="cover_art"
-                    name="cover_art"
+                <div className="space-y-2 md:col-span-2">
+                  <ImageUpload
                     value={formData.cover_art}
-                    onChange={handleInputChange}
-                    placeholder="https://example.com/cover.jpg"
+                    onChange={(url) => setFormData((prev) => ({ ...prev, cover_art: url }))}
+                    onFileChange={setCoverArtFile}
+                    label="Cover Art"
+                    placeholder="Upload release cover art"
                   />
                 </div>
 

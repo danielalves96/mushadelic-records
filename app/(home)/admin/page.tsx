@@ -1,6 +1,6 @@
 'use client';
 
-import { BarChart3, Music, Plus, Settings, Users } from 'lucide-react';
+import { BarChart3, Music, Users } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
@@ -37,26 +37,12 @@ export default function AdminPage() {
   ];
 
   return (
-    <div className="space-y-8 border-t pt-8">
+    <div className="space-y-8 pt-2">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
           <p className="text-muted-foreground mt-2">Manage your music catalog and artist roster</p>
-        </div>
-        <div className="flex gap-2">
-          <Link href="/admin/artists/create">
-            <Button size="sm" className="gap-2">
-              <Plus className="h-4 w-4" />
-              New Artist
-            </Button>
-          </Link>
-          <Link href="/admin/releases/create">
-            <Button size="sm" variant="outline" className="gap-2">
-              <Plus className="h-4 w-4" />
-              New Release
-            </Button>
-          </Link>
         </div>
       </div>
 
@@ -94,26 +80,10 @@ export default function AdminPage() {
               </div>
             </div>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex gap-2">
-              <Link href="/admin/artists" className="flex-1">
-                <Button className="w-full gap-2">
-                  <Settings className="h-4 w-4" />
-                  Manage Artists
-                </Button>
-              </Link>
-              <Link href="/admin/artists/create">
-                <Button variant="outline" size="icon">
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              • Create and edit artist profiles
-              <br />
-              • Manage casting assignments
-              <br />• Update social media links
-            </div>
+          <CardContent>
+            <Link href="/admin/artists">
+              <Button className="w-full">View All Artists</Button>
+            </Link>
           </CardContent>
         </Card>
 
@@ -127,60 +97,32 @@ export default function AdminPage() {
               </div>
             </div>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex gap-2">
-              <Link href="/admin/releases" className="flex-1">
-                <Button className="w-full gap-2">
-                  <Settings className="h-4 w-4" />
-                  Manage Releases
-                </Button>
-              </Link>
-              <Link href="/admin/releases/create">
-                <Button variant="outline" size="icon">
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              • Upload and manage releases
-              <br />
-              • Configure streaming platform links
-              <br />• Assign artists to releases
-            </div>
+          <CardContent>
+            <Link href="/admin/releases">
+              <Button className="w-full">View All Releases</Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
 
-      {/* Recent Activity */}
+      {/* Quick Actions */}
       <Card>
         <CardHeader>
           <CardTitle>Quick Actions</CardTitle>
-          <CardDescription>Frequently used admin tasks</CardDescription>
+          <CardDescription>Create new content quickly</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Link href="/admin/releases/create">
-              <Button variant="outline" className="h-20 flex-col gap-2 w-full">
-                <Plus className="h-5 w-5" />
-                <span className="text-xs">New Release</span>
-              </Button>
-            </Link>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Link href="/admin/artists/create">
-              <Button variant="outline" className="h-20 flex-col gap-2 w-full">
+              <Button variant="outline" className="h-16 flex items-center justify-center gap-3 w-full">
                 <Users className="h-5 w-5" />
-                <span className="text-xs">New Artist</span>
+                <span>Create New Artist</span>
               </Button>
             </Link>
-            <Link href="/admin/artists">
-              <Button variant="outline" className="h-20 flex-col gap-2 w-full">
-                <BarChart3 className="h-5 w-5" />
-                <span className="text-xs">View Casting</span>
-              </Button>
-            </Link>
-            <Link href="/admin/releases">
-              <Button variant="outline" className="h-20 flex-col gap-2 w-full">
+            <Link href="/admin/releases/create">
+              <Button variant="outline" className="h-16 flex items-center justify-center gap-3 w-full">
                 <Music className="h-5 w-5" />
-                <span className="text-xs">Browse Catalog</span>
+                <span>Create New Release</span>
               </Button>
             </Link>
           </div>

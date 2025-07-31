@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ImageUpload } from '@/components/ui/image-upload';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -31,6 +32,14 @@ export default function EditArtistPage({ params }: { params: { artistId: string 
     youtube_link: '',
     flag: '',
     picture: '',
+  });
+
+  const [imageFiles, setImageFiles] = useState<{
+    picture: File | null;
+    flag: File | null;
+  }>({
+    picture: null,
+    flag: null,
   });
 
   useEffect(() => {
@@ -98,9 +107,57 @@ export default function EditArtistPage({ params }: { params: { artistId: string 
     }
 
     try {
+      let pictureUrl = formData.picture;
+      let flagUrl = formData.flag;
+
+      // Upload new images if files are selected
+      if (imageFiles.picture) {
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', imageFiles.picture);
+        uploadFormData.append('type', 'artist');
+        if (formData.picture) {
+          uploadFormData.append('oldImageUrl', formData.picture);
+        }
+
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: uploadFormData,
+        });
+
+        if (response.ok) {
+          const { imageUrl } = await response.json();
+          pictureUrl = imageUrl;
+        }
+      }
+
+      if (imageFiles.flag) {
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', imageFiles.flag);
+        uploadFormData.append('type', 'artist');
+        if (formData.flag) {
+          uploadFormData.append('oldImageUrl', formData.flag);
+        }
+
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: uploadFormData,
+        });
+
+        if (response.ok) {
+          const { imageUrl } = await response.json();
+          flagUrl = imageUrl;
+        }
+      }
+
+      const updateData = {
+        ...formData,
+        picture: pictureUrl,
+        flag: flagUrl,
+      };
+
       await updateArtistMutation.mutateAsync({
         artistId: params.artistId,
-        data: formData,
+        data: updateData,
       });
       toast({
         title: 'Success',
@@ -246,24 +303,22 @@ export default function EditArtistPage({ params }: { params: { artistId: string 
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="flag">Flag URL</Label>
-                      <Input
-                        id="flag"
-                        name="flag"
+                      <ImageUpload
                         value={formData.flag}
-                        onChange={handleInputChange}
-                        placeholder="https://example.com/flag.png"
+                        onChange={(url) => setFormData((prev) => ({ ...prev, flag: url }))}
+                        onFileChange={(file) => setImageFiles((prev) => ({ ...prev, flag: file }))}
+                        label="Country Flag"
+                        placeholder="Upload country flag"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="picture">Picture URL</Label>
-                      <Input
-                        id="picture"
-                        name="picture"
+                      <ImageUpload
                         value={formData.picture}
-                        onChange={handleInputChange}
-                        placeholder="https://example.com/picture.jpg"
+                        onChange={(url) => setFormData((prev) => ({ ...prev, picture: url }))}
+                        onFileChange={(file) => setImageFiles((prev) => ({ ...prev, picture: file }))}
+                        label="Profile Picture"
+                        placeholder="Upload artist profile picture"
                       />
                     </div>
                   </div>

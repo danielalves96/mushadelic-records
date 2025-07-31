@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ImageUpload } from '@/components/ui/image-upload';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -30,6 +31,14 @@ export default function CreateArtistPage() {
     youtube_link: '',
     flag: '',
     picture: '',
+  });
+
+  const [imageFiles, setImageFiles] = useState<{
+    picture: File | null;
+    flag: File | null;
+  }>({
+    picture: null,
+    flag: null,
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -65,6 +74,42 @@ export default function CreateArtistPage() {
       const newArtist = await createArtistMutation.mutateAsync({ name: formData.name });
 
       if (formData.is_casting_artist) {
+        let pictureUrl = formData.picture;
+        let flagUrl = formData.flag;
+
+        // Upload images if files are selected
+        if (imageFiles.picture) {
+          const uploadFormData = new FormData();
+          uploadFormData.append('file', imageFiles.picture);
+          uploadFormData.append('type', 'artist');
+
+          const response = await fetch('/api/upload', {
+            method: 'POST',
+            body: uploadFormData,
+          });
+
+          if (response.ok) {
+            const { imageUrl } = await response.json();
+            pictureUrl = imageUrl;
+          }
+        }
+
+        if (imageFiles.flag) {
+          const uploadFormData = new FormData();
+          uploadFormData.append('file', imageFiles.flag);
+          uploadFormData.append('type', 'artist');
+
+          const response = await fetch('/api/upload', {
+            method: 'POST',
+            body: uploadFormData,
+          });
+
+          if (response.ok) {
+            const { imageUrl } = await response.json();
+            flagUrl = imageUrl;
+          }
+        }
+
         await assignToCastingMutation.mutateAsync({
           artistId: newArtist.id,
           data: {
@@ -74,8 +119,8 @@ export default function CreateArtistPage() {
             soundcloud_link: formData.soundcloud_link,
             spotify_link: formData.spotify_link,
             youtube_link: formData.youtube_link,
-            flag: formData.flag,
-            picture: formData.picture,
+            flag: flagUrl,
+            picture: pictureUrl,
           },
         });
       }
@@ -176,24 +221,22 @@ export default function CreateArtistPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="picture">Profile Picture URL</Label>
-                    <Input
-                      id="picture"
-                      name="picture"
+                    <ImageUpload
                       value={formData.picture}
-                      onChange={handleInputChange}
-                      placeholder="https://example.com/artist-photo.jpg"
+                      onChange={(url) => setFormData((prev) => ({ ...prev, picture: url }))}
+                      onFileChange={(file) => setImageFiles((prev) => ({ ...prev, picture: file }))}
+                      label="Profile Picture"
+                      placeholder="Upload artist profile picture"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="flag">Country Flag URL</Label>
-                    <Input
-                      id="flag"
-                      name="flag"
+                    <ImageUpload
                       value={formData.flag}
-                      onChange={handleInputChange}
-                      placeholder="https://example.com/flag.png"
+                      onChange={(url) => setFormData((prev) => ({ ...prev, flag: url }))}
+                      onFileChange={(file) => setImageFiles((prev) => ({ ...prev, flag: file }))}
+                      label="Country Flag"
+                      placeholder="Upload country flag"
                     />
                   </div>
                 </div>
