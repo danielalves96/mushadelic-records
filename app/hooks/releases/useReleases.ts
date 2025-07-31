@@ -12,6 +12,5 @@ export const useReleases = () => {
   return useQuery<Release[]>({
     queryKey: ['releases'],
     queryFn: fetchReleases,
-    staleTime: 0,
   });
 };
