@@ -45,8 +45,8 @@ export default function ArtistDetailPage({ params }: Props) {
           </Button>
           <h1 className="text-3xl font-bold tracking-tight">Artist Profile</h1>
         </div>
-        <Button 
-          variant="default" 
+        <Button
+          variant="default"
           onClick={() => router.push(`/admin/artists/edit/${params.artistId}`)}
           className="flex items-center gap-2"
         >
@@ -74,12 +74,12 @@ export default function ArtistDetailPage({ params }: Props) {
                 <div className="flex items-center gap-3">
                   <h2 className="text-3xl font-bold">{artist.name}</h2>
                   {artist.casting_artist?.flag && (
-                    <Image 
-                      src={artist.casting_artist.flag} 
-                      alt="Country flag" 
-                      width={32} 
-                      height={24} 
-                      className="object-contain" 
+                    <Image
+                      src={artist.casting_artist.flag}
+                      alt="Country flag"
+                      width={32}
+                      height={24}
+                      className="object-contain"
                     />
                   )}
                 </div>

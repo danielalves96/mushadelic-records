@@ -1,7 +1,6 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import emailjs from 'emailjs-com';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -37,19 +36,17 @@ export default function Contact() {
     const { name, email, subject, message } = data;
 
     try {
-      const templateParams = {
-        name,
-        email,
-        subject,
-        message,
-      };
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-      await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAIL_SERVICE as string,
-        process.env.NEXT_PUBLIC_EMAIL_TEMPLATE as string,
-        templateParams,
-        process.env.NEXT_PUBLIC_EMAIL_USER as string
-      );
+      if (!response.ok) {
+        throw new Error('Failed to send email');
+      }
 
       toast({
         title: 'Success!',

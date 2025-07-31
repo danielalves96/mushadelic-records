@@ -2,6 +2,8 @@ import { getToken } from 'next-auth/jwt';
 import { withAuth } from 'next-auth/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { env } from '@/env';
+
 function basicAuth(req: NextRequest) {
   const USERNAME = 'admin';
   const PASSWORD = 'admin';
@@ -56,7 +58,7 @@ export default async function middleware(req: NextRequest) {
 
   // Check if it's a STAFF-only route (users management)
   if (url.pathname.startsWith('/admin/users') || url.pathname.startsWith('/api/admin/users')) {
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const token = await getToken({ req, secret: env.NEXTAUTH_SECRET });
 
     if (!token) {
       if (url.pathname.startsWith('/api/')) {

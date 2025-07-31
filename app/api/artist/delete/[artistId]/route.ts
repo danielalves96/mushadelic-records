@@ -30,7 +30,7 @@ export async function DELETE(request: Request, { params }: { params: { artistId:
     // Delete casting artist data if exists
     if (existingArtist.casting_artist) {
       await prisma.castingArtist.delete({
-        where: { artist_id: artistId },
+        where: { artistId: artistId },
       });
     }
 

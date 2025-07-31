@@ -83,7 +83,7 @@ export const authOptions: NextAuthOptions = {
             where: { id: token.sub },
             select: { role: true },
           });
-          
+
           if (dbUser) {
             token.role = dbUser.role;
           }

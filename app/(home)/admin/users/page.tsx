@@ -139,7 +139,7 @@ export default function UsersManagementPage() {
                   <TableHead>Email</TableHead>
                   <TableHead>Role</TableHead>
                   <TableHead>Status</TableHead>
-                  
+
                   <TableHead className="w-[100px]">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -178,7 +178,7 @@ export default function UsersManagementPage() {
                         {user.emailVerified ? 'Verified' : 'Unverified'}
                       </Badge>
                     </TableCell>
-                    
+
                     <TableCell>
                       <div className="flex items-center space-x-2">
                         <Button variant="ghost" size="sm" onClick={() => router.push(`/admin/users/${user.id}`)}>

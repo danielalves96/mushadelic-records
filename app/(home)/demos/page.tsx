@@ -1,7 +1,6 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import emailjs from 'emailjs-com';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -38,23 +37,18 @@ export default function Contact() {
   });
 
   const onSubmit = async (data: FormData) => {
-    const { name, email, message, artist_name, country } = data;
-
     try {
-      const templateParams = {
-        name,
-        email,
-        message,
-        artist_name,
-        country,
-      };
+      const response = await fetch('/api/demos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-      await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAIL_SERVICE as string,
-        process.env.NEXT_PUBLIC_EMAIL_TEMPLATE_DEMO as string,
-        templateParams,
-        process.env.NEXT_PUBLIC_EMAIL_USER as string
-      );
+      if (!response.ok) {
+        throw new Error('Failed to submit demo');
+      }
 
       toast({
         title: 'Success!',
