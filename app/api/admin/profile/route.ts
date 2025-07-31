@@ -6,6 +6,8 @@ import { authOptions } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { deleteImageFromUrl } from '@/lib/r2-server';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);

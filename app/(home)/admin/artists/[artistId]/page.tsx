@@ -18,6 +18,69 @@ interface Props {
   };
 }
 
+function ArtistDetailSkeleton() {
+  return (
+    <div className="w-full space-y-6">
+      <div className="flex items-center gap-4">
+        <Skeleton className="h-10 w-10" />
+        <Skeleton className="h-8 w-48" />
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <Card>
+            <CardHeader className="relative h-32 bg-muted/40">
+              <div className="absolute bottom-0 left-6 translate-y-1/2">
+                <Skeleton className="h-28 w-28 rounded-full" />
+              </div>
+            </CardHeader>
+            <CardContent className="pt-16 space-y-2">
+              <Skeleton className="h-8 w-1/2" />
+              <Skeleton className="h-5 w-1/4" />
+              <Skeleton className="h-4 w-full mt-2" />
+              <Skeleton className="h-4 w-3/4" />
+            </CardContent>
+          </Card>
+        </div>
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <Skeleton className="h-6 w-3/4" />
+              <Skeleton className="h-4 w-1/2" />
+            </CardHeader>
+            <CardContent className="flex gap-4">
+              <Skeleton className="h-10 w-10" />
+              <Skeleton className="h-10 w-10" />
+              <Skeleton className="h-10 w-10" />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <Skeleton className="h-6 w-3/4" />
+              <Skeleton className="h-4 w-1/2" />
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center gap-4">
+                <Skeleton className="h-12 w-12" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-3 w-16" />
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <Skeleton className="h-12 w-12" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-3 w-16" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ArtistDetailPage({ params }: Props) {
   const router = useRouter();
   const { data: artist, isLoading } = useArtistById(params.artistId);
@@ -169,69 +232,6 @@ export default function ArtistDetailPage({ params }: Props) {
                 ) : (
                   <p className="text-sm text-muted-foreground">No releases found for this artist.</p>
                 )}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ArtistDetailSkeleton() {
-  return (
-    <div className="w-full space-y-6">
-      <div className="flex items-center gap-4">
-        <Skeleton className="h-10 w-10" />
-        <Skeleton className="h-8 w-48" />
-      </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <Card>
-            <CardHeader className="relative h-32 bg-muted/40">
-              <div className="absolute bottom-0 left-6 translate-y-1/2">
-                <Skeleton className="h-28 w-28 rounded-full" />
-              </div>
-            </CardHeader>
-            <CardContent className="pt-16 space-y-2">
-              <Skeleton className="h-8 w-1/2" />
-              <Skeleton className="h-5 w-1/4" />
-              <Skeleton className="h-4 w-full mt-2" />
-              <Skeleton className="h-4 w-3/4" />
-            </CardContent>
-          </Card>
-        </div>
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <Skeleton className="h-6 w-3/4" />
-              <Skeleton className="h-4 w-1/2" />
-            </CardHeader>
-            <CardContent className="flex gap-4">
-              <Skeleton className="h-10 w-10" />
-              <Skeleton className="h-10 w-10" />
-              <Skeleton className="h-10 w-10" />
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <Skeleton className="h-6 w-3/4" />
-              <Skeleton className="h-4 w-1/2" />
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-4">
-                <Skeleton className="h-12 w-12" />
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-32" />
-                  <Skeleton className="h-3 w-16" />
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <Skeleton className="h-12 w-12" />
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-32" />
-                  <Skeleton className="h-3 w-16" />
-                </div>
               </div>
             </CardContent>
           </Card>

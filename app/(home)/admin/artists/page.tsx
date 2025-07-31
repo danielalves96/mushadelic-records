@@ -47,6 +47,129 @@ interface Artist {
   };
 }
 
+// --- Reusable Components ---
+
+function ArtistGrid({
+  artists,
+  handleRemoveFromCasting,
+  removeFromCastingMutation,
+  openDeleteDialog,
+  deleteArtistMutation,
+}: any) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {artists.map((artist: Artist) => (
+        <Card key={artist.id} className="flex flex-col">
+          <CardContent className="p-6 flex-grow">
+            <div className="flex items-start gap-4">
+              <Avatar className="w-16 h-16 border">
+                <AvatarImage src={artist.casting_artist?.picture} alt={artist.name} />
+                <AvatarFallback className="text-xl font-semibold bg-muted">
+                  {artist.name.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-semibold text-lg">{artist.name}</h3>
+                  {artist.casting_artist?.flag && (
+                    <Image
+                      src={artist.casting_artist.flag}
+                      alt="Country flag"
+                      width={20}
+                      height={15}
+                      className="object-contain"
+                    />
+                  )}
+                </div>
+                {artist.casting_artist?.description && (
+                  <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{artist.casting_artist.description}</p>
+                )}
+              </div>
+            </div>
+          </CardContent>
+          <div className="p-4 border-t bg-muted/50 flex justify-between items-center gap-2">
+            <Badge variant="outline" className="text-xs rounded-sm">
+              {artist.music_releases.length} {artist.music_releases.length === 1 ? 'release' : 'releases'}
+            </Badge>
+            <div className="flex gap-2">
+              <Link href={`/admin/artists/${artist.id}`}>
+                <Button variant="ghost" size="sm">
+                  <Eye className="h-4 w-4 " />
+                </Button>
+              </Link>
+              <Link href={`/admin/artists/edit/${artist.id}`}>
+                <Button variant="ghost" size="sm">
+                  <Edit className="h-4 w-4 " />
+                </Button>
+              </Link>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => openDeleteDialog(artist.id, artist.name)}
+                className="hover:text-red-500"
+                disabled={deleteArtistMutation.isPending}
+              >
+                <Trash2 className="h-4 w-4 " />
+              </Button>
+              {artist.is_casting_artist && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleRemoveFromCasting(artist.id, artist.name)}
+                  disabled={removeFromCastingMutation.isPending}
+                >
+                  Remove from Casting
+                </Button>
+              )}
+            </div>
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+function ArtistGridSkeleton() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {Array.from({ length: 3 }).map((_, i) => (
+        <Card key={i} className="flex flex-col">
+          <CardContent className="p-6">
+            <div className="flex items-start gap-4">
+              <Skeleton className="w-16 h-16 rounded-full" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-5 w-3/4" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-1/2" />
+              </div>
+            </div>
+          </CardContent>
+          <div className="p-4 border-t bg-muted/50 flex justify-end gap-2">
+            <Skeleton className="h-8 w-16" />
+            <Skeleton className="h-8 w-16" />
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+function EmptyState({ type, searchTerm }: { type: 'casting' | 'other'; searchTerm: string }) {
+  const message = searchTerm
+    ? `No ${type} artists found for "${searchTerm}".`
+    : `There are no ${type} artists to display.`;
+
+  return (
+    <Card className="col-span-full">
+      <CardContent className="text-center p-12">
+        <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+        <h3 className="text-lg font-semibold mb-2">No Artists Found</h3>
+        <p className="text-muted-foreground">{message}</p>
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function AdminArtistsPage() {
   const router = useRouter();
   const { data: artists, isLoading } = useArtists();
@@ -207,128 +330,5 @@ export default function AdminArtistsPage() {
         </DialogContent>
       </Dialog>
     </div>
-  );
-}
-
-// --- Reusable Components ---
-
-function ArtistGrid({
-  artists,
-  handleRemoveFromCasting,
-  removeFromCastingMutation,
-  openDeleteDialog,
-  deleteArtistMutation,
-}: any) {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {artists.map((artist: Artist) => (
-        <Card key={artist.id} className="flex flex-col">
-          <CardContent className="p-6 flex-grow">
-            <div className="flex items-start gap-4">
-              <Avatar className="w-16 h-16 border">
-                <AvatarImage src={artist.casting_artist?.picture} alt={artist.name} />
-                <AvatarFallback className="text-xl font-semibold bg-muted">
-                  {artist.name.charAt(0).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-lg">{artist.name}</h3>
-                  {artist.casting_artist?.flag && (
-                    <Image
-                      src={artist.casting_artist.flag}
-                      alt="Country flag"
-                      width={20}
-                      height={15}
-                      className="object-contain"
-                    />
-                  )}
-                </div>
-                {artist.casting_artist?.description && (
-                  <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{artist.casting_artist.description}</p>
-                )}
-              </div>
-            </div>
-          </CardContent>
-          <div className="p-4 border-t bg-muted/50 flex justify-between items-center gap-2">
-            <Badge variant="outline" className="text-xs rounded-sm">
-              {artist.music_releases.length} {artist.music_releases.length === 1 ? 'release' : 'releases'}
-            </Badge>
-            <div className="flex gap-2">
-              <Link href={`/admin/artists/${artist.id}`}>
-                <Button variant="ghost" size="sm">
-                  <Eye className="h-4 w-4 " />
-                </Button>
-              </Link>
-              <Link href={`/admin/artists/edit/${artist.id}`}>
-                <Button variant="ghost" size="sm">
-                  <Edit className="h-4 w-4 " />
-                </Button>
-              </Link>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => openDeleteDialog(artist.id, artist.name)}
-                className="hover:text-red-500"
-                disabled={deleteArtistMutation.isPending}
-              >
-                <Trash2 className="h-4 w-4 " />
-              </Button>
-              {artist.is_casting_artist && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleRemoveFromCasting(artist.id, artist.name)}
-                  disabled={removeFromCastingMutation.isPending}
-                >
-                  Remove from Casting
-                </Button>
-              )}
-            </div>
-          </div>
-        </Card>
-      ))}
-    </div>
-  );
-}
-
-function ArtistGridSkeleton() {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {Array.from({ length: 3 }).map((_, i) => (
-        <Card key={i} className="flex flex-col">
-          <CardContent className="p-6">
-            <div className="flex items-start gap-4">
-              <Skeleton className="w-16 h-16 rounded-full" />
-              <div className="flex-1 space-y-2">
-                <Skeleton className="h-5 w-3/4" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-1/2" />
-              </div>
-            </div>
-          </CardContent>
-          <div className="p-4 border-t bg-muted/50 flex justify-end gap-2">
-            <Skeleton className="h-8 w-16" />
-            <Skeleton className="h-8 w-16" />
-          </div>
-        </Card>
-      ))}
-    </div>
-  );
-}
-
-function EmptyState({ type, searchTerm }: { type: 'casting' | 'other'; searchTerm: string }) {
-  const message = searchTerm
-    ? `No ${type} artists found for "${searchTerm}".`
-    : `There are no ${type} artists to display.`;
-
-  return (
-    <Card className="col-span-full">
-      <CardContent className="text-center p-12">
-        <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-        <h3 className="text-lg font-semibold mb-2">No Artists Found</h3>
-        <p className="text-muted-foreground">{message}</p>
-      </CardContent>
-    </Card>
   );
 }

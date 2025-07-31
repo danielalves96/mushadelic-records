@@ -16,110 +16,6 @@ import { useReleases } from '@/hooks/releases/useReleases';
 import { useToast } from '@/hooks/use-toast';
 import { Release } from '@/types/types';
 
-export default function AdminReleasesPage() {
-  const router = useRouter();
-  const { data: releases, isLoading } = useReleases();
-  const deleteReleaseMutation = useDeleteRelease();
-  const { toast } = useToast();
-
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const handleDeleteRelease = async (releaseId: string, releaseName: string) => {
-    if (window.confirm(`Are you sure you want to delete the release "${releaseName}"?`)) {
-      try {
-        await deleteReleaseMutation.mutateAsync(releaseId);
-        toast({ title: 'Success', description: 'Release deleted successfully!' });
-      } catch (error) {
-        console.error(error);
-        toast({ title: 'Error', description: 'Failed to delete release', variant: 'destructive' });
-      }
-    }
-  };
-
-  const filteredReleases = useMemo(() => {
-    if (!releases) return [];
-    return releases.filter(
-      (release) =>
-        release.music_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        release.artists.some((artist) => artist.name.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-  }, [releases, searchTerm]);
-
-  const totalArtists = useMemo(() => {
-    if (!releases) return 0;
-    const artistIds = new Set(releases.flatMap((r) => r.artists.map((a) => a.id)));
-    return artistIds.size;
-  }, [releases]);
-
-  return (
-    <div className="space-y-8 mt-2">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <Button variant="outline" size="icon" onClick={() => router.push('/admin')}>
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-          <h1 className="text-3xl font-bold tracking-tight">Releases</h1>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="relative w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search releases or artists..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          <Link href="/admin/releases/create">
-            <Button className="gap-2">
-              <Plus className="h-4 w-4" />
-              Add Release
-            </Button>
-          </Link>
-        </div>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <Music className="h-6 w-6 text-blue-600" />
-              <div>
-                <p className="text-sm text-muted-foreground">Total Releases</p>
-                <p className="text-2xl font-bold">{releases?.length || 0}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <Users className="h-6 w-6 text-green-600" />
-              <div>
-                <p className="text-sm text-muted-foreground">Unique Artists</p>
-                <p className="text-2xl font-bold">{totalArtists}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Releases Grid */}
-      <section>
-        {isLoading ? (
-          <ReleaseGridSkeleton />
-        ) : filteredReleases.length > 0 ? (
-          <ReleaseGrid releases={filteredReleases} handleDeleteRelease={handleDeleteRelease} />
-        ) : (
-          <EmptyState searchTerm={searchTerm} />
-        )}
-      </section>
-    </div>
-  );
-}
-
 // --- Reusable Components ---
 
 function ReleaseGrid({
@@ -277,5 +173,109 @@ function EmptyState({ searchTerm }: { searchTerm: string }) {
         <p className="text-muted-foreground">{message}</p>
       </CardContent>
     </Card>
+  );
+}
+
+export default function AdminReleasesPage() {
+  const router = useRouter();
+  const { data: releases, isLoading } = useReleases();
+  const deleteReleaseMutation = useDeleteRelease();
+  const { toast } = useToast();
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleDeleteRelease = async (releaseId: string, releaseName: string) => {
+    if (window.confirm(`Are you sure you want to delete the release "${releaseName}"?`)) {
+      try {
+        await deleteReleaseMutation.mutateAsync(releaseId);
+        toast({ title: 'Success', description: 'Release deleted successfully!' });
+      } catch (error) {
+        console.error(error);
+        toast({ title: 'Error', description: 'Failed to delete release', variant: 'destructive' });
+      }
+    }
+  };
+
+  const filteredReleases = useMemo(() => {
+    if (!releases) return [];
+    return releases.filter(
+      (release) =>
+        release.music_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        release.artists.some((artist) => artist.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+  }, [releases, searchTerm]);
+
+  const totalArtists = useMemo(() => {
+    if (!releases) return 0;
+    const artistIds = new Set(releases.flatMap((r) => r.artists.map((a) => a.id)));
+    return artistIds.size;
+  }, [releases]);
+
+  return (
+    <div className="space-y-8 mt-2">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <Button variant="outline" size="icon" onClick={() => router.push('/admin')}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <h1 className="text-3xl font-bold tracking-tight">Releases</h1>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="relative w-64">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search releases or artists..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          <Link href="/admin/releases/create">
+            <Button className="gap-2">
+              <Plus className="h-4 w-4" />
+              Add Release
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <Music className="h-6 w-6 text-blue-600" />
+              <div>
+                <p className="text-sm text-muted-foreground">Total Releases</p>
+                <p className="text-2xl font-bold">{releases?.length || 0}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <Users className="h-6 w-6 text-green-600" />
+              <div>
+                <p className="text-sm text-muted-foreground">Unique Artists</p>
+                <p className="text-2xl font-bold">{totalArtists}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Releases Grid */}
+      <section>
+        {isLoading ? (
+          <ReleaseGridSkeleton />
+        ) : filteredReleases.length > 0 ? (
+          <ReleaseGrid releases={filteredReleases} handleDeleteRelease={handleDeleteRelease} />
+        ) : (
+          <EmptyState searchTerm={searchTerm} />
+        )}
+      </section>
+    </div>
   );
 }

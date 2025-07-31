@@ -33,8 +33,6 @@ export default function Contact() {
   });
 
   const onSubmit = async (data: FormData) => {
-    const { name, email, subject, message } = data;
-
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
