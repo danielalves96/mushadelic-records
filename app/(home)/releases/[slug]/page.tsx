@@ -59,7 +59,7 @@ const ReleaseDetailsPage: React.FC = () => {
       <Card className="w-full bg-black/60 text-white backdrop-blur-md">
         <CardHeader className="flex flex-col md:flex-row items-center gap-6">
           <Image
-            src={musicData.cover_art}
+            src={musicData.cover_art || '/default-cover.jpg'}
             alt={musicData.music_name}
             width={270}
             height={270}

@@ -1,18 +1,28 @@
-import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
-const fetchArtistBySlug = async (slug: string) => {
-  const response = await fetch('/api/artist/casting/list');
-  if (!response.ok) {
-    throw new Error('Failed to fetch artist');
-  }
-  const data = await response.json();
-  return data.find((artist: any) => artist.casting_artist.slug === slug);
-};
+import { useApiData } from '@/hooks/common/useApiData';
+import { Artist } from '@/types/types';
+import { useDataRefresh } from '../../../providers/data-refresh-provider';
 
 export const useArtistBySlug = (slug: string) => {
-  return useQuery({
-    queryKey: ['artist', slug],
-    queryFn: () => fetchArtistBySlug(slug),
-    enabled: !!slug,
-  });
+  const { refreshTrigger } = useDataRefresh();
+
+  const result = useApiData<Artist[]>('/api/artist/casting/list', { enabled: !!slug });
+
+  // Transform the data to find the specific artist by slug
+  const transformedResult = {
+    ...result,
+    data:
+      result.data && Array.isArray(result.data)
+        ? result.data.find((artist: Artist) => artist.casting_artist.slug === slug)
+        : null,
+  };
+
+  useEffect(() => {
+    if (refreshTrigger > 0) {
+      result.refetch();
+    }
+  }, [refreshTrigger, result]);
+
+  return transformedResult;
 };

@@ -1,16 +1,19 @@
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import { useEffect } from 'react';
 
+import { useApiData } from '@/hooks/common/useApiData';
 import { Release } from '@/types/types';
-
-const fetchReleases = async (): Promise<Release[]> => {
-  const { data } = await axios.get('/api/release/list');
-  return data;
-};
+import { useDataRefresh } from '../../../providers/data-refresh-provider';
 
 export const useReleases = () => {
-  return useQuery<Release[]>({
-    queryKey: ['releases'],
-    queryFn: fetchReleases,
-  });
+  const { refreshTrigger } = useDataRefresh();
+  const result = useApiData<Release[]>('/api/release/list');
+
+  // Re-fetch when refresh is triggered
+  useEffect(() => {
+    if (refreshTrigger > 0) {
+      result.refetch();
+    }
+  }, [refreshTrigger]);
+
+  return result;
 };

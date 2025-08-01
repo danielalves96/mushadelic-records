@@ -1,4 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
+
+import { useApiData } from '@/hooks/common/useApiData';
+import { useDataRefresh } from '../../../providers/data-refresh-provider';
 
 interface User {
   id: string;
@@ -9,20 +12,14 @@ interface User {
 }
 
 export const useProfile = () => {
-  return useQuery<User>({
-    queryKey: ['admin-profile'],
-    queryFn: async () => {
-      const response = await fetch('/api/admin/profile', {
-        headers: {
-          'Cache-Control': 'no-store',
-        },
-      });
+  const { refreshTrigger } = useDataRefresh();
+  const result = useApiData<User>('/api/admin/profile');
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch profile');
-      }
+  useEffect(() => {
+    if (refreshTrigger > 0) {
+      result.refetch();
+    }
+  }, [refreshTrigger, result]);
 
-      return response.json();
-    },
-  });
+  return result;
 };

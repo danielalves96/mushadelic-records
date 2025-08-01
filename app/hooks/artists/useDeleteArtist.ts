@@ -1,27 +1,11 @@
-import { useMutation } from '@tanstack/react-query';
+import { useApiMutation } from '@/hooks/common/useApiData';
+import api from '@/lib/axios';
 
-import { useQueryInvalidation } from '../common/useQueryInvalidation';
-
-const deleteArtist = async (artistId: string) => {
-  const response = await fetch(`/api/artist/delete/${artistId}`, {
-    method: 'DELETE',
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error || 'Failed to delete artist');
-  }
-
-  return response.json();
+const deleteArtist = async (artistId: string): Promise<void> => {
+  const response = await api.delete(`/api/artist/delete/${artistId}`);
+  return response.data;
 };
 
 export const useDeleteArtist = () => {
-  const { invalidateAllArtists } = useQueryInvalidation();
-
-  return useMutation({
-    mutationFn: deleteArtist,
-    onSuccess: () => {
-      invalidateAllArtists();
-    },
-  });
+  return useApiMutation<void, string>(deleteArtist);
 };

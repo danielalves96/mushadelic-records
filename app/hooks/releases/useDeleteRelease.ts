@@ -1,20 +1,11 @@
-import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import { useApiMutation } from '@/hooks/common/useApiData';
+import api from '@/lib/axios';
 
-import { useQueryInvalidation } from '../common/useQueryInvalidation';
-
-const deleteRelease = async (releaseId: string) => {
-  const response = await axios.delete(`/api/release/delete/${releaseId}`);
+const deleteRelease = async (releaseId: string): Promise<void> => {
+  const response = await api.delete(`/api/release/delete/${releaseId}`);
   return response.data;
 };
 
 export const useDeleteRelease = () => {
-  const { invalidateAllReleases } = useQueryInvalidation();
-
-  return useMutation({
-    mutationFn: deleteRelease,
-    onSuccess: () => {
-      invalidateAllReleases();
-    },
-  });
+  return useApiMutation<void, string>(deleteRelease);
 };

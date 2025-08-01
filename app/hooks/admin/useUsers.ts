@@ -1,4 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+
+import { useApiData, useApiMutation } from '@/hooks/common/useApiData';
+import api from '@/lib/axios';
+import { useDataRefresh } from '../../../providers/data-refresh-provider';
 
 interface User {
   id: string;
@@ -30,113 +34,54 @@ interface UpdateUserData {
 }
 
 export const useUsers = () => {
-  return useQuery<User[]>({
-    queryKey: ['admin-users'],
-    queryFn: async () => {
-      const response = await fetch('/api/admin/users', {
-        headers: {
-          'Cache-Control': 'no-store',
-        },
-      });
+  const { refreshTrigger } = useDataRefresh();
+  const result = useApiData<User[]>('/api/admin/users');
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch users');
-      }
+  useEffect(() => {
+    if (refreshTrigger > 0) {
+      result.refetch();
+    }
+  }, [refreshTrigger, result]);
 
-      return response.json();
-    },
-  });
+  return result;
 };
 
 export const useUser = (userId: string) => {
-  return useQuery<User>({
-    queryKey: ['admin-user', userId],
-    queryFn: async () => {
-      const response = await fetch(`/api/admin/users/${userId}`, {
-        headers: {
-          'Cache-Control': 'no-store',
-        },
-      });
+  const { refreshTrigger } = useDataRefresh();
+  const result = useApiData<User>(`/api/admin/users/${userId}`, { enabled: !!userId });
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch user');
-      }
+  useEffect(() => {
+    if (refreshTrigger > 0) {
+      result.refetch();
+    }
+  }, [refreshTrigger, result]);
 
-      return response.json();
-    },
-    enabled: !!userId,
-  });
+  return result;
+};
+
+const createUser = async (data: CreateUserData): Promise<User> => {
+  const response = await api.post('/api/admin/users', data);
+  return response.data;
 };
 
 export const useCreateUser = () => {
-  const queryClient = useQueryClient();
+  return useApiMutation(createUser);
+};
 
-  return useMutation({
-    mutationFn: async (data: CreateUserData): Promise<User> => {
-      const response = await fetch('/api/admin/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to create user');
-      }
-
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
-    },
-  });
+const updateUser = async ({ userId, data }: { userId: string; data: UpdateUserData }): Promise<User> => {
+  const response = await api.put(`/api/admin/users/${userId}`, data);
+  return response.data;
 };
 
 export const useUpdateUser = () => {
-  const queryClient = useQueryClient();
+  return useApiMutation(updateUser);
+};
 
-  return useMutation({
-    mutationFn: async ({ userId, data }: { userId: string; data: UpdateUserData }): Promise<User> => {
-      const response = await fetch(`/api/admin/users/${userId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to update user');
-      }
-
-      return response.json();
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
-      queryClient.invalidateQueries({ queryKey: ['admin-user', data.id] });
-    },
-  });
+const deleteUser = async (userId: string): Promise<void> => {
+  const response = await api.delete(`/api/admin/users/${userId}`);
+  return response.data;
 };
 
 export const useDeleteUser = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (userId: string): Promise<void> => {
-      const response = await fetch(`/api/admin/users/${userId}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to delete user');
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
-    },
-  });
+  return useApiMutation(deleteUser);
 };

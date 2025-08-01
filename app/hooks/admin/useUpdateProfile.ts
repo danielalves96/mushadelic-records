@@ -1,5 +1,15 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+
+import { useApiMutation } from '@/hooks/common/useApiData';
+import { useDataRefresh } from '../../../providers/data-refresh-provider';
+
+interface User {
+  id: string;
+  name: string | null;
+  email: string | null;
+  image: string | null;
+  role: 'STAFF' | 'ADMIN' | 'ARTIST';
+}
 
 interface UpdateProfileData {
   name: string;
@@ -9,37 +19,58 @@ interface UpdateProfileData {
   newPassword?: string;
 }
 
+const updateProfile = async (data: UpdateProfileData): Promise<User> => {
+  const response = await fetch('/api/admin/profile', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-store',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to update profile');
+  }
+
+  return response.json();
+};
+
 export const useUpdateProfile = () => {
-  const queryClient = useQueryClient();
+  const { refreshData } = useDataRefresh();
   const { update } = useSession();
 
-  return useMutation({
-    mutationFn: async (data: UpdateProfileData) => {
-      const response = await fetch('/api/admin/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Cache-Control': 'no-store',
-        },
-        body: JSON.stringify(data),
-      });
+  const mutation = useApiMutation<User, UpdateProfileData>(updateProfile);
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to update profile');
-      }
+  const mutate = async (
+    data: UpdateProfileData,
+    options?: { onSuccess?: (data: User) => void; onError?: (error: string) => void }
+  ) => {
+    return mutation.mutate(data, {
+      onSuccess: async (updatedUser) => {
+        refreshData();
 
-      return response.json();
-    },
-    onSuccess: async (updatedUser) => {
-      queryClient.invalidateQueries({ queryKey: ['admin-profile'] });
+        // Update the session with new user data
+        await update({
+          name: updatedUser.name,
+          email: updatedUser.email,
+          image: updatedUser.image,
+        });
 
-      // Update the session with new user data
-      await update({
-        name: updatedUser.name,
-        email: updatedUser.email,
-        image: updatedUser.image,
-      });
-    },
-  });
+        options?.onSuccess?.(updatedUser);
+      },
+      onError: options?.onError,
+    });
+  };
+
+  const mutateAsync = async (data: UpdateProfileData) => {
+    return mutation.mutateAsync(data);
+  };
+
+  return {
+    ...mutation,
+    mutate,
+    mutateAsync,
+  };
 };

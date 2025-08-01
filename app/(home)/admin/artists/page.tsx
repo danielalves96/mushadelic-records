@@ -24,28 +24,7 @@ import { useArtists } from '@/hooks/artists/useArtists';
 import { useDeleteArtist } from '@/hooks/artists/useDeleteArtist';
 import { useRemoveFromCasting } from '@/hooks/artists/useRemoveFromCasting';
 import { useToast } from '@/hooks/use-toast';
-
-interface Artist {
-  id: string;
-  name: string;
-  is_casting_artist: boolean;
-  music_releases: Array<{
-    id: string;
-    music_name: string;
-  }>;
-  casting_artist?: {
-    id: string;
-    description: string;
-    facebook_link?: string;
-    instagram_link?: string;
-    soundcloud_link?: string;
-    spotify_link?: string;
-    youtube_link?: string;
-    flag?: string;
-    picture?: string;
-    slug: string;
-  };
-}
+import { Artist } from '@/types/types';
 
 // --- Reusable Components ---
 

@@ -51,7 +51,7 @@ const ArtistDetailsPage: React.FC = () => {
       <Card className="w-full bg-black/60 text-white backdrop-blur-md">
         <CardHeader className="flex flex-col md:flex-row items-center gap-6">
           <Image
-            src={castingArtist.picture}
+            src={castingArtist.picture || '/default-artist.jpg'}
             alt={artistData.name}
             width={250}
             height={250}
@@ -60,7 +60,9 @@ const ArtistDetailsPage: React.FC = () => {
           <div className="text-center md:text-left">
             <CardTitle className="text-3xl font-bold mb-2 flex gap-3">
               <span> {artistData.name} </span>
-              <Image src={castingArtist.flag as string} alt="flag" width={32} height={24} className="object-contain" />
+              {castingArtist.flag && (
+                <Image src={castingArtist.flag} alt="flag" width={32} height={24} className="object-contain" />
+              )}
             </CardTitle>
             <p className="text-md mb-4">{castingArtist.description}</p>
           </div>

@@ -1,17 +1,21 @@
-import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
-const fetchReleaseBySlug = async (slug: string) => {
-  const res = await fetch(`/api/release/${slug}`);
-  if (!res.ok) {
-    throw new Error('Failed to fetch release');
-  }
-  return res.json();
-};
+import { useApiData } from '@/hooks/common/useApiData';
+import { Release } from '@/types/types';
+import { useDataRefresh } from '../../../providers/data-refresh-provider';
 
 export const useReleaseBySlug = (slug: string) => {
-  return useQuery({
-    queryKey: ['release', slug],
-    queryFn: () => fetchReleaseBySlug(slug),
+  const { refreshTrigger } = useDataRefresh();
+  const result = useApiData<Release>(`/api/release/${slug}`, {
     enabled: !!slug,
   });
+
+  // Re-fetch when refresh is triggered
+  useEffect(() => {
+    if (refreshTrigger > 0 && slug) {
+      result.refetch();
+    }
+  }, [refreshTrigger, slug]);
+
+  return result;
 };

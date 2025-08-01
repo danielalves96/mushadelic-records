@@ -1,19 +1,18 @@
-import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
+import { useApiData } from '@/hooks/common/useApiData';
 import { Artist } from '@/types/types';
-
-const fetchArtistById = async (artistId: string) => {
-  const response = await fetch(`/api/artist/by-id/${artistId}`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch artist');
-  }
-  return response.json();
-};
+import { useDataRefresh } from '../../../providers/data-refresh-provider';
 
 export const useArtistById = (artistId: string) => {
-  return useQuery<Artist>({
-    queryKey: ['artist', artistId],
-    queryFn: () => fetchArtistById(artistId),
-    enabled: !!artistId, // Only run the query if artistId is available
-  });
+  const { refreshTrigger } = useDataRefresh();
+  const result = useApiData<Artist>(`/api/artist/by-id/${artistId}`, { enabled: !!artistId });
+
+  useEffect(() => {
+    if (refreshTrigger > 0) {
+      result.refetch();
+    }
+  }, [refreshTrigger, result]);
+
+  return result;
 };

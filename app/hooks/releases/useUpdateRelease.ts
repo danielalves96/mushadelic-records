@@ -1,7 +1,6 @@
-import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
-
-import { useQueryInvalidation } from '../common/useQueryInvalidation';
+import { useApiMutation } from '@/hooks/common/useApiData';
+import api from '@/lib/axios';
+import { Release } from '@/types/types';
 
 interface UpdateReleaseData {
   music_name?: string;
@@ -17,18 +16,11 @@ interface UpdateReleaseData {
   artistIds?: string[];
 }
 
-const updateRelease = async ({ releaseId, data }: { releaseId: string; data: UpdateReleaseData }) => {
-  const response = await axios.patch(`/api/release/update/${releaseId}`, data);
+const updateRelease = async ({ releaseId, data }: { releaseId: string; data: UpdateReleaseData }): Promise<Release> => {
+  const response = await api.patch(`/api/release/update/${releaseId}`, data);
   return response.data;
 };
 
 export const useUpdateRelease = () => {
-  const { invalidateAllReleases } = useQueryInvalidation();
-
-  return useMutation({
-    mutationFn: updateRelease,
-    onSuccess: () => {
-      invalidateAllReleases();
-    },
-  });
+  return useApiMutation<Release, { releaseId: string; data: UpdateReleaseData }>(updateRelease);
 };

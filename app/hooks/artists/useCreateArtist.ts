@@ -1,24 +1,16 @@
-import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
-
-import { useQueryInvalidation } from '../common/useQueryInvalidation';
+import { useApiMutation } from '@/hooks/common/useApiData';
+import api from '@/lib/axios';
+import { Artist } from '@/types/types';
 
 interface CreateArtistData {
   name: string;
 }
 
-const createArtist = async (data: CreateArtistData) => {
-  const response = await axios.post('/api/artist/create', data);
+const createArtist = async (data: CreateArtistData): Promise<Artist> => {
+  const response = await api.post('/api/artist/create', data);
   return response.data;
 };
 
 export const useCreateArtist = () => {
-  const { invalidateAllArtists } = useQueryInvalidation();
-
-  return useMutation({
-    mutationFn: createArtist,
-    onSuccess: () => {
-      invalidateAllArtists();
-    },
-  });
+  return useApiMutation<Artist, CreateArtistData>(createArtist);
 };
