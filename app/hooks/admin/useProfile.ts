@@ -19,7 +19,7 @@ export const useProfile = () => {
     if (refreshTrigger > 0) {
       result.refetch();
     }
-  }, [refreshTrigger, result]);
+  }, [refreshTrigger, result.refetch]);
 
   return result;
 };

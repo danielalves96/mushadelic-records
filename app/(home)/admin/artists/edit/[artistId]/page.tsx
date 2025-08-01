@@ -43,6 +43,11 @@ export default function EditArtistPage({ params }: { params: { artistId: string 
     flag: null,
   });
 
+  const [originalImages, setOriginalImages] = useState({
+    picture: '',
+    flag: '',
+  });
+
   useEffect(() => {
     const fetchArtist = async () => {
       try {
@@ -61,6 +66,10 @@ export default function EditArtistPage({ params }: { params: { artistId: string 
             youtube_link: artistData.casting_artist?.youtube_link || '',
             flag: artistData.casting_artist?.flag || '',
             picture: artistData.casting_artist?.picture || '',
+          });
+          setOriginalImages({
+            picture: artistData.casting_artist?.picture || '',
+            flag: artistData.casting_artist?.flag || '',
           });
         }
       } catch (error) {
@@ -116,8 +125,8 @@ export default function EditArtistPage({ params }: { params: { artistId: string 
         const uploadFormData = new FormData();
         uploadFormData.append('file', imageFiles.picture);
         uploadFormData.append('type', 'artist');
-        if (formData.picture) {
-          uploadFormData.append('oldImageUrl', formData.picture);
+        if (originalImages.picture) {
+          uploadFormData.append('oldImageUrl', originalImages.picture);
         }
 
         const response = await fetch('/api/upload', {
@@ -135,8 +144,8 @@ export default function EditArtistPage({ params }: { params: { artistId: string 
         const uploadFormData = new FormData();
         uploadFormData.append('file', imageFiles.flag);
         uploadFormData.append('type', 'artist');
-        if (formData.flag) {
-          uploadFormData.append('oldImageUrl', formData.flag);
+        if (originalImages.flag) {
+          uploadFormData.append('oldImageUrl', originalImages.flag);
         }
 
         const response = await fetch('/api/upload', {

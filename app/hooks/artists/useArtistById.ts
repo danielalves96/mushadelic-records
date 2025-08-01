@@ -12,7 +12,7 @@ export const useArtistById = (artistId: string) => {
     if (refreshTrigger > 0) {
       result.refetch();
     }
-  }, [refreshTrigger, result]);
+  }, [refreshTrigger, result.refetch]);
 
   return result;
 };

@@ -14,6 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useArtists } from '@/hooks/artists/useArtists';
 import { useUpdateRelease } from '@/hooks/releases/useUpdateRelease';
 import { useToast } from '@/hooks/use-toast';
+import { uploadImage } from '@/lib/image-upload';
 
 export default function EditReleasePage({ params }: { params: { releaseId: string } }) {
   const router = useRouter();
@@ -39,6 +40,7 @@ export default function EditReleasePage({ params }: { params: { releaseId: strin
   });
 
   const [coverArtFile, setCoverArtFile] = useState<File | null>(null);
+  const [originalCoverArt, setOriginalCoverArt] = useState<string>('');
 
   useEffect(() => {
     const fetchRelease = async () => {
@@ -47,7 +49,7 @@ export default function EditReleasePage({ params }: { params: { releaseId: strin
         if (response.ok) {
           const releaseData = await response.json();
           setRelease(releaseData);
-          setFormData({
+          const newFormData = {
             music_name: releaseData.music_name || '',
             description: releaseData.description || '',
             buy_link: releaseData.buy_link || '',
@@ -59,7 +61,9 @@ export default function EditReleasePage({ params }: { params: { releaseId: strin
             apple_link: releaseData.apple_link || '',
             release_date: releaseData.release_date ? releaseData.release_date.split('T')[0] : '',
             artistIds: releaseData.artists?.map((artist: any) => artist.id) || [],
-          });
+          };
+          setFormData(newFormData);
+          setOriginalCoverArt(releaseData.cover_art || '');
         }
       } catch (error) {
         console.error('Error fetching release:', error);
@@ -98,22 +102,7 @@ export default function EditReleasePage({ params }: { params: { releaseId: strin
 
       // Upload new cover art if file is selected
       if (coverArtFile) {
-        const uploadFormData = new FormData();
-        uploadFormData.append('file', coverArtFile);
-        uploadFormData.append('type', 'release');
-        if (formData.cover_art) {
-          uploadFormData.append('oldImageUrl', formData.cover_art);
-        }
-
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: uploadFormData,
-        });
-
-        if (response.ok) {
-          const { imageUrl } = await response.json();
-          coverArtUrl = imageUrl;
-        }
+        coverArtUrl = await uploadImage(coverArtFile, 'release', originalCoverArt);
       }
 
       const updateData = {

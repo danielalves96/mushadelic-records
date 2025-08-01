@@ -68,3 +68,32 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { imageUrl } = await request.json();
+
+    if (!imageUrl) {
+      return NextResponse.json({ error: 'No image URL provided' }, { status: 400 });
+    }
+
+    // Only delete images from our bucket
+    if (!imageUrl.includes(R2_PUBLIC_URL)) {
+      return NextResponse.json({ error: 'Invalid image URL' }, { status: 400 });
+    }
+
+    const fileName = imageUrl.replace(`${R2_PUBLIC_URL}/`, '');
+
+    const deleteCommand = new DeleteObjectCommand({
+      Bucket: R2_BUCKET_NAME,
+      Key: fileName,
+    });
+
+    await r2Client.send(deleteCommand);
+
+    return NextResponse.json({ success: true }, { status: 200 });
+  } catch (error) {
+    console.error('Delete error:', error);
+    return NextResponse.json({ error: 'Delete failed' }, { status: 500 });
+  }
+}

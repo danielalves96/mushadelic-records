@@ -13,6 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useArtists } from '@/hooks/artists/useArtists';
 import { useCreateRelease } from '@/hooks/releases/useCreateRelease';
 import { useToast } from '@/hooks/use-toast';
+import { uploadImage } from '@/lib/image-upload';
 
 export default function CreateReleasePage() {
   const router = useRouter();
@@ -58,19 +59,7 @@ export default function CreateReleasePage() {
 
       // Upload cover art if file is selected
       if (coverArtFile) {
-        const uploadFormData = new FormData();
-        uploadFormData.append('file', coverArtFile);
-        uploadFormData.append('type', 'release');
-
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: uploadFormData,
-        });
-
-        if (response.ok) {
-          const { imageUrl } = await response.json();
-          coverArtUrl = imageUrl;
-        }
+        coverArtUrl = await uploadImage(coverArtFile, 'release');
       }
 
       const releaseData = {
