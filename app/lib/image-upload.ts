@@ -1,3 +1,5 @@
+import api from './axios';
+
 /**
  * Upload image file to server
  * @param file - Processed image file
@@ -19,18 +21,13 @@ export async function uploadImage(
     formData.append('oldImageUrl', oldImageUrl);
   }
 
-  const response = await fetch('/api/upload', {
-    method: 'POST',
-    body: formData,
+  const response = await api.post('/api/upload', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   });
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error || 'Failed to upload image');
-  }
-
-  const { imageUrl } = await response.json();
-  return imageUrl;
+  return response.data.imageUrl;
 }
 
 /**
@@ -41,12 +38,8 @@ export async function deleteImage(imageUrl: string): Promise<void> {
   if (!imageUrl) return;
 
   try {
-    await fetch('/api/upload', {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ imageUrl }),
+    await api.delete('/api/upload', {
+      data: { imageUrl },
     });
   } catch (error) {
     console.warn('Failed to delete old image:', error);

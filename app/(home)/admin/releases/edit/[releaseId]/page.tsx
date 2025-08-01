@@ -12,6 +12,7 @@ import { MultiSelect } from '@/components/ui/multi-select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Textarea } from '@/components/ui/textarea';
 import { useArtists } from '@/hooks/artists/useArtists';
+import { useReleaseById } from '@/hooks/releases/useReleaseById';
 import { useUpdateRelease } from '@/hooks/releases/useUpdateRelease';
 import { useToast } from '@/hooks/use-toast';
 import { uploadImage } from '@/lib/image-upload';
@@ -21,9 +22,7 @@ export default function EditReleasePage({ params }: { params: { releaseId: strin
   const { toast } = useToast();
   const updateReleaseMutation = useUpdateRelease();
   const { data: artists } = useArtists();
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [, setRelease] = useState<any>(null);
+  const { data: release, isLoading, error } = useReleaseById(params.releaseId);
 
   const [formData, setFormData] = useState({
     music_name: '',
@@ -43,42 +42,34 @@ export default function EditReleasePage({ params }: { params: { releaseId: strin
   const [originalCoverArt, setOriginalCoverArt] = useState<string>('');
 
   useEffect(() => {
-    const fetchRelease = async () => {
-      try {
-        const response = await fetch(`/api/release/by-id/${params.releaseId}`);
-        if (response.ok) {
-          const releaseData = await response.json();
-          setRelease(releaseData);
-          const newFormData = {
-            music_name: releaseData.music_name || '',
-            description: releaseData.description || '',
-            buy_link: releaseData.buy_link || '',
-            cover_art: releaseData.cover_art || '',
-            soundcloud_link: releaseData.soundcloud_link || '',
-            spotify_link: releaseData.spotify_link || '',
-            youtube_link: releaseData.youtube_link || '',
-            deezer_link: releaseData.deezer_link || '',
-            apple_link: releaseData.apple_link || '',
-            release_date: releaseData.release_date ? releaseData.release_date.split('T')[0] : '',
-            artistIds: releaseData.artists?.map((artist: any) => artist.id) || [],
-          };
-          setFormData(newFormData);
-          setOriginalCoverArt(releaseData.cover_art || '');
-        }
-      } catch (error) {
-        console.error('Error fetching release:', error);
-        toast({
-          title: 'Error',
-          description: 'Failed to load release data',
-          variant: 'destructive',
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    if (release) {
+      const newFormData = {
+        music_name: release.music_name || '',
+        description: release.description || '',
+        buy_link: release.buy_link || '',
+        cover_art: release.cover_art || '',
+        soundcloud_link: release.soundcloud_link || '',
+        spotify_link: release.spotify_link || '',
+        youtube_link: release.youtube_link || '',
+        deezer_link: release.deezer_link || '',
+        apple_link: release.apple_link || '',
+        release_date: release.release_date ? release.release_date.split('T')[0] : '',
+        artistIds: release.artists?.map((artist: any) => artist.id) || [],
+      };
+      setFormData(newFormData);
+      setOriginalCoverArt(release.cover_art || '');
+    }
+  }, [release]);
 
-    fetchRelease();
-  }, [params.releaseId, toast]);
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to load release data',
+        variant: 'destructive',
+      });
+    }
+  }, [error, toast]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;

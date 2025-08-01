@@ -22,11 +22,11 @@ const updateArtist = async ({ artistId, data }: { artistId: string; data: Update
 };
 
 export const useUpdateArtist = () => {
-  const { refreshData } = useDataRefresh();
+  const { refreshArtists } = useDataRefresh();
 
   return useApiMutation<Artist, { artistId: string; data: UpdateArtistData }>(updateArtist, {
     onSuccess: () => {
-      refreshData(); // Trigger refresh of all lists
+      refreshArtists(); // Trigger refresh only of artist data
     },
   });
 };

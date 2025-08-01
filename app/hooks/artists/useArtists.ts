@@ -1,19 +1,13 @@
-import { useEffect } from 'react';
-
 import { useApiData } from '@/hooks/common/useApiData';
+import { useRefreshEffect } from '@/hooks/common/useRefreshEffect';
 import { Artist } from '@/types/types';
 import { useDataRefresh } from '../../../providers/data-refresh-provider';
 
 export const useArtists = () => {
-  const { refreshTrigger } = useDataRefresh();
+  const { artistsRefreshTrigger } = useDataRefresh();
   const result = useApiData<Artist[]>('/api/artist/list');
 
-  // Re-fetch when refresh is triggered
-  useEffect(() => {
-    if (refreshTrigger > 0) {
-      result.refetch();
-    }
-  }, [refreshTrigger, result.refetch]);
+  useRefreshEffect(artistsRefreshTrigger, result.refetch);
 
   return result;
 };

@@ -13,11 +13,11 @@ const createArtist = async (data: CreateArtistData): Promise<Artist> => {
 };
 
 export const useCreateArtist = () => {
-  const { refreshData } = useDataRefresh();
+  const { refreshArtists } = useDataRefresh();
 
   return useApiMutation<Artist, CreateArtistData>(createArtist, {
     onSuccess: () => {
-      refreshData(); // Trigger refresh of all lists
+      refreshArtists(); // Trigger refresh only of artist data
     },
   });
 };

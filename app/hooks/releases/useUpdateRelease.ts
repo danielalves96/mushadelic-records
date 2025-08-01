@@ -23,11 +23,11 @@ const updateRelease = async ({ releaseId, data }: { releaseId: string; data: Upd
 };
 
 export const useUpdateRelease = () => {
-  const { refreshData } = useDataRefresh();
+  const { refreshReleases } = useDataRefresh();
 
   return useApiMutation<Release, { releaseId: string; data: UpdateReleaseData }>(updateRelease, {
     onSuccess: () => {
-      refreshData(); // Trigger refresh of all lists
+      refreshReleases(); // Trigger refresh only of releases data
     },
   });
 };

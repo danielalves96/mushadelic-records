@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Textarea } from '@/components/ui/textarea';
+import { useArtistById } from '@/hooks/artists/useArtistById';
 import { useUpdateArtist } from '@/hooks/artists/useUpdateArtist';
 import { useToast } from '@/hooks/use-toast';
 
@@ -18,9 +19,7 @@ export default function EditArtistPage({ params }: { params: { artistId: string 
   const router = useRouter();
   const { toast } = useToast();
   const updateArtistMutation = useUpdateArtist();
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [, setArtist] = useState<any>(null);
+  const { data: artist, isLoading, error } = useArtistById(params.artistId);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -49,43 +48,35 @@ export default function EditArtistPage({ params }: { params: { artistId: string 
   });
 
   useEffect(() => {
-    const fetchArtist = async () => {
-      try {
-        const response = await fetch(`/api/artist/by-id/${params.artistId}`);
-        if (response.ok) {
-          const artistData = await response.json();
-          setArtist(artistData);
-          setFormData({
-            name: artistData.name || '',
-            is_casting_artist: artistData.is_casting_artist || false,
-            description: artistData.casting_artist?.description || '',
-            facebook_link: artistData.casting_artist?.facebook_link || '',
-            instagram_link: artistData.casting_artist?.instagram_link || '',
-            soundcloud_link: artistData.casting_artist?.soundcloud_link || '',
-            spotify_link: artistData.casting_artist?.spotify_link || '',
-            youtube_link: artistData.casting_artist?.youtube_link || '',
-            flag: artistData.casting_artist?.flag || '',
-            picture: artistData.casting_artist?.picture || '',
-          });
-          setOriginalImages({
-            picture: artistData.casting_artist?.picture || '',
-            flag: artistData.casting_artist?.flag || '',
-          });
-        }
-      } catch (error) {
-        console.error('Error fetching artist:', error);
-        toast({
-          title: 'Error',
-          description: 'Failed to load artist data',
-          variant: 'destructive',
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    if (artist) {
+      setFormData({
+        name: artist.name || '',
+        is_casting_artist: artist.is_casting_artist || false,
+        description: artist.casting_artist?.description || '',
+        facebook_link: artist.casting_artist?.facebook_link || '',
+        instagram_link: artist.casting_artist?.instagram_link || '',
+        soundcloud_link: artist.casting_artist?.soundcloud_link || '',
+        spotify_link: artist.casting_artist?.spotify_link || '',
+        youtube_link: artist.casting_artist?.youtube_link || '',
+        flag: artist.casting_artist?.flag || '',
+        picture: artist.casting_artist?.picture || '',
+      });
+      setOriginalImages({
+        picture: artist.casting_artist?.picture || '',
+        flag: artist.casting_artist?.flag || '',
+      });
+    }
+  }, [artist]);
 
-    fetchArtist();
-  }, [params.artistId, toast]);
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to load artist data',
+        variant: 'destructive',
+      });
+    }
+  }, [error, toast]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;

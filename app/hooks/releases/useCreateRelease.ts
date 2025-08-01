@@ -23,11 +23,11 @@ const createRelease = async (data: CreateReleaseData): Promise<Release> => {
 };
 
 export const useCreateRelease = () => {
-  const { refreshData } = useDataRefresh();
+  const { refreshReleases } = useDataRefresh();
 
   return useApiMutation<Release, CreateReleaseData>(createRelease, {
     onSuccess: () => {
-      refreshData(); // Trigger refresh of all lists
+      refreshReleases(); // Trigger refresh only of releases data
     },
   });
 };

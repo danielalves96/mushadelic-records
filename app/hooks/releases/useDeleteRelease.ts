@@ -8,11 +8,11 @@ const deleteRelease = async (releaseId: string): Promise<void> => {
 };
 
 export const useDeleteRelease = () => {
-  const { refreshData } = useDataRefresh();
+  const { refreshReleases } = useDataRefresh();
 
   return useApiMutation<void, string>(deleteRelease, {
     onSuccess: () => {
-      refreshData(); // Trigger refresh of all lists
+      refreshReleases(); // Trigger refresh only of releases data
     },
   });
 };

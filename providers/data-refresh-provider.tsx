@@ -6,16 +6,40 @@ interface DataRefreshContextType {
   refreshTrigger: number;
   refreshData: () => void;
   refreshKey: () => void;
+  refreshArtists: () => void;
+  refreshReleases: () => void;
+  refreshProfile: () => void;
+  artistsRefreshTrigger: number;
+  releasesRefreshTrigger: number;
+  profileRefreshTrigger: number;
 }
 
 const DataRefreshContext = createContext<DataRefreshContextType | undefined>(undefined);
 
 export function DataRefreshProvider({ children }: { children: ReactNode }) {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [artistsRefreshTrigger, setArtistsRefreshTrigger] = useState(0);
+  const [releasesRefreshTrigger, setReleasesRefreshTrigger] = useState(0);
+  const [profileRefreshTrigger, setProfileRefreshTrigger] = useState(0);
 
   const refreshData = () => {
-    // Simple global refresh - increment trigger to force all data to refetch
+    // Global refresh - increment all triggers
     setRefreshTrigger((prev) => prev + 1);
+    setArtistsRefreshTrigger((prev) => prev + 1);
+    setReleasesRefreshTrigger((prev) => prev + 1);
+    setProfileRefreshTrigger((prev) => prev + 1);
+  };
+
+  const refreshArtists = () => {
+    setArtistsRefreshTrigger((prev) => prev + 1);
+  };
+
+  const refreshReleases = () => {
+    setReleasesRefreshTrigger((prev) => prev + 1);
+  };
+
+  const refreshProfile = () => {
+    setProfileRefreshTrigger((prev) => prev + 1);
   };
 
   const refreshKey = () => {
@@ -24,7 +48,19 @@ export function DataRefreshProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <DataRefreshContext.Provider value={{ refreshTrigger, refreshData, refreshKey }}>
+    <DataRefreshContext.Provider
+      value={{
+        refreshTrigger,
+        refreshData,
+        refreshKey,
+        refreshArtists,
+        refreshReleases,
+        refreshProfile,
+        artistsRefreshTrigger,
+        releasesRefreshTrigger,
+        profileRefreshTrigger,
+      }}
+    >
       {children}
     </DataRefreshContext.Provider>
   );

@@ -6,13 +6,20 @@ export async function GET(request: Request, { params }: { params: { slug: string
   const { slug } = params;
 
   try {
-    const release = await prisma.castingArtist.findUnique({
-      where: { slug },
+    const artist = await prisma.artist.findFirst({
+      where: {
+        casting_artist: {
+          slug: slug,
+        },
+      },
+      include: {
+        casting_artist: true,
+      },
     });
 
-    if (!release) {
+    if (!artist) {
       return NextResponse.json(
-        { message: 'Release not found' },
+        { message: 'Artist not found' },
         {
           status: 404,
           headers: {
@@ -24,7 +31,7 @@ export async function GET(request: Request, { params }: { params: { slug: string
       );
     }
 
-    return NextResponse.json(release, {
+    return NextResponse.json(artist, {
       headers: {
         'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
         Pragma: 'no-cache',
@@ -32,9 +39,9 @@ export async function GET(request: Request, { params }: { params: { slug: string
       },
     });
   } catch (error) {
-    console.error('Error fetching release:', error);
+    console.error('Error fetching artist:', error);
     return NextResponse.json(
-      { error: 'Error fetching release' },
+      { error: 'Error fetching artist' },
       {
         status: 500,
         headers: {

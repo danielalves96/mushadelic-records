@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import api from '@/lib/axios';
 import { Release } from '@/types/types';
 import { useDataRefresh } from '../../../providers/data-refresh-provider';
 
@@ -19,77 +20,60 @@ export const useReleasesByArtists = (artistIds: string[], currentReleaseId?: str
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Memoize artistIds to prevent infinite re-renders
+  const memoizedArtistIds = useMemo(() => artistIds, [artistIds.join(',')]);
+
+  const fetchReleasesByArtists = useCallback(async () => {
+    if (!memoizedArtistIds.length) {
+      setAllReleases([]);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await api.post('/api/release/by-artists', {
+        artistIds: memoizedArtistIds,
+        excludeReleaseId: currentReleaseId,
+      });
+
+      const releases = response.data;
+
+      // Shuffle releases if there are multiple artists to avoid showing only one artist's releases
+      const filteredReleases = memoizedArtistIds.length > 1 && releases.length > 1 ? shuffleArray(releases) : releases;
+
+      setAllReleases(filteredReleases);
+    } catch (err) {
+      console.error('Failed to fetch related releases:', err);
+      setError('Failed to fetch related releases');
+      setAllReleases([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [memoizedArtistIds, currentReleaseId]);
+
   useEffect(() => {
-    const fetchReleasesByArtists = async () => {
-      if (!artistIds.length) {
-        setAllReleases([]);
-        setLoading(false);
-        return;
-      }
-
-      setLoading(true);
-      setError(null);
-
-      try {
-        const promises = artistIds.map((artistId) =>
-          fetch(`/api/release/by-artist/${artistId}`)
-            .then((res) => {
-              if (!res.ok) {
-                console.warn(`Failed to fetch releases for artist ${artistId}:`, res.status);
-                return [];
-              }
-              return res.json();
-            })
-            .catch((err) => {
-              console.warn(`Error fetching releases for artist ${artistId}:`, err);
-              return [];
-            })
-        );
-
-        const results = await Promise.all(promises);
-
-        // Flatten and deduplicate releases
-        const flatReleases = results.flat().filter((release) => release && release.id);
-        const uniqueReleases = flatReleases.filter(
-          (release, index, self) => index === self.findIndex((r) => r.id === release.id)
-        );
-
-        // Filter out current release if provided
-        let filteredReleases = currentReleaseId
-          ? uniqueReleases.filter((release) => release.id !== currentReleaseId)
-          : uniqueReleases;
-
-        // Shuffle releases if there are multiple artists to avoid showing only one artist's releases
-        if (artistIds.length > 1 && filteredReleases.length > 1) {
-          filteredReleases = shuffleArray(filteredReleases);
-        }
-
-        setAllReleases(filteredReleases);
-      } catch (err) {
-        console.error('Failed to fetch related releases:', err);
-        setError('Failed to fetch related releases');
-        setAllReleases([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    // Only fetch if we have valid artist IDs
-    if (artistIds.length > 0) {
+    if (memoizedArtistIds.length > 0) {
       fetchReleasesByArtists();
     } else {
       setAllReleases([]);
       setLoading(false);
     }
-  }, [artistIds.join(','), currentReleaseId, refreshTrigger]); // Use join to avoid array reference issues
+  }, [memoizedArtistIds.length, currentReleaseId, fetchReleasesByArtists]);
+
+  useEffect(() => {
+    if (refreshTrigger > 0) {
+      fetchReleasesByArtists();
+    }
+  }, [refreshTrigger, fetchReleasesByArtists]);
 
   return {
     data: allReleases,
     isLoading: loading,
     isError: !!error,
     error,
-    refetch: () => {
-      // Trigger re-fetch by updating refreshTrigger would be handled by the provider
-    },
+    refetch: fetchReleasesByArtists,
   };
 };

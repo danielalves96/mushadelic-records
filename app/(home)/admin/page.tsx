@@ -5,31 +5,29 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useArtists } from '@/hooks/artists/useArtists';
-import { useReleases } from '@/hooks/releases/useReleases';
+import { useAdminStats } from '@/hooks/admin/useAdminStats';
 
 export default function AdminPage() {
-  const { data: artists } = useArtists();
-  const { data: releases } = useReleases();
+  const { data: adminStats, isLoading } = useAdminStats();
 
   const stats = [
     {
       title: 'Total Artists',
-      value: artists?.length || 0,
+      value: adminStats?.totalArtists || 0,
       icon: Users,
       color: 'text-blue-600',
       bgColor: 'bg-blue-50',
     },
     {
       title: 'Total Releases',
-      value: releases?.length || 0,
+      value: adminStats?.totalReleases || 0,
       icon: Music,
       color: 'text-green-600',
       bgColor: 'bg-green-50',
     },
     {
       title: 'Casting Artists',
-      value: artists?.filter((artist: { is_casting_artist: boolean }) => artist.is_casting_artist)?.length || 0,
+      value: adminStats?.castingArtists || 0,
       icon: BarChart3,
       color: 'text-purple-600',
       bgColor: 'bg-purple-50',
@@ -56,7 +54,7 @@ export default function AdminPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">{stat.title}</p>
-                    <p className="text-3xl font-bold">{stat.value}</p>
+                    <p className="text-3xl font-bold">{isLoading ? '...' : stat.value}</p>
                   </div>
                   <Icon className={`h-8 w-8 ${stat.color}`} />
                 </div>

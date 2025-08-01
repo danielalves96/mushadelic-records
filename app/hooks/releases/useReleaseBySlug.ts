@@ -1,21 +1,15 @@
-import { useEffect } from 'react';
-
 import { useApiData } from '@/hooks/common/useApiData';
+import { useRefreshEffect } from '@/hooks/common/useRefreshEffect';
 import { Release } from '@/types/types';
 import { useDataRefresh } from '../../../providers/data-refresh-provider';
 
 export const useReleaseBySlug = (slug: string) => {
-  const { refreshTrigger } = useDataRefresh();
+  const { releasesRefreshTrigger } = useDataRefresh();
   const result = useApiData<Release>(`/api/release/${slug}`, {
     enabled: !!slug,
   });
 
-  // Re-fetch when refresh is triggered
-  useEffect(() => {
-    if (refreshTrigger > 0 && slug) {
-      result.refetch();
-    }
-  }, [refreshTrigger, slug]);
+  useRefreshEffect(releasesRefreshTrigger, result.refetch, [slug]);
 
   return result;
 };

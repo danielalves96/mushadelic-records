@@ -1,6 +1,7 @@
 import { useSession } from 'next-auth/react';
 
 import { useApiMutation } from '@/hooks/common/useApiData';
+import api from '@/lib/axios';
 import { useDataRefresh } from '../../../providers/data-refresh-provider';
 
 interface User {
@@ -20,21 +21,13 @@ interface UpdateProfileData {
 }
 
 const updateProfile = async (data: UpdateProfileData): Promise<User> => {
-  const response = await fetch('/api/admin/profile', {
-    method: 'PUT',
+  const response = await api.put('/api/admin/profile', data, {
     headers: {
-      'Content-Type': 'application/json',
       'Cache-Control': 'no-store',
     },
-    body: JSON.stringify(data),
   });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to update profile');
-  }
-
-  return response.json();
+  return response.data;
 };
 
 export const useUpdateProfile = () => {

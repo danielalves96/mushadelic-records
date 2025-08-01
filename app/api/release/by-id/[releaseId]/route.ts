@@ -9,7 +9,11 @@ export async function GET(req: NextRequest, { params }: { params: { releaseId: s
     const release = await prisma.musicRelease.findUnique({
       where: { id: releaseId },
       include: {
-        artists: true,
+        artists: {
+          include: {
+            casting_artist: true,
+          },
+        },
       },
     });
 
