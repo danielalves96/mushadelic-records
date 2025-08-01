@@ -60,8 +60,10 @@ const HomePage = () => {
                 src={release.cover_art as string}
                 alt={release.music_name}
                 fill
+                sizes="(max-width: 768px) 500px, (max-width: 1200px) 500px, 500px"
                 style={{ objectFit: 'cover' }}
                 className="rounded-lg"
+                priority={true}
               />
               <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center rounded-md justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
                 <div className="flex flex-col justify-center items-center">

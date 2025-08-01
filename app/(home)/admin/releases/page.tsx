@@ -36,6 +36,7 @@ function ReleaseGrid({
                 src={release.cover_art}
                 alt={release.music_name}
                 fill
+                sizes="(max-width: 768px) 500px, (max-width: 1200px) 500px, 500px"
                 className="object-cover blur-lg brightness-50"
               />
             )}
@@ -47,6 +48,7 @@ function ReleaseGrid({
                     src={release.cover_art}
                     alt={release.music_name}
                     fill
+                    sizes="(max-width: 768px) 500px, (max-width: 1200px) 500px, 500px"
                     className="object-cover rounded-md border-2 border-white/50"
                   />
                 )}

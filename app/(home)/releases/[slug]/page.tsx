@@ -6,16 +6,22 @@ import React from 'react';
 import { FaArrowLeft, FaDeezer, FaSoundcloud, FaSpotify, FaYoutube } from 'react-icons/fa';
 import { SiApplemusic, SiBeatport } from 'react-icons/si';
 
+import { ReleaseGrid } from '@/components/releases/ReleaseGrid';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useReleaseBySlug } from '@/hooks/releases/useReleaseBySlug';
+import { useReleasesByArtists } from '@/hooks/releases/useReleasesByArtists';
 import { Artist } from '@/types/types';
 
 const ReleaseDetailsPage: React.FC = () => {
   const router = useRouter();
   const { slug } = useParams();
   const { data: musicData, isLoading, isError } = useReleaseBySlug(slug as string);
+
+  // Get artist IDs for related releases
+  const artistIds = musicData?.artists?.map((artist) => artist.id) || [];
+  const { data: relatedReleases, isLoading: isLoadingRelated } = useReleasesByArtists(artistIds, musicData?.id);
 
   if (isLoading) {
     return (
@@ -67,7 +73,9 @@ const ReleaseDetailsPage: React.FC = () => {
           />
           <div className="text-center md:text-left">
             <CardTitle className="text-3xl font-bold mb-2">{musicData.music_name}</CardTitle>
-            <p className="text-xl mb-4">{musicData.artists.map((artist: Artist) => artist.name).join(', ')}</p>
+            <p className="text-xl mb-4">
+              {musicData.artists?.map((artist: Artist) => artist.name).join(', ') || 'Unknown Artist'}
+            </p>
             <p className="text-sm dark:text-green-600">
               Released on {new Date(musicData.release_date).toLocaleDateString()}
             </p>
@@ -132,6 +140,11 @@ const ReleaseDetailsPage: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Related Releases Section */}
+      <div className="mt-12 w-full ">
+        <ReleaseGrid releases={relatedReleases} isLoading={isLoadingRelated} title="Related Releases" limit={12} />
+      </div>
     </div>
   );
 };

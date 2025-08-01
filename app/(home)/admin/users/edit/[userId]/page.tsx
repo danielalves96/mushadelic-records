@@ -39,6 +39,7 @@ export default function EditUserPage({ params }: Props) {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [originalImage, setOriginalImage] = useState<string>('');
 
   // Update form data when user is loaded
   useEffect(() => {
@@ -50,6 +51,7 @@ export default function EditUserPage({ params }: Props) {
         role: user.role,
         image: user.image || '',
       }));
+      setOriginalImage(user.image || '');
     }
   }, [user]);
 
@@ -81,6 +83,11 @@ export default function EditUserPage({ params }: Props) {
     const uploadFormData = new FormData();
     uploadFormData.append('file', file);
     uploadFormData.append('type', 'user');
+
+    // Add old image URL for deletion if provided
+    if (originalImage) {
+      uploadFormData.append('oldImageUrl', originalImage);
+    }
 
     const response = await fetch('/api/upload', {
       method: 'POST',

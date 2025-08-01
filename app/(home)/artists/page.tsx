@@ -62,6 +62,7 @@ const ArtistsPage = () => {
                     src={artist.casting_artist.picture as string}
                     alt={artist.name}
                     fill
+                    sizes="(max-width: 768px) 500px, (max-width: 1200px) 500px, 500px"
                     style={{ objectFit: 'cover' }}
                     className="rounded-lg"
                     priority={true}

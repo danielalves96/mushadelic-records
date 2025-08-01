@@ -15,15 +15,26 @@ export async function GET(req: NextRequest, { params }: { params: { artistId: st
         },
       },
       include: {
-        artists: true,
+        artists: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+      orderBy: {
+        release_date: 'desc',
       },
     });
 
-    if (releases.length === 0) {
-      return NextResponse.json({ message: 'No releases found for this artist' }, { status: 404 });
-    }
-
-    return NextResponse.json(releases, { status: 200 });
+    return NextResponse.json(releases, {
+      status: 200,
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        Pragma: 'no-cache',
+        Expires: '0',
+      },
+    });
   } catch (error) {
     console.error('Erro ao buscar releases do artista:', error);
     return NextResponse.json({ error: 'Erro ao buscar releases do artista' }, { status: 500 });

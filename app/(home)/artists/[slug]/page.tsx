@@ -5,15 +5,20 @@ import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
 import { FaArrowLeft, FaFacebook, FaInstagram, FaSoundcloud, FaSpotify, FaYoutube } from 'react-icons/fa';
 
+import { ReleaseGrid } from '@/components/releases/ReleaseGrid';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useArtistBySlug } from '@/hooks/artists/useArtistBySlug';
+import { useReleasesByArtist } from '@/hooks/releases/useReleasesByArtist';
 
 const ArtistDetailsPage: React.FC = () => {
   const router = useRouter();
   const { slug } = useParams();
   const { data: artistData, isLoading, isError } = useArtistBySlug(slug as string);
+
+  // Get releases by this artist
+  const { data: artistReleases, isLoading: isLoadingReleases } = useReleasesByArtist(artistData?.id || '');
 
   if (isLoading) {
     return (
@@ -117,6 +122,15 @@ const ArtistDetailsPage: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Artist Releases Section */}
+      <div className="mt-12 w-full">
+        <ReleaseGrid
+          releases={artistReleases || []}
+          isLoading={isLoadingReleases}
+          title={`Releases of ${artistData.name}`}
+        />
+      </div>
     </div>
   );
 };
