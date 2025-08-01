@@ -1,6 +1,7 @@
 import { useApiMutation } from '@/hooks/common/useApiData';
 import api from '@/lib/axios';
 import { Artist } from '@/types/types';
+import { useDataRefresh } from '../../../providers/data-refresh-provider';
 
 interface UpdateArtistData {
   name?: string;
@@ -21,5 +22,11 @@ const updateArtist = async ({ artistId, data }: { artistId: string; data: Update
 };
 
 export const useUpdateArtist = () => {
-  return useApiMutation<Artist, { artistId: string; data: UpdateArtistData }>(updateArtist);
+  const { refreshData } = useDataRefresh();
+
+  return useApiMutation<Artist, { artistId: string; data: UpdateArtistData }>(updateArtist, {
+    onSuccess: () => {
+      refreshData(); // Trigger refresh of all lists
+    },
+  });
 };

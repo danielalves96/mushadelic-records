@@ -13,7 +13,7 @@ export const useReleases = () => {
     if (refreshTrigger > 0) {
       result.refetch();
     }
-  }, [refreshTrigger]);
+  }, [refreshTrigger, result.refetch]);
 
   return result;
 };

@@ -24,9 +24,9 @@ export function useApiData<T = any>(url: string, options: UseApiDataOptions = { 
     }
   }, [url]);
 
-  const refetch = () => {
+  const refetch = useCallback(() => {
     fetchData();
-  };
+  }, [fetchData]);
 
   useEffect(() => {
     if (options.enabled) {
@@ -43,7 +43,13 @@ export function useApiData<T = any>(url: string, options: UseApiDataOptions = { 
   };
 }
 
-export function useApiMutation<TData = any, TVariables = any>(mutationFn: (variables: TVariables) => Promise<TData>) {
+export function useApiMutation<TData = any, TVariables = any>(
+  mutationFn: (variables: TVariables) => Promise<TData>,
+  globalOptions?: {
+    onSuccess?: (data: TData) => void;
+    onError?: (error: string) => void;
+  }
+) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -59,11 +65,13 @@ export function useApiMutation<TData = any, TVariables = any>(mutationFn: (varia
       setError(null);
       const result = await mutationFn(variables);
       options?.onSuccess?.(result);
+      globalOptions?.onSuccess?.(result);
       return result;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An error occurred';
       setError(errorMessage);
       options?.onError?.(errorMessage);
+      globalOptions?.onError?.(errorMessage);
       throw err;
     } finally {
       setIsLoading(false);

@@ -1,6 +1,7 @@
 import { useApiMutation } from '@/hooks/common/useApiData';
 import api from '@/lib/axios';
 import { Release } from '@/types/types';
+import { useDataRefresh } from '../../../providers/data-refresh-provider';
 
 interface CreateReleaseData {
   music_name: string;
@@ -22,5 +23,11 @@ const createRelease = async (data: CreateReleaseData): Promise<Release> => {
 };
 
 export const useCreateRelease = () => {
-  return useApiMutation<Release, CreateReleaseData>(createRelease);
+  const { refreshData } = useDataRefresh();
+
+  return useApiMutation<Release, CreateReleaseData>(createRelease, {
+    onSuccess: () => {
+      refreshData(); // Trigger refresh of all lists
+    },
+  });
 };
