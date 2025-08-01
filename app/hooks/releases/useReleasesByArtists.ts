@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import { useApiData } from '@/hooks/common/useApiData';
 import { Release } from '@/types/types';
 import { useDataRefresh } from '../../../providers/data-refresh-provider';
 
@@ -32,32 +31,32 @@ export const useReleasesByArtists = (artistIds: string[], currentReleaseId?: str
       setError(null);
 
       try {
-        const promises = artistIds.map(artistId =>
+        const promises = artistIds.map((artistId) =>
           fetch(`/api/release/by-artist/${artistId}`)
-            .then(res => {
+            .then((res) => {
               if (!res.ok) {
                 console.warn(`Failed to fetch releases for artist ${artistId}:`, res.status);
                 return [];
               }
               return res.json();
             })
-            .catch(err => {
+            .catch((err) => {
               console.warn(`Error fetching releases for artist ${artistId}:`, err);
               return [];
             })
         );
 
         const results = await Promise.all(promises);
-        
+
         // Flatten and deduplicate releases
-        const flatReleases = results.flat().filter(release => release && release.id);
-        const uniqueReleases = flatReleases.filter((release, index, self) =>
-          index === self.findIndex(r => r.id === release.id)
+        const flatReleases = results.flat().filter((release) => release && release.id);
+        const uniqueReleases = flatReleases.filter(
+          (release, index, self) => index === self.findIndex((r) => r.id === release.id)
         );
 
         // Filter out current release if provided
         let filteredReleases = currentReleaseId
-          ? uniqueReleases.filter(release => release.id !== currentReleaseId)
+          ? uniqueReleases.filter((release) => release.id !== currentReleaseId)
           : uniqueReleases;
 
         // Shuffle releases if there are multiple artists to avoid showing only one artist's releases
@@ -91,6 +90,6 @@ export const useReleasesByArtists = (artistIds: string[], currentReleaseId?: str
     error,
     refetch: () => {
       // Trigger re-fetch by updating refreshTrigger would be handled by the provider
-    }
+    },
   };
 };
