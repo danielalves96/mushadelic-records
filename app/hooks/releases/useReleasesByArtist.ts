@@ -6,8 +6,8 @@ import { useDataRefresh } from '../../../providers/data-refresh-provider';
 
 export const useReleasesByArtist = (artistId: string) => {
   const { refreshTrigger } = useDataRefresh();
-  const result = useApiData<Release[]>(`/api/release/by-artist/${artistId}`, { 
-    enabled: !!artistId 
+  const result = useApiData<Release[]>(`/api/release/by-artist/${artistId}`, {
+    enabled: !!artistId,
   });
 
   useEffect(() => {
