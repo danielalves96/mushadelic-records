@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { useEffect, useMemo } from 'react';
 
 import { useApiData } from '@/hooks/common/useApiData';
 import { useDataRefresh } from '../../../providers/data-refresh-provider';
@@ -12,14 +13,28 @@ interface User {
 }
 
 export const useProfile = () => {
+  const { data: session, status } = useSession();
   const { refreshTrigger } = useDataRefresh();
-  const result = useApiData<User>('/api/admin/profile');
+  const apiResult = useApiData<Omit<User, 'role'>>('/api/admin/profile');
 
   useEffect(() => {
     if (refreshTrigger > 0) {
-      result.refetch();
+      apiResult.refetch();
     }
-  }, [refreshTrigger, result.refetch]);
+  }, [refreshTrigger, apiResult.refetch]);
 
-  return result;
+  const data = useMemo(() => {
+    if (!apiResult.data || !session?.user) return null;
+
+    return {
+      ...apiResult.data,
+      role: session.user.role as 'STAFF' | 'ADMIN' | 'ARTIST',
+    };
+  }, [apiResult.data, session?.user]);
+
+  return {
+    ...apiResult,
+    data,
+    isLoading: apiResult.isLoading || status === 'loading',
+  };
 };
