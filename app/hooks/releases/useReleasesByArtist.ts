@@ -14,6 +14,7 @@ export const useReleasesByArtist = (artistId: string) => {
     if (refreshTrigger > 0 && artistId) {
       result.refetch();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshTrigger, result.refetch, artistId]);
 
   return result;

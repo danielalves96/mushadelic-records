@@ -82,6 +82,7 @@ export function ImageUpload({ value, onChange, onFileChange, label, placeholder 
           </div>
         ) : preview ? (
           <div className="relative">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={preview} alt="Preview" className="max-w-full h-32 object-cover rounded-lg mx-auto" />
             <div className="flex gap-2 mt-4 justify-center">
               <Button type="button" variant="outline" onClick={handleRemove} size="sm" disabled={isProcessing}>

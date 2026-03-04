@@ -7,7 +7,6 @@ import { FaArrowLeft, FaFacebook, FaInstagram, FaSoundcloud, FaSpotify, FaYoutub
 
 import { ReleaseGrid } from '@/components/releases/ReleaseGrid';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useArtistBySlug } from '@/hooks/artists/useArtistBySlug';
 import { useReleasesByArtist } from '@/hooks/releases/useReleasesByArtist';

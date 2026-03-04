@@ -21,6 +21,7 @@ export const useReleasesByArtists = (artistIds: string[], currentReleaseId?: str
   const [error, setError] = useState<string | null>(null);
 
   // Memoize artistIds to prevent infinite re-renders
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const memoizedArtistIds = useMemo(() => artistIds, [artistIds.join(',')]);
 
   const fetchReleasesByArtists = useCallback(async () => {

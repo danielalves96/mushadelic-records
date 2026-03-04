@@ -21,6 +21,7 @@ export const useProfile = () => {
     if (refreshTrigger > 0) {
       apiResult.refetch();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshTrigger, apiResult.refetch]);
 
   const data = useMemo(() => {

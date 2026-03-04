@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { ImageUpload } from '@/components/ui/image-upload';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';

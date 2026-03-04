@@ -7,7 +7,6 @@ import { FaArrowLeft, FaDeezer, FaSoundcloud, FaSpotify, FaYoutube } from 'react
 import { SiApplemusic, SiBeatport } from 'react-icons/si';
 
 import { ReleaseCarousel } from '@/components/releases/ReleaseCarousel';
-import { ReleaseGrid } from '@/components/releases/ReleaseGrid';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useReleaseBySlug } from '@/hooks/releases/useReleaseBySlug';
