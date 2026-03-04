@@ -125,7 +125,7 @@ export default function ArtistDetailPage({ params }: Props) {
             <CardHeader className="relative h-32 bg-muted/40">
               <div className="absolute bottom-0 left-6 translate-y-1/2">
                 <Avatar className="h-28 w-28 border-4 border-background">
-                  <AvatarImage src={artist.casting_artist?.picture || ''} alt={artist.name} />
+                  <AvatarImage src={artist.picture || ''} alt={artist.name} />
                   <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white font-semibold text-4xl">
                     {artist.name.charAt(0).toUpperCase()}
                   </AvatarFallback>

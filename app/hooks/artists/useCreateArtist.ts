@@ -5,6 +5,7 @@ import { useDataRefresh } from '../../../providers/data-refresh-provider';
 
 interface CreateArtistData {
   name: string;
+  picture?: string;
 }
 
 const createArtist = async (data: CreateArtistData): Promise<Artist> => {

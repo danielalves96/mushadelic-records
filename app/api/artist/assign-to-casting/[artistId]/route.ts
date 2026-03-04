@@ -5,8 +5,7 @@ import { slugify } from '@/lib/utils';
 
 export async function POST(req: NextRequest, { params }: { params: { artistId: string } }) {
   const body = await req.json();
-  const { description, facebook_link, instagram_link, soundcloud_link, spotify_link, youtube_link, flag, picture } =
-    body;
+  const { description, facebook_link, instagram_link, soundcloud_link, spotify_link, youtube_link, flag } = body;
 
   try {
     const artistId = params.artistId;
@@ -34,7 +33,6 @@ export async function POST(req: NextRequest, { params }: { params: { artistId: s
         youtube_link,
         slug,
         flag,
-        picture,
       },
     });
 

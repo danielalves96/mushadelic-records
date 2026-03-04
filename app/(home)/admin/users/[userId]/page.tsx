@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowLeft, Pencil, Trash2 } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -28,6 +29,8 @@ interface Props {
 
 export default function UserDetailPage({ params }: Props) {
   const router = useRouter();
+  const { data: session } = useSession();
+  const currentUserId = session?.user?.id;
   const { toast } = useToast();
   const { data: user, isLoading } = useUser(params.userId);
   const deleteUserMutation = useDeleteUser();
@@ -193,15 +196,26 @@ export default function UserDetailPage({ params }: Props) {
               <CardDescription>Manage this user account.</CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-4">
-              <Button onClick={() => router.push(`/admin/users/edit/${user.id}`)}>
-                <Pencil className="h-4 w-4 mr-2" />
-                Edit User
-              </Button>
-              <Button variant="destructive" onClick={() => setDeleteDialogOpen(true)}>
-                <Trash2 className="h-4 w-4 mr-2" />
-                Delete User
-              </Button>
+              {(user.id !== 'cmdrgn7jx0000qtybd7pfv9jz' || currentUserId === 'cmdrgn7jx0000qtybd7pfv9jz') && (
+                <Button onClick={() => router.push(`/admin/users/edit/${user.id}`)}>
+                  <Pencil className="h-4 w-4 mr-2" />
+                  Edit User
+                </Button>
+              )}
+              {user.id !== 'cmdrgn7jx0000qtybd7pfv9jz' && (
+                <Button variant="destructive" onClick={() => setDeleteDialogOpen(true)}>
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete User
+                </Button>
+              )}
             </CardContent>
+            {user.id === 'cmdrgn7jx0000qtybd7pfv9jz' && currentUserId !== 'cmdrgn7jx0000qtybd7pfv9jz' && (
+              <CardContent>
+                <p className="text-sm text-muted-foreground text-center py-2">
+                  System Administrator cannot be modified.
+                </p>
+              </CardContent>
+            )}
           </Card>
         </div>
       </div>

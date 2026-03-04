@@ -1,6 +1,7 @@
 export interface Artist {
   id: string;
   name: string;
+  picture?: string;
   is_casting_artist: boolean;
   music_releases: Release[];
   casting_artist: {
@@ -14,7 +15,6 @@ export interface Artist {
     facebook_link?: string;
     slug?: string;
     flag?: string;
-    picture?: string;
   };
 }
 

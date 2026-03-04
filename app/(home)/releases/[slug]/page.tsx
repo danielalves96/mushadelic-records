@@ -6,9 +6,9 @@ import React from 'react';
 import { FaArrowLeft, FaDeezer, FaSoundcloud, FaSpotify, FaYoutube } from 'react-icons/fa';
 import { SiApplemusic, SiBeatport } from 'react-icons/si';
 
+import { ReleaseCarousel } from '@/components/releases/ReleaseCarousel';
 import { ReleaseGrid } from '@/components/releases/ReleaseGrid';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useReleaseBySlug } from '@/hooks/releases/useReleaseBySlug';
 import { useReleasesByArtists } from '@/hooks/releases/useReleasesByArtists';
@@ -62,88 +62,114 @@ const ReleaseDetailsPage: React.FC = () => {
           <FaArrowLeft className="w-4 h-4" />
         </Button>
       </div>
-      <Card className="w-full bg-black/60 text-white backdrop-blur-md">
-        <CardHeader className="flex flex-col md:flex-row items-center gap-6">
-          <Image
-            src={musicData.cover_art || '/default-cover.jpg'}
-            alt={musicData.music_name}
-            width={270}
-            height={270}
-            className="object-cover rounded-lg shadow-lg"
-          />
-          <div className="text-center md:text-left">
-            <CardTitle className="text-3xl font-bold mb-2">{musicData.music_name}</CardTitle>
-            <p className="text-xl mb-4">
+      <div className="w-full relative glass-card rounded-3xl overflow-hidden p-6 md:p-12 mb-12">
+        {/* Subtle background glow based on cover art positioning */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
+
+        <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-center md:items-start z-10 relative">
+          <div className="relative shrink-0 group">
+            <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-2xl group-hover:bg-primary/30 transition-all duration-500" />
+            <Image
+              src={musicData.cover_art || '/default-cover.jpg'}
+              alt={musicData.music_name}
+              width={320}
+              height={320}
+              priority
+              className="object-cover rounded-2xl shadow-2xl relative z-10 border border-white/5"
+            />
+          </div>
+
+          <div className="flex flex-col text-center md:text-left pt-2 md:pt-6 w-full">
+            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4 drop-shadow-sm">
+              {musicData.music_name}
+            </h1>
+
+            <p className="text-2xl md:text-3xl font-medium text-muted-foreground mb-6">
               {musicData.artists?.map((artist: Artist) => artist.name).join(', ') || 'Unknown Artist'}
             </p>
-            <p className="text-sm dark:text-green-600">
-              Released on {new Date(musicData.release_date).toLocaleDateString()}
-            </p>
+
+            <div className="inline-flex items-center justify-center md:justify-start px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-semibold w-max mx-auto md:mx-0 mb-10">
+              Released on{' '}
+              {new Date(musicData.release_date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </div>
+
+            <h3 className="text-lg font-semibold text-foreground/80 mb-4 uppercase tracking-widest text-sm">
+              Listen & Buy
+            </h3>
+
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 w-full">
+              <Button
+                variant="outline"
+                size="lg"
+                disabled={musicData.spotify_link === 'None' || !musicData.spotify_link}
+                className="flex items-center justify-center gap-3 h-14 bg-card/40 border-white/10 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300 rounded-xl"
+                onClick={() => window.open(musicData.spotify_link, '_blank')}
+              >
+                <FaSpotify className="w-5 h-5" />
+                <span className="font-semibold">Spotify</span>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                disabled={musicData.youtube_link === 'None' || !musicData.youtube_link}
+                className="flex items-center justify-center gap-3 h-14 bg-card/40 border-white/10 hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-300 rounded-xl"
+                onClick={() => window.open(musicData.youtube_link, '_blank')}
+              >
+                <FaYoutube className="w-5 h-5" />
+                <span className="font-semibold">YouTube</span>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                disabled={musicData.apple_link === 'None' || !musicData.apple_link}
+                className="flex items-center justify-center gap-3 h-14 bg-card/40 border-white/10 hover:bg-pink-500 hover:text-white hover:border-pink-500 transition-all duration-300 rounded-xl"
+                onClick={() => window.open(musicData.apple_link, '_blank')}
+              >
+                <SiApplemusic className="w-5 h-5" />
+                <span className="font-semibold">Apple Music</span>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                disabled={musicData.soundcloud_link === 'None' || !musicData.soundcloud_link}
+                className="flex items-center justify-center gap-3 h-14 bg-card/40 border-white/10 hover:bg-[#ff5500] hover:text-white hover:border-[#ff5500] transition-all duration-300 rounded-xl"
+                onClick={() => window.open(musicData.soundcloud_link, '_blank')}
+              >
+                <FaSoundcloud className="w-5 h-5" />
+                <span className="font-semibold">SoundCloud</span>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                disabled={musicData.deezer_link === 'None' || !musicData.deezer_link}
+                className="flex items-center justify-center gap-3 h-14 bg-card/40 border-white/10 hover:bg-blue-500 hover:text-white hover:border-blue-500 transition-all duration-300 rounded-xl"
+                onClick={() => window.open(musicData.deezer_link, '_blank')}
+              >
+                <FaDeezer className="w-5 h-5" />
+                <span className="font-semibold">Deezer</span>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                disabled={musicData.buy_link === 'None' || !musicData.buy_link}
+                className="flex items-center justify-center gap-3 h-14 bg-card/40 border-white/10 hover:bg-green-400 hover:text-black hover:border-green-400 transition-all duration-300 rounded-xl"
+                onClick={() => window.open(musicData.buy_link, '_blank')}
+              >
+                <SiBeatport className="w-5 h-5" />
+                <span className="font-semibold">Beatport</span>
+              </Button>
+            </div>
           </div>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6">
-            <Button
-              variant="secondary"
-              disabled={musicData.spotify_link === 'None' || !musicData.spotify_link}
-              className="flex items-center justify-center gap-2"
-              onClick={() => window.open(musicData.spotify_link, '_blank')}
-            >
-              <FaSpotify className="w-5 h-5" />
-              Spotify
-            </Button>
-            <Button
-              variant="secondary"
-              disabled={musicData.youtube_link === 'None' || !musicData.youtube_link}
-              className="flex items-center justify-center gap-2"
-              onClick={() => window.open(musicData.youtube_link, '_blank')}
-            >
-              <FaYoutube className="w-5 h-5" />
-              YouTube
-            </Button>
-            <Button
-              variant="secondary"
-              disabled={musicData.apple_link === 'None' || !musicData.apple_link}
-              className="flex items-center justify-center gap-2"
-              onClick={() => window.open(musicData.apple_link, '_blank')}
-            >
-              <SiApplemusic className="w-5 h-5" />
-              Apple Music
-            </Button>
-            <Button
-              variant="secondary"
-              disabled={musicData.soundcloud_link === 'None' || !musicData.soundcloud_link}
-              className="flex items-center justify-center gap-2"
-              onClick={() => window.open(musicData.soundcloud_link, '_blank')}
-            >
-              <FaSoundcloud className="w-5 h-5" />
-              SoundCloud
-            </Button>
-            <Button
-              variant="secondary"
-              disabled={musicData.deezer_link === 'None' || !musicData.deezer_link}
-              className="flex items-center justify-center gap-2"
-              onClick={() => window.open(musicData.deezer_link, '_blank')}
-            >
-              <FaDeezer className="w-5 h-5" />
-              Deezer
-            </Button>
-            <Button
-              variant="secondary"
-              disabled={musicData.buy_link === 'None' || !musicData.buy_link}
-              className="flex items-center justify-center gap-2"
-              onClick={() => window.open(musicData.buy_link, '_blank')}
-            >
-              <SiBeatport className="w-5 h-5" />
-              Beatport
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Related Releases Section */}
-      <div className="mt-12 w-full ">
-        <ReleaseGrid releases={relatedReleases} isLoading={isLoadingRelated} title="Related Releases" limit={12} />
+      <div className="mt-8 w-full max-w-[100vw]">
+        <ReleaseCarousel releases={relatedReleases} isLoading={isLoadingRelated} title="Related Releases" />
       </div>
     </div>
   );

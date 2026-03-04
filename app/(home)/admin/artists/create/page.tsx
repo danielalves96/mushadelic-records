@@ -71,28 +71,29 @@ export default function CreateArtistPage() {
     }
 
     try {
-      const newArtist = await createArtistMutation.mutateAsync({ name: formData.name });
+      let pictureUrl = formData.picture;
+
+      // Ensure picture is uploaded FIRST so we can create the base Artist with it
+      if (imageFiles.picture) {
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', imageFiles.picture);
+        uploadFormData.append('type', 'artist');
+
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: uploadFormData,
+        });
+
+        if (response.ok) {
+          const { imageUrl } = await response.json();
+          pictureUrl = imageUrl;
+        }
+      }
+
+      const newArtist = await createArtistMutation.mutateAsync({ name: formData.name, picture: pictureUrl });
 
       if (formData.is_casting_artist) {
-        let pictureUrl = formData.picture;
         let flagUrl = formData.flag;
-
-        // Upload images if files are selected
-        if (imageFiles.picture) {
-          const uploadFormData = new FormData();
-          uploadFormData.append('file', imageFiles.picture);
-          uploadFormData.append('type', 'artist');
-
-          const response = await fetch('/api/upload', {
-            method: 'POST',
-            body: uploadFormData,
-          });
-
-          if (response.ok) {
-            const { imageUrl } = await response.json();
-            pictureUrl = imageUrl;
-          }
-        }
 
         if (imageFiles.flag) {
           const uploadFormData = new FormData();
@@ -120,7 +121,6 @@ export default function CreateArtistPage() {
             spotify_link: formData.spotify_link,
             youtube_link: formData.youtube_link,
             flag: flagUrl,
-            picture: pictureUrl,
           },
         });
       }
@@ -143,99 +143,130 @@ export default function CreateArtistPage() {
   const isLoading = createArtistMutation.isPending || assignToCastingMutation.isPending;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10 pt-4 px-4 sm:px-8 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex items-center gap-4">
-        <Button variant="outline" size="icon" onClick={() => router.back()}>
-          <ArrowLeft className="h-4 w-4" />
+      <div className="flex items-center gap-4 border-b border-white/5 pb-6">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => router.back()}
+          className="h-12 w-12 rounded-full border-white/10 hover:border-primary"
+        >
+          <ArrowLeft className="h-6 w-6" />
         </Button>
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Create New Artist</h1>
-          <p className="text-muted-foreground">Add a new artist to your roster</p>
+          <h1 className="text-4xl font-extrabold tracking-tight drop-shadow-sm text-foreground">Create New Artist</h1>
+          <p className="text-muted-foreground text-lg mt-1">Add a new artist to your roster</p>
         </div>
       </div>
 
       <div>
         <form onSubmit={handleSubmit} className="space-y-8">
-          {/* Basic Information */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <User className="h-5 w-5" />
-                <CardTitle>Basic Information</CardTitle>
+          {/* Basic Information & Picture */}
+          <Card className="glass-card border-white/10 shadow-2xl overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[60px] -z-10 pointer-events-none" />
+            <CardHeader className="border-b border-white/5 bg-card/30">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20">
+                  <User className="h-6 w-6 text-primary" strokeWidth={2} />
+                </div>
+                <div>
+                  <CardTitle className="text-xl">Basic Information</CardTitle>
+                  <CardDescription className="text-base mt-1">
+                    Essential artist details and profile picture
+                  </CardDescription>
+                </div>
               </div>
-              <CardDescription>Essential artist details</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Artist Name *</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  placeholder="Enter artist name"
-                  required
-                />
-              </div>
+            <CardContent className="space-y-8 pt-8 relative z-10">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div className="lg:col-span-8 flex flex-col justify-center space-y-6">
+                  <div className="space-y-3">
+                    <Label htmlFor="name" className="text-base font-semibold">
+                      Artist Name <span className="text-primary">*</span>
+                    </Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      placeholder="Enter artist name"
+                      className="h-14 text-lg bg-background/50 border-white/10 focus-visible:ring-primary/50"
+                      required
+                    />
+                  </div>
 
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="is_casting_artist"
-                  name="is_casting_artist"
-                  checked={formData.is_casting_artist}
-                  onChange={handleInputChange}
-                  className="rounded border-gray-300"
-                />
-                <Label htmlFor="is_casting_artist" className="text-sm font-medium">
-                  Add to casting roster
-                </Label>
+                  <div className="flex items-center space-x-3 p-4 rounded-xl border border-white/5 bg-background/30">
+                    <input
+                      type="checkbox"
+                      id="is_casting_artist"
+                      name="is_casting_artist"
+                      checked={formData.is_casting_artist}
+                      onChange={handleInputChange}
+                      className="w-5 h-5 rounded border-white/20 text-primary focus:ring-primary/50 bg-background"
+                    />
+                    <Label htmlFor="is_casting_artist" className="text-base font-medium cursor-pointer">
+                      Add to casting roster
+                    </Label>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-4 flex justify-center lg:justify-end">
+                  <div className="w-full max-w-[250px] space-y-3">
+                    <Label className="text-base font-semibold block text-center lg:text-left">Profile Picture</Label>
+                    <ImageUpload
+                      value={formData.picture}
+                      onChange={(url) => setFormData((prev) => ({ ...prev, picture: url }))}
+                      onFileChange={(file) => setImageFiles((prev) => ({ ...prev, picture: file }))}
+                      label=""
+                      placeholder="Upload photo"
+                    />
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Casting Information */}
           {formData.is_casting_artist && (
-            <Card>
-              <CardHeader>
-                <div className="flex items-center gap-2">
-                  <Music className="h-5 w-5" />
-                  <CardTitle>Casting Information</CardTitle>
+            <Card className="glass-card border-white/10 shadow-xl overflow-hidden relative">
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/5 rounded-full blur-[60px] -z-10 pointer-events-none" />
+              <CardHeader className="border-b border-white/5 bg-card/30">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20">
+                    <Music className="h-6 w-6 text-primary" strokeWidth={2} />
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl">Casting Information</CardTitle>
+                    <CardDescription className="text-base mt-1">Details for the casting portfolio</CardDescription>
+                  </div>
                 </div>
-                <CardDescription>Details for the casting portfolio</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="description">Artist Description *</Label>
+              <CardContent className="space-y-8 pt-8 relative z-10">
+                <div className="space-y-3">
+                  <Label htmlFor="description" className="text-base font-semibold">
+                    Artist Description <span className="text-primary">*</span>
+                  </Label>
                   <Textarea
                     id="description"
                     name="description"
                     value={formData.description}
                     onChange={handleInputChange}
                     placeholder="Describe the artist's style, background, and musical approach..."
-                    rows={4}
+                    rows={5}
+                    className="resize-none text-base bg-background/50 border-white/10 focus-visible:ring-primary/50 p-4"
                     required={formData.is_casting_artist}
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <ImageUpload
-                      value={formData.picture}
-                      onChange={(url) => setFormData((prev) => ({ ...prev, picture: url }))}
-                      onFileChange={(file) => setImageFiles((prev) => ({ ...prev, picture: file }))}
-                      label="Profile Picture"
-                      placeholder="Upload artist profile picture"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <Label className="text-base font-semibold">Country Flag</Label>
                     <ImageUpload
                       value={formData.flag}
                       onChange={(url) => setFormData((prev) => ({ ...prev, flag: url }))}
                       onFileChange={(file) => setImageFiles((prev) => ({ ...prev, flag: file }))}
-                      label="Country Flag"
+                      label=""
                       placeholder="Upload country flag"
                     />
                   </div>

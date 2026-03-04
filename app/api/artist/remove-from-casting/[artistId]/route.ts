@@ -17,7 +17,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { artistId:
 
     const castingArtist = await prisma.castingArtist.findUnique({
       where: { artistId },
-      select: { picture: true, flag: true },
+      select: { flag: true },
     });
 
     if (!castingArtist) {
@@ -29,8 +29,8 @@ export async function DELETE(req: NextRequest, { params }: { params: { artistId:
       where: { artistId },
     });
 
-    // Delete images from R2 if they exist
-    await deleteImagesFromUrls([castingArtist.picture, castingArtist.flag]);
+    // Delete the flag image if it exists
+    await deleteImagesFromUrls([castingArtist.flag]);
 
     await prisma.artist.update({
       where: { id: artistId },

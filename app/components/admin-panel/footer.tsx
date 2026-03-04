@@ -2,21 +2,21 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    <div className="z-20 w-full bg-zinc-50 dark:bg-[#111318] backdrop-blur container mx-auto mt-6">
-      <div className="flex h-16 items-center border-t-2 justify-center md:justify-start">
-        <p className="text-xs md:text-sm leading-loose text-muted-foreground text-left">
+    <footer className="z-20 w-full glass border-t border-white/5 mt-12">
+      <div className="container mx-auto flex h-20 items-center justify-center md:justify-start px-4 sm:px-8">
+        <p className="text-xs md:text-sm leading-loose text-muted-foreground text-center">
           Developed by{' '}
           <Link
             href="https://kyantech.com.br/"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-medium underline underline-offset-4"
+            className="font-medium text-primary hover:text-primary/80 transition-colors"
           >
             Kyantech Solutions
           </Link>
           .
         </p>
       </div>
-    </div>
+    </footer>
   );
 }

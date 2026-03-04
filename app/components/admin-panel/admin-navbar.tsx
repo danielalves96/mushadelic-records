@@ -26,10 +26,10 @@ export function AdminNavbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-lg dark:bg-[#111318]/90 border-b px-4 sm:px-8 py-2">
+    <header className="sticky top-0 z-50 glass border-b border-white/5 px-4 sm:px-8 py-2">
       <div className="container mx-auto flex h-16 items-center justify-between">
         <div className="flex items-center">
-          <Image src="/logo.png" alt="Mushadelic Records Logo" width={180} height={30} />
+          <Image src="/logo.png" alt="Mushadelic Records Logo" width={180} height={30} className="drop-shadow-lg" />
         </div>
 
         <div className="flex items-center space-x-4">

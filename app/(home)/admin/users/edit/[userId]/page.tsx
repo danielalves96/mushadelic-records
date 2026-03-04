@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowLeft, Eye, EyeOff, Save, Trash2, Upload, UserCheck } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -23,6 +24,8 @@ interface Props {
 
 export default function EditUserPage({ params }: Props) {
   const router = useRouter();
+  const { data: session } = useSession();
+  const currentUserId = session?.user?.id;
   const { toast } = useToast();
   const { data: user, isLoading } = useUser(params.userId);
   const updateUserMutation = useUpdateUser();
@@ -219,6 +222,22 @@ export default function EditUserPage({ params }: Props) {
           <div>
             <h1 className="text-3xl font-bold tracking-tight">User Not Found</h1>
             <p className="text-muted-foreground">The requested user could not be found</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (user.id === 'cmdrgn7jx0000qtybd7pfv9jz' && currentUserId !== 'cmdrgn7jx0000qtybd7pfv9jz') {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Button variant="outline" size="icon" onClick={() => router.push('/admin/users')}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Access Denied</h1>
+            <p className="text-muted-foreground">The system administrator cannot be modified.</p>
           </div>
         </div>
       </div>

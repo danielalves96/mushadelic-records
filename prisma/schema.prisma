@@ -26,6 +26,7 @@ model MusicRelease {
 model Artist {
   id                String         @id @default(cuid())
   name              String         @unique
+  picture           String?
   is_casting_artist Boolean        @default(false)
   music_releases    MusicRelease[]
   casting_artist    CastingArtist?
@@ -39,7 +40,6 @@ model CastingArtist {
   facebook_link   String?
   flag            String?
   instagram_link  String?
-  picture         String?
   soundcloud_link String?
   slug            String  @unique
   spotify_link    String?

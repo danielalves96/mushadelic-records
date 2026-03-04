@@ -55,6 +55,15 @@ module.exports = {
           '5': 'hsl(var(--chart-5))',
         },
       },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
+      },
+      animation: {
+        marquee: 'marquee 60s linear infinite',
+      },
     },
   },
   // eslint-disable-next-line @typescript-eslint/no-require-imports

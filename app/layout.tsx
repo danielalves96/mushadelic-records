@@ -2,12 +2,12 @@ import { Metadata } from 'next';
 
 import './globals.css';
 
-import { Inter } from 'next/font/google';
+import { Outfit } from 'next/font/google';
 import { DataRefreshProvider } from 'providers/data-refresh-provider';
 import SessionWrapper from 'providers/session-wrapper';
 import { ThemeProvider } from 'providers/theme-provider';
 
-const inter = Inter({ subsets: ['latin'] });
+const outfit = Outfit({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: `Mushadelic Records`,
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} bg-zinc-50 dark:bg-[#111318]`}>
+      <body className={`${outfit.className} bg-background dark:bg-background`}>
         <DataRefreshProvider>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             <SessionWrapper>{children}</SessionWrapper>

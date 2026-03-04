@@ -38,18 +38,21 @@ function ArtistGrid({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {artists.map((artist: Artist) => (
-        <Card key={artist.id} className="flex flex-col">
+        <Card
+          key={artist.id}
+          className="flex flex-col glass-card border-white/10 shadow-lg hover:shadow-primary/10 transition-shadow"
+        >
           <CardContent className="p-6 flex-grow">
             <div className="flex items-start gap-4">
-              <Avatar className="w-16 h-16 border">
-                <AvatarImage src={artist.casting_artist?.picture} alt={artist.name} />
-                <AvatarFallback className="text-xl font-semibold bg-muted">
+              <Avatar className="w-16 h-16 border border-white/20">
+                <AvatarImage src={artist.picture || ''} alt={artist.name} />
+                <AvatarFallback className="text-xl font-semibold bg-background/50">
                   {artist.name.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-lg">{artist.name}</h3>
+                  <h3 className="font-semibold text-lg drop-shadow-sm">{artist.name}</h3>
                   {artist.casting_artist?.flag && (
                     <Image
                       src={artist.casting_artist.flag}

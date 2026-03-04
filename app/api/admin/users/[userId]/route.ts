@@ -63,6 +63,11 @@ export async function PUT(request: NextRequest, { params }: { params: { userId: 
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // Prevent overriding system admin
+    if (params.userId === 'cmdrgn7jx0000qtybd7pfv9jz') {
+      return NextResponse.json({ error: 'This system administrator cannot be modified' }, { status: 403 });
+    }
+
     // Check if user is STAFF
     const currentUser = await prisma.user.findUnique({
       where: { id: session.user.id },
@@ -163,6 +168,11 @@ export async function DELETE(request: NextRequest, { params }: { params: { userI
 
     if (currentUser?.role !== 'STAFF') {
       return NextResponse.json({ error: 'Forbidden - STAFF access required' }, { status: 403 });
+    }
+
+    // Prevent overriding system admin
+    if (params.userId === 'cmdrgn7jx0000qtybd7pfv9jz') {
+      return NextResponse.json({ error: 'This system administrator cannot be deleted' }, { status: 403 });
     }
 
     // Prevent self-deletion

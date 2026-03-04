@@ -92,143 +92,159 @@ export default function CreateReleasePage() {
         </Button>
       </div>
 
-      <div>
-        <Card>
-          <CardHeader>
-            <CardTitle>Release Information</CardTitle>
-            <CardDescription>Fill in the details for the new release</CardDescription>
+      <div className="relative">
+        <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-primary/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[30vw] h-[30vw] bg-blue-500/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
+        
+        <Card className="glass-card border-white/10 bg-black/40 shadow-2xl overflow-hidden backdrop-blur-xl">
+          <CardHeader className="border-b border-white/5 bg-white/5">
+            <CardTitle className="text-2xl font-bold tracking-tight text-white/90">Release Details</CardTitle>
+            <CardDescription className="text-muted-foreground/80">Complete the information below to publish a new release.</CardDescription>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="music_name">Music Name *</Label>
+          <CardContent className="p-6 md:p-8">
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-3">
+                  <Label htmlFor="music_name" className="text-white/80 font-medium">Music Name <span className="text-red-500">*</span></Label>
                   <Input
                     id="music_name"
                     name="music_name"
                     value={formData.music_name}
                     onChange={handleInputChange}
+                    className="bg-black/50 border-white/10 focus-visible:ring-primary/50 text-white placeholder:text-white/30"
                     required
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="release_date">Release Date *</Label>
+                <div className="space-y-3">
+                  <Label htmlFor="release_date" className="text-white/80 font-medium">Release Date <span className="text-red-500">*</span></Label>
                   <Input
                     id="release_date"
                     name="release_date"
                     type="date"
                     value={formData.release_date}
                     onChange={handleInputChange}
+                    className="bg-black/50 border-white/10 focus-visible:ring-primary/50 text-white placeholder:text-white/30"
                     required
                   />
                 </div>
 
-                <div className="space-y-2 md:col-span-2">
+                <div className="space-y-3 md:col-span-2 p-6 rounded-xl border border-white/5 bg-black/20">
                   <ImageUpload
                     value={formData.cover_art}
                     onChange={(url) => setFormData((prev) => ({ ...prev, cover_art: url }))}
                     onFileChange={setCoverArtFile}
                     label="Cover Art"
-                    placeholder="Upload release cover art"
+                    placeholder="Upload high-res release cover art"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="buy_link">Buy Link</Label>
+                {/* Platforms Row */}
+                <div className="space-y-3">
+                  <Label htmlFor="buy_link" className="text-white/80 font-medium">Buy Link (Bandcamp)</Label>
                   <Input
                     id="buy_link"
                     name="buy_link"
                     value={formData.buy_link}
                     onChange={handleInputChange}
-                    placeholder="https://store.example.com"
+                    className="bg-black/50 border-white/10 focus-visible:ring-primary/50 text-white placeholder:text-white/30"
+                    placeholder="https://bandcamp.com/..."
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="soundcloud_link">SoundCloud Link</Label>
+                <div className="space-y-3">
+                  <Label htmlFor="soundcloud_link" className="text-white/80 font-medium">SoundCloud Link</Label>
                   <Input
                     id="soundcloud_link"
                     name="soundcloud_link"
                     value={formData.soundcloud_link}
                     onChange={handleInputChange}
+                    className="bg-black/50 border-white/10 focus-visible:ring-primary/50 text-white placeholder:text-white/30"
                     placeholder="https://soundcloud.com/..."
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="spotify_link">Spotify Link</Label>
+                <div className="space-y-3">
+                  <Label htmlFor="spotify_link" className="text-white/80 font-medium">Spotify Link</Label>
                   <Input
                     id="spotify_link"
                     name="spotify_link"
                     value={formData.spotify_link}
                     onChange={handleInputChange}
+                    className="bg-black/50 border-white/10 focus-visible:ring-primary/50 text-white placeholder:text-white/30"
                     placeholder="https://spotify.com/..."
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="youtube_link">YouTube Link</Label>
+                <div className="space-y-3">
+                  <Label htmlFor="youtube_link" className="text-white/80 font-medium">YouTube Link</Label>
                   <Input
                     id="youtube_link"
                     name="youtube_link"
                     value={formData.youtube_link}
                     onChange={handleInputChange}
+                    className="bg-black/50 border-white/10 focus-visible:ring-primary/50 text-white placeholder:text-white/30"
                     placeholder="https://youtube.com/..."
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="deezer_link">Deezer Link</Label>
+                <div className="space-y-3">
+                  <Label htmlFor="deezer_link" className="text-white/80 font-medium">Deezer Link</Label>
                   <Input
                     id="deezer_link"
                     name="deezer_link"
                     value={formData.deezer_link}
                     onChange={handleInputChange}
+                    className="bg-black/50 border-white/10 focus-visible:ring-primary/50 text-white placeholder:text-white/30"
                     placeholder="https://deezer.com/..."
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="apple_link">Apple Music Link</Label>
+                <div className="space-y-3">
+                  <Label htmlFor="apple_link" className="text-white/80 font-medium">Apple Music Link</Label>
                   <Input
                     id="apple_link"
                     name="apple_link"
                     value={formData.apple_link}
                     onChange={handleInputChange}
+                    className="bg-black/50 border-white/10 focus-visible:ring-primary/50 text-white placeholder:text-white/30"
                     placeholder="https://music.apple.com/..."
                   />
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
+              <div className="space-y-3">
+                <Label htmlFor="description" className="text-white/80 font-medium">Description</Label>
                 <Textarea
                   id="description"
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
+                  className="bg-black/50 border-white/10 focus-visible:ring-primary/50 text-white placeholder:text-white/30 min-h-[120px]"
+                  placeholder="Tell us about this release..."
                   rows={4}
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label>Artists *</Label>
-                <MultiSelect
-                  options={artists || []}
-                  selectedIds={formData.artistIds}
-                  onSelectionChange={(selectedIds) => setFormData((prev) => ({ ...prev, artistIds: selectedIds }))}
-                  placeholder="Select artists for this release..."
-                  emptyMessage="No artists found."
-                />
+              <div className="space-y-3 p-6 rounded-xl border border-white/5 bg-black/20">
+                <Label className="text-white/80 font-medium">Artists involved <span className="text-red-500">*</span></Label>
+                <div className="mt-2">
+                  <MultiSelect
+                    options={artists || []}
+                    selectedIds={formData.artistIds}
+                    onSelectionChange={(selectedIds) => setFormData((prev) => ({ ...prev, artistIds: selectedIds }))}
+                    placeholder="Select artists for this release..."
+                    emptyMessage="No artists found."
+                  />
+                </div>
               </div>
 
-              <div className="flex gap-4">
-                <Button type="submit" disabled={createReleaseMutation.isPending} className="flex-1">
-                  {createReleaseMutation.isPending ? 'Creating...' : 'Create Release'}
-                </Button>
-                <Button type="button" variant="outline" onClick={() => router.back()} className="flex-1">
+              <div className="flex gap-4 pt-4 border-t border-white/5 mt-8">
+                <Button type="button" variant="outline" onClick={() => router.back()} className="flex-1 bg-transparent border-white/10 hover:bg-white/5 hover:text-white">
                   Cancel
+                </Button>
+                <Button type="submit" disabled={createReleaseMutation.isPending} className="flex-1 shadow-lg shadow-primary/20 bg-primary text-primary-foreground hover:bg-primary/90">
+                  {createReleaseMutation.isPending ? 'Creating...' : 'Publish Release'}
                 </Button>
               </div>
             </form>

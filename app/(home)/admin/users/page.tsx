@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowLeft, Eye, Pencil, Plus, Trash2, Users } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -23,6 +24,8 @@ import { useToast } from '@/hooks/use-toast';
 
 export default function UsersManagementPage() {
   const router = useRouter();
+  const { data: session } = useSession();
+  const currentUserId = session?.user?.id;
   const { toast } = useToast();
   const { data: users, isLoading } = useUsers();
   const deleteUserMutation = useDeleteUser();
@@ -184,12 +187,16 @@ export default function UsersManagementPage() {
                         <Button variant="ghost" size="sm" onClick={() => router.push(`/admin/users/${user.id}`)}>
                           <Eye className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm" onClick={() => router.push(`/admin/users/edit/${user.id}`)}>
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm" onClick={() => openDeleteDialog(user.id)}>
-                          <Trash2 className="h-4 w-4 text-red-500" />
-                        </Button>
+                        {(user.id !== 'cmdrgn7jx0000qtybd7pfv9jz' || currentUserId === 'cmdrgn7jx0000qtybd7pfv9jz') && (
+                          <Button variant="ghost" size="sm" onClick={() => router.push(`/admin/users/edit/${user.id}`)}>
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                        )}
+                        {user.role !== 'STAFF' && user.id !== 'cmdrgn7jx0000qtybd7pfv9jz' && (
+                          <Button variant="ghost" size="sm" onClick={() => openDeleteDialog(user.id)}>
+                            <Trash2 className="h-4 w-4 text-red-500" />
+                          </Button>
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>

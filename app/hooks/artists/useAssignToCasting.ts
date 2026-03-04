@@ -10,7 +10,6 @@ interface AssignToCastingData {
   spotify_link?: string;
   youtube_link?: string;
   flag?: string;
-  picture?: string;
 }
 
 const assignToCasting = async ({

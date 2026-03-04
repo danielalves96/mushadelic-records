@@ -24,6 +24,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { artistId: 
       where: { id: artistId },
       data: {
         name: name || undefined,
+        picture: picture !== undefined ? picture : undefined,
         is_casting_artist: is_casting_artist !== undefined ? is_casting_artist : undefined,
       },
     });
@@ -52,7 +53,6 @@ export async function PATCH(req: NextRequest, { params }: { params: { artistId: 
           spotify_link: spotify_link || undefined,
           youtube_link: youtube_link || undefined,
           flag: flag || undefined,
-          picture: picture || undefined,
         },
         create: {
           artist: {
@@ -66,7 +66,6 @@ export async function PATCH(req: NextRequest, { params }: { params: { artistId: 
           spotify_link: spotify_link || '',
           youtube_link: youtube_link || '',
           flag: flag || '',
-          picture: picture || '',
         },
       });
 
