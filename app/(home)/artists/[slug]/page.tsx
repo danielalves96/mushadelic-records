@@ -57,7 +57,7 @@ const ArtistDetailsPage: React.FC = () => {
         {/* Subtle background glow based on primary color */}
         <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-primary/10 rounded-full blur-[120px] -z-10 pointer-events-none opacity-70" />
         <div className="absolute bottom-0 left-0 w-[30vw] h-[30vw] bg-blue-500/10 rounded-full blur-[100px] -z-10 pointer-events-none opacity-50" />
-        
+
         <div className="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-16 z-10 relative">
           <div className="relative shrink-0 group">
             <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full group-hover:bg-primary/30 transition-all duration-500" />
@@ -71,46 +71,64 @@ const ArtistDetailsPage: React.FC = () => {
               />
             </div>
           </div>
-          
+
           <div className="flex flex-col text-center md:text-left pt-2 md:pt-4 w-full">
             <div className="flex flex-col md:flex-row items-center md:items-baseline gap-4 mb-4">
-              <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight drop-shadow-sm">
-                {artistData.name}
-              </h1>
+              <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight drop-shadow-sm">{artistData.name}</h1>
               {castingArtist.flag && (
                 <div className="relative w-10 h-7 rounded-sm overflow-hidden shadow-md mt-2 md:mt-0">
                   <Image src={castingArtist.flag} alt="flag" fill className="object-cover" />
                 </div>
               )}
             </div>
-            
+
             <p className="text-lg md:text-xl text-muted-foreground/90 font-medium mb-8 max-w-3xl leading-relaxed">
               {castingArtist.description || 'No biography provided yet.'}
             </p>
-            
+
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
               {castingArtist.spotify_link && castingArtist.spotify_link !== 'None' && (
-                <Button variant="secondary" className="gap-2 rounded-full px-6 bg-[#1DB954]/10 text-[#1DB954] hover:bg-[#1DB954] hover:text-white border border-[#1DB954]/20 transition-all" onClick={() => window.open(castingArtist.spotify_link, '_blank')}>
+                <Button
+                  variant="secondary"
+                  className="gap-2 rounded-full px-6 bg-[#1DB954]/10 text-[#1DB954] hover:bg-[#1DB954] hover:text-white border border-[#1DB954]/20 transition-all"
+                  onClick={() => window.open(castingArtist.spotify_link, '_blank')}
+                >
                   <FaSpotify className="w-4 h-4" /> Spotify
                 </Button>
               )}
               {castingArtist.youtube_link && castingArtist.youtube_link !== 'None' && (
-                <Button variant="secondary" className="gap-2 rounded-full px-6 bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white border border-red-600/20 transition-all" onClick={() => window.open(castingArtist.youtube_link, '_blank')}>
+                <Button
+                  variant="secondary"
+                  className="gap-2 rounded-full px-6 bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white border border-red-600/20 transition-all"
+                  onClick={() => window.open(castingArtist.youtube_link, '_blank')}
+                >
                   <FaYoutube className="w-4 h-4" /> YouTube
                 </Button>
               )}
               {castingArtist.soundcloud_link && castingArtist.soundcloud_link !== 'None' && (
-                <Button variant="secondary" className="gap-2 rounded-full px-6 bg-[#ff5500]/10 text-[#ff5500] hover:bg-[#ff5500] hover:text-white border border-[#ff5500]/20 transition-all" onClick={() => window.open(castingArtist.soundcloud_link, '_blank')}>
+                <Button
+                  variant="secondary"
+                  className="gap-2 rounded-full px-6 bg-[#ff5500]/10 text-[#ff5500] hover:bg-[#ff5500] hover:text-white border border-[#ff5500]/20 transition-all"
+                  onClick={() => window.open(castingArtist.soundcloud_link, '_blank')}
+                >
                   <FaSoundcloud className="w-4 h-4" /> SoundCloud
                 </Button>
               )}
               {castingArtist.instagram_link && castingArtist.instagram_link !== 'None' && (
-                <Button variant="secondary" className="gap-2 rounded-full px-6 bg-pink-500/10 text-pink-500 hover:bg-gradient-to-tr hover:from-pink-500 hover:to-purple-500 hover:text-white border border-pink-500/20 transition-all" onClick={() => window.open(castingArtist.instagram_link, '_blank')}>
+                <Button
+                  variant="secondary"
+                  className="gap-2 rounded-full px-6 bg-pink-500/10 text-pink-500 hover:bg-gradient-to-tr hover:from-pink-500 hover:to-purple-500 hover:text-white border border-pink-500/20 transition-all"
+                  onClick={() => window.open(castingArtist.instagram_link, '_blank')}
+                >
                   <FaInstagram className="w-4 h-4" /> Instagram
                 </Button>
               )}
               {castingArtist.facebook_link && castingArtist.facebook_link !== 'None' && (
-                <Button variant="secondary" className="gap-2 rounded-full px-6 bg-blue-600/10 text-blue-500 hover:bg-blue-600 hover:text-white border border-blue-600/20 transition-all" onClick={() => window.open(castingArtist.facebook_link, '_blank')}>
+                <Button
+                  variant="secondary"
+                  className="gap-2 rounded-full px-6 bg-blue-600/10 text-blue-500 hover:bg-blue-600 hover:text-white border border-blue-600/20 transition-all"
+                  onClick={() => window.open(castingArtist.facebook_link, '_blank')}
+                >
                   <FaFacebook className="w-4 h-4" /> Facebook
                 </Button>
               )}
@@ -121,11 +139,7 @@ const ArtistDetailsPage: React.FC = () => {
 
       {/* Artist Releases Section */}
       <div className="w-full">
-        <ReleaseGrid
-          releases={artistReleases || []}
-          isLoading={isLoadingReleases}
-          title="Artist Releases"
-        />
+        <ReleaseGrid releases={artistReleases || []} isLoading={isLoadingReleases} title="Artist Releases" />
       </div>
     </div>
   );

@@ -28,7 +28,10 @@ function ReleaseGrid({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {releases.map((release) => (
-        <Card key={release.id} className="group flex flex-col overflow-hidden glass-card border-white/10 shadow-2xl transition-all duration-300 hover:border-primary/50 hover:shadow-primary/20 bg-background/40">
+        <Card
+          key={release.id}
+          className="group flex flex-col overflow-hidden glass-card border-white/10 shadow-2xl transition-all duration-300 hover:border-primary/50 hover:shadow-primary/20 bg-background/40"
+        >
           <CardHeader className="relative h-48 p-0 border-b border-white/5 overflow-hidden">
             {/* Blurred Background */}
             {release.cover_art && (
@@ -40,7 +43,7 @@ function ReleaseGrid({
                 className="object-cover blur-xl brightness-50 opacity-60 group-hover:opacity-80 transition-opacity duration-500 transform scale-110"
               />
             )}
-            
+
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
 
             {/* Main Cover Art */}
@@ -60,7 +63,9 @@ function ReleaseGrid({
           </CardHeader>
 
           <CardContent className="p-5 flex-grow flex flex-col z-20 relative bg-black/20">
-            <h3 className="font-bold text-xl tracking-tight truncate drop-shadow-sm group-hover:text-primary transition-colors">{release.music_name}</h3>
+            <h3 className="font-bold text-xl tracking-tight truncate drop-shadow-sm group-hover:text-primary transition-colors">
+              {release.music_name}
+            </h3>
 
             <div className="flex flex-wrap items-center gap-x-1 mt-2">
               {release.artists.map((artist, index) => (

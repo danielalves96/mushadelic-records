@@ -95,17 +95,21 @@ export default function CreateReleasePage() {
       <div className="relative">
         <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-primary/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[30vw] h-[30vw] bg-blue-500/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
-        
+
         <Card className="glass-card border-white/10 bg-black/40 shadow-2xl overflow-hidden backdrop-blur-xl">
           <CardHeader className="border-b border-white/5 bg-white/5">
             <CardTitle className="text-2xl font-bold tracking-tight text-white/90">Release Details</CardTitle>
-            <CardDescription className="text-muted-foreground/80">Complete the information below to publish a new release.</CardDescription>
+            <CardDescription className="text-muted-foreground/80">
+              Complete the information below to publish a new release.
+            </CardDescription>
           </CardHeader>
           <CardContent className="p-6 md:p-8">
             <form onSubmit={handleSubmit} className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-3">
-                  <Label htmlFor="music_name" className="text-white/80 font-medium">Music Name <span className="text-red-500">*</span></Label>
+                  <Label htmlFor="music_name" className="text-white/80 font-medium">
+                    Music Name <span className="text-red-500">*</span>
+                  </Label>
                   <Input
                     id="music_name"
                     name="music_name"
@@ -117,7 +121,9 @@ export default function CreateReleasePage() {
                 </div>
 
                 <div className="space-y-3">
-                  <Label htmlFor="release_date" className="text-white/80 font-medium">Release Date <span className="text-red-500">*</span></Label>
+                  <Label htmlFor="release_date" className="text-white/80 font-medium">
+                    Release Date <span className="text-red-500">*</span>
+                  </Label>
                   <Input
                     id="release_date"
                     name="release_date"
@@ -141,7 +147,9 @@ export default function CreateReleasePage() {
 
                 {/* Platforms Row */}
                 <div className="space-y-3">
-                  <Label htmlFor="buy_link" className="text-white/80 font-medium">Buy Link (Bandcamp)</Label>
+                  <Label htmlFor="buy_link" className="text-white/80 font-medium">
+                    Buy Link (Bandcamp)
+                  </Label>
                   <Input
                     id="buy_link"
                     name="buy_link"
@@ -153,7 +161,9 @@ export default function CreateReleasePage() {
                 </div>
 
                 <div className="space-y-3">
-                  <Label htmlFor="soundcloud_link" className="text-white/80 font-medium">SoundCloud Link</Label>
+                  <Label htmlFor="soundcloud_link" className="text-white/80 font-medium">
+                    SoundCloud Link
+                  </Label>
                   <Input
                     id="soundcloud_link"
                     name="soundcloud_link"
@@ -165,7 +175,9 @@ export default function CreateReleasePage() {
                 </div>
 
                 <div className="space-y-3">
-                  <Label htmlFor="spotify_link" className="text-white/80 font-medium">Spotify Link</Label>
+                  <Label htmlFor="spotify_link" className="text-white/80 font-medium">
+                    Spotify Link
+                  </Label>
                   <Input
                     id="spotify_link"
                     name="spotify_link"
@@ -177,7 +189,9 @@ export default function CreateReleasePage() {
                 </div>
 
                 <div className="space-y-3">
-                  <Label htmlFor="youtube_link" className="text-white/80 font-medium">YouTube Link</Label>
+                  <Label htmlFor="youtube_link" className="text-white/80 font-medium">
+                    YouTube Link
+                  </Label>
                   <Input
                     id="youtube_link"
                     name="youtube_link"
@@ -189,7 +203,9 @@ export default function CreateReleasePage() {
                 </div>
 
                 <div className="space-y-3">
-                  <Label htmlFor="deezer_link" className="text-white/80 font-medium">Deezer Link</Label>
+                  <Label htmlFor="deezer_link" className="text-white/80 font-medium">
+                    Deezer Link
+                  </Label>
                   <Input
                     id="deezer_link"
                     name="deezer_link"
@@ -201,7 +217,9 @@ export default function CreateReleasePage() {
                 </div>
 
                 <div className="space-y-3">
-                  <Label htmlFor="apple_link" className="text-white/80 font-medium">Apple Music Link</Label>
+                  <Label htmlFor="apple_link" className="text-white/80 font-medium">
+                    Apple Music Link
+                  </Label>
                   <Input
                     id="apple_link"
                     name="apple_link"
@@ -214,7 +232,9 @@ export default function CreateReleasePage() {
               </div>
 
               <div className="space-y-3">
-                <Label htmlFor="description" className="text-white/80 font-medium">Description</Label>
+                <Label htmlFor="description" className="text-white/80 font-medium">
+                  Description
+                </Label>
                 <Textarea
                   id="description"
                   name="description"
@@ -227,7 +247,9 @@ export default function CreateReleasePage() {
               </div>
 
               <div className="space-y-3 p-6 rounded-xl border border-white/5 bg-black/20">
-                <Label className="text-white/80 font-medium">Artists involved <span className="text-red-500">*</span></Label>
+                <Label className="text-white/80 font-medium">
+                  Artists involved <span className="text-red-500">*</span>
+                </Label>
                 <div className="mt-2">
                   <MultiSelect
                     options={artists || []}
@@ -240,10 +262,19 @@ export default function CreateReleasePage() {
               </div>
 
               <div className="flex gap-4 pt-4 border-t border-white/5 mt-8">
-                <Button type="button" variant="outline" onClick={() => router.back()} className="flex-1 bg-transparent border-white/10 hover:bg-white/5 hover:text-white">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => router.back()}
+                  className="flex-1 bg-transparent border-white/10 hover:bg-white/5 hover:text-white"
+                >
                   Cancel
                 </Button>
-                <Button type="submit" disabled={createReleaseMutation.isPending} className="flex-1 shadow-lg shadow-primary/20 bg-primary text-primary-foreground hover:bg-primary/90">
+                <Button
+                  type="submit"
+                  disabled={createReleaseMutation.isPending}
+                  className="flex-1 shadow-lg shadow-primary/20 bg-primary text-primary-foreground hover:bg-primary/90"
+                >
                   {createReleaseMutation.isPending ? 'Creating...' : 'Publish Release'}
                 </Button>
               </div>
